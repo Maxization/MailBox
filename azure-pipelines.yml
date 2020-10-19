@@ -1,7 +1,11 @@
 # ASP.NET Core
-- task: UseRubyVersion@0
+- task: VersionAssemblies@2
   inputs:
-    versionSpec: '>= 2.4'
+    Path: '$(Build.SourcesDirectory)'
+    VersionNumber: '$(Build.BuildNumber)'
+    InjectVersion: False
+    FilenamePattern: 'AssemblyInfo.*'
+    OutputVersion: 'OutputedVersion'
 # Build and test ASP.NET Core projects targeting .NET Core.
 # Add steps that run tests, create a NuGet package, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
@@ -15,32 +19,13 @@ pool:
 variables:
   buildConfiguration: 'Release'
 
-name: 'Set dynamically below in a task'
-
-variables:
-  version.MajorMinor: '1.2' # Manually adjust the version number as needed for semantic versioning. Revision is auto-incremented.
-  version.Revision: $[counter(variables['version.MajorMinor'], 0)]
-  versionNumber: '$(version.MajorMinor).$(version.Revision)'
-
 steps:
-- task: PowerShell@2
-  displayName: Set the name of the build (i.e. the Build.BuildNumber)
+- task: DotNetCoreCLI@2
+  displayName: Build
   inputs:
-    targetType: 'inline'
-    script: |
-      [string] $buildName = "$(versionNumber)_$(Build.SourceBranchName)"
-      Write-Host "Setting the name of the build to '$buildName'."
-      Write-Host "##vso[build.updatebuildnumber]$buildName"
-
-- task: richardfennellBM.BM-VSTS-Versioning-Task.Version-Assemblies-Task.VersionAssemblies@2
-  displayName: Version the assemblies
-  inputs:
-    Path: '$(Build.SourcesDirectory)'
-    VersionNumber: '$(versionNumber)'
-    InjectVersion: true
-    FilenamePattern: 'AssemblyInfo.*'
-    OutputVersion: 'OutputedVersion'
-
+    command: build
+    projects: '**/*.csproj'
+    arguments: '--configuration $(buildConfiguration)'
 
 - task: DotNetCoreCLI@2
   displayName: 'Tests'
