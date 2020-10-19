@@ -33,9 +33,4 @@ steps:
     testRunner: VSTest
     testResultsFiles: '**/*.trx'
 
-- task: UseDotNet@2
-  displayName: 'Versioning'
-  inputs:
-    version: '1.0.x'
-
 
