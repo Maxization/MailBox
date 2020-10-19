@@ -1,11 +1,5 @@
 # ASP.NET Core
-- task: VersionAssemblies@2
-  inputs:
-    Path: '$(Build.SourcesDirectory)'
-    VersionNumber: '$(Build.BuildNumber)'
-    InjectVersion: False
-    FilenamePattern: 'AssemblyInfo.*'
-    OutputVersion: 'OutputedVersion'
+
 # Build and test ASP.NET Core projects targeting .NET Core.
 # Add steps that run tests, create a NuGet package, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
