@@ -13,16 +13,28 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- script: dotnet build MailBox/MailBox/MailBox.csproj --configuration $(buildConfiguration)
-  displayName: 'dotnet build $(buildConfiguration)'
+- task: DotNetCoreCLI@2
+  displayName: Build
+  inputs:
+    command: build
+    projects: '**/*.csproj'
+    arguments: '--configuration $(buildConfiguration)'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: test
+    projects: '**/*Tests/*.csproj'
+    arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
+
+- script: dotnet test <test-project> --logger trx --collect "Code coverage"
+- task: PublishTestResults@2
+  inputs:
+    testRunner: VSTest
+    testResultsFiles: '**/*.trx'
 
 - task: UseDotNet@2
   displayName: 'Versioning'
   inputs:
     version: '1.0.x'
 
-- task: DotNetCoreCLI@2
-  inputs:
-    command: test
-    projects: '**/Tests/*.csproj'
-    arguments: '--configuration $(buildConfiguration)'
+
