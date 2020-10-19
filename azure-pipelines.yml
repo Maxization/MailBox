@@ -15,3 +15,14 @@ variables:
 steps:
 - script: dotnet build --configuration $(buildConfiguration)
   displayName: 'dotnet build $(buildConfiguration)'
+
+- task: UseDotNet@2
+  displayName: 'Versioning'
+  inputs:
+    version: '1.0.x'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: test
+    projects: '**/Tests/*.csproj'
+    arguments: '--configuration $(buildConfiguration)'
