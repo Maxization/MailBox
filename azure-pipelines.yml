@@ -50,7 +50,7 @@ steps:
 - task: VersionAssemblies@2
   displayName: Version the assemblies
   inputs:
-    Path: '$(Build.Repository.LocalPath)'
+    Path: '/MailBox'
     VersionNumber: '$(versionNumber)'
     InjectVersion: true
     FilenamePattern: 'AssemblyInfo.*'
