@@ -47,3 +47,12 @@ steps:
       Write-Host "Setting the name of the build to '$buildName'."
       Write-Host "##vso[build.updatebuildnumber]$buildName"
 
+- task: richardfennellBM.BM-VSTS-Versioning-Task.Version-Assemblies-Task.VersionAssemblies@2
+  displayName: Version the assemblies
+  inputs:
+    Path: '$(Build.SourcesDirectory)'
+    VersionNumber: '$(versionNumber)'
+    InjectVersion: true
+    FilenamePattern: '*.AssemblyInfo.*'
+    OutputVersion: 'OutputedVersion'
+
