@@ -50,9 +50,9 @@ steps:
 - task: VersionAssemblies@2
   displayName: Version the assemblies
   inputs:
-    Path: '/**/*'
+    Path: '$(Build.SourcesDirectory)'
     VersionNumber: '$(versionNumber)'
     InjectVersion: true
-    FilenamePattern: 'AssemblyInfo.*'
+    FilenamePattern: '*/AssemblyInfo.*'
     OutputVersion: 'OutputedVersion'
 
