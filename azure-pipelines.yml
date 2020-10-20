@@ -53,6 +53,6 @@ steps:
     Path: '$(Build.SourcesDirectory)'
     VersionNumber: '$(versionNumber)'
     InjectVersion: true
-    FilenamePattern: '/MailBox.AssemblyInfo.*'
+    FilenamePattern: '*.AssemblyInfo.*'
     OutputVersion: 'OutputedVersion'
 
