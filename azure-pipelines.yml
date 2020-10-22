@@ -14,9 +14,29 @@ variables:
   buildConfiguration: 'Release'
   version.MajorMinor: '1.0' # Manually adjust the version number as needed for semantic versioning. Revision is auto-incremented.
   version.Revision: $[counter(variables['version.MajorMinor'], 0)]
-  versionNumber: '$(version.MajorMinor).$(version.Revision)'
+  versionNumber: '$(version.MajorMinor).$(version.Revision).0'
 
 steps:
+
+- task: Assembly-Info-NetCore@2
+  inputs:
+    Path: '$(Build.SourcesDirectory)'
+    FileNames: '**/*.csproj'
+    InsertAttributes: true
+    FileEncoding: 'auto'
+    WriteBOM: false
+    VersionNumber: '$(versionNumber)'
+    FileVersionNumber: '$(versionNumber)'
+    LogLevel: 'verbose'
+    FailOnWarning: false
+    DisableTelemetry: false
+
+- task: NuGetCommand@2
+  inputs:
+    command: 'restore'
+    restoreSolution: '**/*.sln'
+    feedsToUse: 'select'
+
 - task: DotNetCoreCLI@2
   displayName: Build
   inputs:
@@ -46,13 +66,4 @@ steps:
       [string] $buildName = "$(versionNumber)_$(Build.SourceBranchName)"
       Write-Host "Setting the name of the build to '$buildName'."
       Write-Host "##vso[build.updatebuildnumber]$buildName"
-
-- task: richardfennellBM.BM-VSTS-Versioning-Task.Version-Assemblies-Task.VersionAssemblies@2
-  displayName: Version the assemblies
-  inputs:
-    Path: '$(Build.SourcesDirectory)'
-    VersionNumber: '$(versionNumber)'
-    InjectVersion: true
-    FilenamePattern: '*.AssemblyInfo.*'
-    OutputVersion: 'OutputedVersion'
 
