@@ -1,0 +1,32 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<div class="inbox" id="container">
+    <table id="mail_list" border="1">
+        <tr>
+            <td width="20">Read</td>
+            <td width="30">Recipient</td>
+            <td width="1000">Text</td>
+            <td width="10">Date</td>
+        </tr>
+    </table>
+    <button type="button" onclick="getMails()">Show mails</button>
+    <script>
+        function getMails() {
+            fetch("https://localhost:44368/mail/usermails")
+                .then((resp) => resp.json())
+                .then(function (data) {
+                    document.getElementById("mail_list").innerHTML = "";
+
+                    document.getElementById("mail_list").innerHTML += "<tr></tr><td>Read</td><td>Recipient</td><td>Text</td><td>Date</td></tr>";
+                    data.forEach(createRow);
+                })
+        }
+
+        function createRow(item, index) {
+            document.getElementById("mail_list").innerHTML += "<tr><td>" + item.read + "</td><td>" + item.recipient + "</td><td>" + item.text + "</td><td>" + item.date + "</td></tr>";
+        }       
+    </script>
+</div>
