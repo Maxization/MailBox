@@ -3,30 +3,181 @@
 *@
 @{
 }
-<div class="inbox" id="container">
-    <table id="mail_list" border="1">
-        <tr>
-            <td width="20">Read</td>
-            <td width="30">Recipient</td>
-            <td width="1000">Text</td>
-            <td width="10">Date</td>
-        </tr>
-    </table>
-    <button type="button" onclick="getMails()">Show mails</button>
-    <script>
-        function getMails() {
-            fetch("https://localhost:44368/mail/usermails")
-                .then((resp) => resp.json())
-                .then(function (data) {
-                    document.getElementById("mail_list").innerHTML = "";
+<head>
 
-                    document.getElementById("mail_list").innerHTML += "<tr></tr><td>Read</td><td>Recipient</td><td>Text</td><td>Date</td></tr>";
-                    data.forEach(createRow);
-                })
-        }
+    <link href="~/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/css/main.css" rel="stylesheet" />
+    <link href="~/css/inbox.css" rel="stylesheet" />
+</head>
+<body class="bg-dark2">
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Search in inbox" aria-label="Recipient's username" aria-describedby="basic-addon2">
+        <div class="input-group-append">
+            <button class="btn btn-outline-secondary btn-primary" type="button">Search</button>
+        </div>
+    </div>
+    <div class="container-fluid text-white">
+        <div class="row">
+            <div class="col-2 no-float bg-dark-transparent">
+                <div class="button-container"><button type="button" class="btn-sm btn-outline-secondary btn-primary btn-80-width">Compose</button></div>
+                <div class="button-container"><button type="button" class="btn-sm btn-outline-secondary btn-primary btn-80-width">Inbox</button></div>
+                <div class="button-container"><button type="button" class="btn-sm btn-outline-secondary btn-primary btn-80-width">Sent</button></div>
+                <div class="button-container"><button type="button" class="btn-sm btn-outline-secondary btn-primary btn-80-width">Spam</button></div>
+                <div class="button-container"><button type="button" class="btn-sm btn-outline-secondary btn-primary btn-80-width">Stared</button></div>
+            </div>
+            <div class="col-8 bg-dark-transparent">
+                <div class="row">
+                    <div class="container table-dark table-inbox overflow-auto " id="inbox_table" border="1">
+                        <div class="row no-gutters">
+                            <div class="col-1 no-gutters"><span>Read</span></div>
+                            <div class="col-2 no-gutters"><span>Recipient</span></div>
+                            <div class="col-8 no-gutters"><span>Text</span></div>
+                            <div class="col-1 no-gutters"><span>Date</span></div>
+                        </div>
+                        <div class="row no-gutters">
+                            <div class="col-1 no-gutters"><span><div class="form-check"><input class="form-check-input position-static" type="checkbox" id="blankCheckbox" value="option1" aria-label="..."></div></span></div>
+                            <div class="col-2 no-gutters"><span>Adam Kowal</span></div>
+                            <div class="col-8 no-gutters"><span>Dzień dobry. Pisze do Pana w sprawie spotkania. Niestety nie moge pojawic się ponieważ mam dużo zajęć w domu. Musze posprzątać bałagan. Naprawić stół. Umyć kuchnie. Zamieść podłoge. Pozdrawiam Adam Kowalczyk.</span></div>
+                            <div class="col-1 no-gutters"><span>19.02.2010</span></div>
+                        </div>
+                        <div class="row no-gutters">
+                            <div class="col-1 no-gutters"><span><div class="form-check"><input class="form-check-input position-static" type="checkbox" id="blankCheckbox" value="option1" aria-label="..."></div></span></div>
+                            <div class="col-2 no-gutters"><span>Adam Kowal</span></div>
+                            <div class="col-8 no-gutters"><span>Dzień dobry. Pisze do Pana w sprawie spotkania. Niestety nie moge pojawic się ponieważ mam dużo zajęć w domu. Musze posprzątać bałagan. Naprawić stół. Umyć kuchnie. Zamieść podłoge. Pozdrawiam Adam Kowalczyk.</span></div>
+                            <div class="col-1 no-gutters"><span>19.02.2010</span></div>
+                        </div>
+                        <div class="row no-gutters">
+                            <div class="col-1 no-gutters"><span><div class="form-check"><input class="form-check-input position-static" type="checkbox" id="blankCheckbox" value="option1" aria-label="..."></div></span></div>
+                            <div class="col-2 no-gutters"><span>Adam Kowal</span></div>
+                            <div class="col-8 no-gutters"><span>Dzień dobry. Pisze do Pana w sprawie spotkania. Niestety nie moge pojawic się ponieważ mam dużo zajęć w domu. Musze posprzątać bałagan. Naprawić stół. Umyć kuchnie. Zamieść podłoge. Pozdrawiam Adam Kowalczyk.</span></div>
+                            <div class="col-1 no-gutters"><span>19.02.2010</span></div>
+                        </div>
+                        <div class="row no-gutters">
+                            <div class="col-1 no-gutters"><span><div class="form-check"><input class="form-check-input position-static" type="checkbox" id="blankCheckbox" value="option1" aria-label="..."></div></span></div>
+                            <div class="col-2 no-gutters"><span>Adam Kowal</span></div>
+                            <div class="col-8 no-gutters"><span>Dzień dobry. Pisze do Pana w sprawie spotkania. Niestety nie moge pojawic się ponieważ mam dużo zajęć w domu. Musze posprzątać bałagan. Naprawić stół. Umyć kuchnie. Zamieść podłoge. Pozdrawiam Adam Kowalczyk.</span></div>
+                            <div class="col-1 no-gutters"><span>19.02.2010</span></div>
+                        </div>
+                        <div class="row no-gutters">
+                            <div class="col-1 no-gutters"><span><div class="form-check"><input class="form-check-input position-static" type="checkbox" id="blankCheckbox" value="option1" aria-label="..."></div></span></div>
+                            <div class="col-2 no-gutters"><span>Adam Kowal</span></div>
+                            <div class="col-8 no-gutters"><span>Dzień dobry. Pisze do Pana w sprawie spotkania. Niestety nie moge pojawic się ponieważ mam dużo zajęć w domu. Musze posprzątać bałagan. Naprawić stół. Umyć kuchnie. Zamieść podłoge. Pozdrawiam Adam Kowalczyk.</span></div>
+                            <div class="col-1 no-gutters"><span>19.02.2010</span></div>
+                        </div>
+                        <div class="row no-gutters">
+                            <div class="col-1 no-gutters"><span><div class="form-check"><input class="form-check-input position-static" type="checkbox" id="blankCheckbox" value="option1" aria-label="..."></div></span></div>
+                            <div class="col-2 no-gutters"><span>Adam Kowal</span></div>
+                            <div class="col-8 no-gutters"><span>Dzień dobry. Pisze do Pana w sprawie spotkania. Niestety nie moge pojawic się ponieważ mam dużo zajęć w domu. Musze posprzątać bałagan. Naprawić stół. Umyć kuchnie. Zamieść podłoge. Pozdrawiam Adam Kowalczyk.</span></div>
+                            <div class="col-1 no-gutters"><span>19.02.2010</span></div>
+                        </div>
+                        <div class="row no-gutters">
+                            <div class="col-1 no-gutters"><span><div class="form-check"><input class="form-check-input position-static" type="checkbox" id="blankCheckbox" value="option1" aria-label="..."></div></span></div>
+                            <div class="col-2 no-gutters"><span>Adam Kowal</span></div>
+                            <div class="col-8 no-gutters"><span>Dzień dobry. Pisze do Pana w sprawie spotkania. Niestety nie moge pojawic się ponieważ mam dużo zajęć w domu. Musze posprzątać bałagan. Naprawić stół. Umyć kuchnie. Zamieść podłoge. Pozdrawiam Adam Kowalczyk.</span></div>
+                            <div class="col-1 no-gutters"><span>19.02.2010</span></div>
+                        </div>
+                        <div class="row no-gutters">
+                            <div class="col-1 no-gutters"><span><div class="form-check"><input class="form-check-input position-static" type="checkbox" id="blankCheckbox" value="option1" aria-label="..."></div></span></div>
+                            <div class="col-2 no-gutters"><span>Adam Kowal</span></div>
+                            <div class="col-8 no-gutters"><span>Dzień dobry. Pisze do Pana w sprawie spotkania. Niestety nie moge pojawic się ponieważ mam dużo zajęć w domu. Musze posprzątać bałagan. Naprawić stół. Umyć kuchnie. Zamieść podłoge. Pozdrawiam Adam Kowalczyk.</span></div>
+                            <div class="col-1 no-gutters"><span>19.02.2010</span></div>
+                        </div>
+                        <div class="row no-gutters">
+                            <div class="col-1 no-gutters"><span><div class="form-check"><input class="form-check-input position-static" type="checkbox" id="blankCheckbox" value="option1" aria-label="..."></div></span></div>
+                            <div class="col-2 no-gutters"><span>Adam Kowal</span></div>
+                            <div class="col-8 no-gutters"><span>Dzień dobry. Pisze do Pana w sprawie spotkania. Niestety nie moge pojawic się ponieważ mam dużo zajęć w domu. Musze posprzątać bałagan. Naprawić stół. Umyć kuchnie. Zamieść podłoge. Pozdrawiam Adam Kowalczyk.</span></div>
+                            <div class="col-1 no-gutters"><span>19.02.2010</span></div>
+                        </div>
+                        <div class="row no-gutters">
+                            <div class="col-1 no-gutters"><span><div class="form-check"><input class="form-check-input position-static" type="checkbox" id="blankCheckbox" value="option1" aria-label="..."></div></span></div>
+                            <div class="col-2 no-gutters"><span>Adam Kowal</span></div>
+                            <div class="col-8 no-gutters"><span>Dzień dobry. Pisze do Pana w sprawie spotkania. Niestety nie moge pojawic się ponieważ mam dużo zajęć w domu. Musze posprzątać bałagan. Naprawić stół. Umyć kuchnie. Zamieść podłoge. Pozdrawiam Adam Kowalczyk.</span></div>
+                            <div class="col-1 no-gutters"><span>19.02.2010</span></div>
+                        </div>
+                        <div class="row no-gutters">
+                            <div class="col-1 no-gutters"><span><div class="form-check"><input class="form-check-input position-static" type="checkbox" id="blankCheckbox" value="option1" aria-label="..."></div></span></div>
+                            <div class="col-2 no-gutters"><span>Adam Kowal</span></div>
+                            <div class="col-8 no-gutters"><span>Dzień dobry. Pisze do Pana w sprawie spotkania. Niestety nie moge pojawic się ponieważ mam dużo zajęć w domu. Musze posprzątać bałagan. Naprawić stół. Umyć kuchnie. Zamieść podłoge. Pozdrawiam Adam Kowalczyk.</span></div>
+                            <div class="col-1 no-gutters"><span>19.02.2010</span></div>
+                        </div>
+                        <div class="row no-gutters">
+                            <div class="col-1 no-gutters"><span><div class="form-check"><input class="form-check-input position-static" type="checkbox" id="blankCheckbox" value="option1" aria-label="..."></div></span></div>
+                            <div class="col-2 no-gutters"><span>Adam Kowal</span></div>
+                            <div class="col-8 no-gutters"><span>Dzień dobry. Pisze do Pana w sprawie spotkania. Niestety nie moge pojawic się ponieważ mam dużo zajęć w domu. Musze posprzątać bałagan. Naprawić stół. Umyć kuchnie. Zamieść podłoge. Pozdrawiam Adam Kowalczyk.</span></div>
+                            <div class="col-1 no-gutters"><span>19.02.2010</span></div>
+                        </div>
+                        <div class="row no-gutters">
+                            <div class="col-1 no-gutters"><span><div class="form-check"><input class="form-check-input position-static" type="checkbox" id="blankCheckbox" value="option1" aria-label="..."></div></span></div>
+                            <div class="col-2 no-gutters"><span>Adam Kowal</span></div>
+                            <div class="col-8 no-gutters"><span>Dzień dobry. Pisze do Pana w sprawie spotkania. Niestety nie moge pojawic się ponieważ mam dużo zajęć w domu. Musze posprzątać bałagan. Naprawić stół. Umyć kuchnie. Zamieść podłoge. Pozdrawiam Adam Kowalczyk.</span></div>
+                            <div class="col-1 no-gutters"><span>19.02.2010</span></div>
+                        </div>
+                        <div class="row no-gutters">
+                            <div class="col-1 no-gutters"><span><div class="form-check"><input class="form-check-input position-static" type="checkbox" id="blankCheckbox" value="option1" aria-label="..."></div></span></div>
+                            <div class="col-2 no-gutters"><span>Adam Kowal</span></div>
+                            <div class="col-8 no-gutters"><span>Dzień dobry. Pisze do Pana w sprawie spotkania. Niestety nie moge pojawic się ponieważ mam dużo zajęć w domu. Musze posprzątać bałagan. Naprawić stół. Umyć kuchnie. Zamieść podłoge. Pozdrawiam Adam Kowalczyk.</span></div>
+                            <div class="col-1 no-gutters"><span>19.02.2010</span></div>
+                        </div>
 
-        function createRow(item, index) {
-            document.getElementById("mail_list").innerHTML += "<tr><td>" + item.read + "</td><td>" + item.recipient + "</td><td>" + item.text + "</td><td>" + item.date + "</td></tr>";
-        }       
-    </script>
-</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-2 bg-dark-transparent">
+                <div class="row">
+                    <div class="col-9 no-gutters container-name text-center"><div class=""><b>Adam Słowacki</b></div></div>
+                    <div class="col-3 circle">A</div>
+                </div>
+                <div class="container-fluid container-groups">
+
+                    <div>All contact</div>
+                    <div class="container-fluid overflow-auto container-group" id="all">
+                        <button class="btn-sm btn-primary btn-contact"><span>kolega1@mailbox.com</span></button>
+                        <button class="btn-sm btn-primary btn-contact"><span>kolega1@mailbox.com</span></button>
+                        <button class="btn-sm btn-primary btn-contact"><span>kolega1@mailbox.com</span></button>
+                        <button class="btn-sm btn-primary btn-contact"><span>kolega1@mailbox.com</span></button>
+                        <button class="btn-sm btn-primary btn-contact"><span>kolega1@mailbox.com</span></button>
+                        <button class="btn-sm btn-primary btn-contact"><span>kolega1@mailbox.com</span></button>
+                        <button class="btn-sm btn-primary btn-contact"><span>kolega1@mailbox.com</span></button>
+                        <button class="btn-sm btn-primary btn-contact"><span>kolega1@mailbox.com</span></button>
+                        <button class="btn-sm btn-primary btn-contact"><span>kolega1@mailbox.com</span></button>
+                        <button class="btn-sm btn-primary btn-contact"><span>kolega1@mailbox.com</span></button>
+                        <button class="btn-sm btn-primary btn-contact"><span>kolega1@mailbox.com</span></button>
+                        <button class="btn-sm btn-primary btn-contact"><span>kolega1@mailbox.com</span></button>
+                        <button class="btn-sm btn-primary btn-contact"><span>kolega1@mailbox.com</span></button>
+                        <button class="btn-sm btn-primary btn-contact"><span>kolega1@mailbox.com</span></button>
+                        <button class="btn-sm btn-primary btn-contact"><span>kolega1@mailbox.com</span></button>
+                        <button class="btn-sm btn-primary btn-contact"><span>kolega1@mailbox.com</span></button>
+                        <button class="btn-sm btn-primary btn-contact"><span>kolega1@mailbox.com</span></button>
+                        <button class="btn-sm btn-primary btn-contact"><span>kolega1@mailbox.com</span></button>
+                        <button class="btn-sm btn-primary btn-contact"><span>kolega1@mailbox.com</span></button>
+                        <button class="btn-sm btn-primary btn-contact"><span>kolega1@mailbox.com</span></button>
+                        <button class="btn-sm btn-primary btn-contact"><span>kolega1@mailbox.com</span></button>
+                    </div>
+                    <div>Work</div>
+                    <div class="container-fluid overflow-auto container-group" id="work">
+                        <button class="btn-sm btn-primary btn-contact"><span>kolega1@mailbox.com</span></button>
+                        <button class="btn-sm btn-primary btn-contact"><span>kolega1@mailbox.com</span></button>
+                        <button class="btn-sm btn-primary btn-contact"><span>kolega1@mailbox.com</span></button>
+                        <button class="btn-sm btn-primary btn-contact"><span>kolega1@mailbox.com</span></button>
+                        <button class="btn-sm btn-primary btn-contact"><span>kolega1@mailbox.com</span></button>
+                        <button class="btn-sm btn-primary btn-contact"><span>kolega1@mailbox.com</span></button>
+                        <button class="btn-sm btn-primary btn-contact"><span>kolega1@mailbox.com</span></button>
+                        <button class="btn-sm btn-primary btn-contact"><span>kolega1@mailbox.com</span></button>
+                        <button class="btn-sm btn-primary btn-contact"><span>kolega1@mailbox.com</span></button>
+                        <button class="btn-sm btn-primary btn-contact"><span>kolega1@mailbox.com</span></button>
+                        <button class="btn-sm btn-primary btn-contact"><span>kolega1@mailbox.com</span></button>
+                        <button class="btn-sm btn-primary btn-contact"><span>kolega1@mailbox.com</span></button>
+                        <button class="btn-sm btn-primary btn-contact"><span>kolega1@mailbox.com</span></button>
+                        <button class="btn-sm btn-primary btn-contact"><span>kolega1@mailbox.com</span></button>
+                        <button class="btn-sm btn-primary btn-contact"><span>kolega1@mailbox.com</span></button>
+                        <button class="btn-sm btn-primary btn-contact"><span>kolega1@mailbox.com</span></button>
+                        <button class="btn-sm btn-primary btn-contact"><span>kolega1@mailbox.com</span></button>
+                        <button class="btn-sm btn-primary btn-contact"><span>kolega1@mailbox.com</span></button>
+                        <button class="btn-sm btn-primary btn-contact"><span>kolega1@mailbox.com</span></button>
+                        <button class="btn-sm btn-primary btn-contact"><span>kolega1@mailbox.com</span></button>
+                        <button class="btn-sm btn-primary btn-contact"><span>kolega1@mailbox.com</span></button>
+                    </div>
+                </div>
+        </div>
+    </div>
+</body>

@@ -7,7 +7,6 @@ using MailBox.Models;
 
 namespace MailBox.Controllers
 {
-    [Route("[controller]/[action]")]
     public class MailController : Controller
     {
         public IActionResult Index()
