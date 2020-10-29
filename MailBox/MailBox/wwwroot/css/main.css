@@ -1,0 +1,176 @@
+﻿/*colors*/
+.bg-dark-transparent {
+    background: rgba(41, 41, 41, 0.10)
+}
+
+.bg-dark2 {
+    background-color: #292929 !important;
+}
+
+.bg-black {
+    background-color: #000000 !important;
+}
+
+.bg-blue-label {
+    background-color: #0d6efd !important;
+}
+/*search container*/
+.container-search{
+    margin-left: auto;
+    margin-right: auto;
+    width: 86%;
+}
+/*hr*/
+hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid #ccc;
+    margin: 0 0 1em 0;
+    padding: 0;
+    color: white;
+}
+
+/*container contacts*/
+.container-contacts{
+    max-height: 150px;
+}
+/*container title*/
+.container-title {
+    margin-left: 5%;
+    margin-right: 5%;
+    width: 90%;
+    min-width: 70px;
+}
+
+/*buttons*/
+.btn-folder {
+    color: #fff;
+    background-color: #0d6efd;
+    border: none;
+    border-radius: 5px;
+    width: 95%;
+    min-width: 70px;
+}
+
+/*new folder input*/
+.container-new{
+    margin-top: 5px;
+    margin-left: 3.5%;
+    margin-right: 3.5%;
+    height: 35px;
+    width: 91%;
+    min-width: 70px;
+}
+
+/*container with white boarder*/
+.container-board-white {
+    border: solid;
+    border-color: white;
+    border-width: 1px;
+}
+
+.input-new_folder{
+    background-color: #000000;
+    color: white;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/*new folder button*/
+.btn-new{
+    width: 100%;
+    height: 100%;
+}
+
+/*input focus*/
+input[type="text"]:focus {
+    background-color: #000000;
+    color: white;
+}
+
+button:focus {
+    background-color: #000000;
+    color: white;
+    border: none;
+}
+
+button:hover {
+    background-color: #000000;
+    color: white;
+    border: none;
+}
+
+button:active {
+    background-color: #000000;
+    color: white;
+    border: none;
+}
+/*left container*/
+/*mid container*/
+/*right container*/
+
+/*name container*/
+.container-name {
+    padding: 13px;
+}
+
+.btn-contact{
+    align-self: center;
+    width: 110px;
+}
+
+/*button container*/
+.button-container{
+    margin-top: 2px;
+    padding-top: 1px;
+    padding-left: 5px;
+}
+/*container group*/
+.container-group{
+    max-height: 180px;
+    min-height: 100px;
+    width: 90%;
+    margin-bottom: 20px;
+}
+
+.group-title{
+}
+
+/*container groups*/
+.container-groups {
+    height: 100%;
+    width: 90%;
+    margin-left: 5%;
+    margin-right: 5%;
+    max-height: 300px;
+}
+
+/*group title container*/
+.container-group-title{
+    height: 30px;
+    width: 90%;
+}
+/*Scrols*/
+/*scrol style*/
+/* width */
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #343a40;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
