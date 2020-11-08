@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MailBox.Models.UserModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,14 +10,14 @@ namespace MailBox.Models
     public class InboxMail
     {
         public bool Read { get; set; }
-        public User Sender { get; }
-        public List<User> Recipients { get; }
+        public Sender Sender { get; }
+        public List<Recipient> Recipients { get; }
         public string Topic { get; }
         public string Text { get; }
         public DateTime Date { get; }
         public InboxMail MailReply { get; }
 
-        public InboxMail(bool read, User sender, List<User> recipients, string topic, string text, DateTime date, InboxMail mailReply)
+        public InboxMail(bool read, Sender sender, List<Recipient> recipients, string topic, string text, DateTime date, InboxMail mailReply)
         {
             this.Read = read;
             this.Sender = sender;
