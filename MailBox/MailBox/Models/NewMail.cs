@@ -14,15 +14,15 @@ namespace MailBox.Models
         public string Text { get; set; }
         public DateTime Date { get; set; }
         public InboxMail MailReply { get; }
-        public NewMail(User Sender, List<User> CCRecipients, List<User> BCRecipients, string Topic, string Text, DateTime Date, InboxMail MailReply)
+        public NewMail(User sender, List<User> CCrecipients, List<User> BCrecipients, string topic, string text, DateTime date, InboxMail mailReply)
         {
-            this.Sender = Sender;
-            this.CCRecipients = CCRecipients;
-            this.BCRecipients = BCRecipients;
-            this.Topic = Topic;
-            this.Text = Text;
-            this.Date = Date;
-            this.MailReply = MailReply;
+            this.Sender = sender;
+            this.CCRecipients = CCrecipients;
+            this.BCRecipients = BCrecipients;
+            this.Topic = topic;
+            this.Text = text;
+            this.Date = date;
+            this.MailReply = mailReply;
         }
     }
 }

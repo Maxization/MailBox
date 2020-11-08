@@ -16,15 +16,15 @@ namespace MailBox.Models
         public DateTime Date { get; }
         public InboxMail MailReply { get; }
 
-        public InboxMail(bool Read, User Sender, List<User> Recipients, string Topic, string Text, DateTime date, InboxMail MailReply)
+        public InboxMail(bool read, User sender, List<User> recipients, string topic, string text, DateTime date, InboxMail mailReply)
         {
-            this.Read = Read;
-            this.Sender = Sender;
-            this.Recipients = Recipients;
-            this.Topic = Topic;
-            this.Text = Text;
-            this.Date = Date;
-            this.MailReply = MailReply;
+            this.Read = read;
+            this.Sender = sender;
+            this.Recipients = recipients;
+            this.Topic = topic;
+            this.Text = text;
+            this.Date = date;
+            this.MailReply = mailReply;
         }
     }
 }
