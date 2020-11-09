@@ -14,7 +14,7 @@ namespace MailBox.Models
         public string Topic { get; set; }
         public string Text { get; set; }
         public DateTime Date { get; set; }
-        public InboxMail MailReply { get; }
+        public InboxMail MailReply { get; set; }
         public NewMail(Sender sender, List<Recipient> CCrecipients, List<Recipient> BCrecipients, string topic, string text, DateTime date, InboxMail mailReply)
         {
             this.Sender = sender;
