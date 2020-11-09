@@ -14,6 +14,11 @@ namespace MailBox.Controllers
             return View();
         }
 
+        public IActionResult NewMail()
+        {
+            return View();
+        }
+
         [HttpGet]
         public IActionResult UserMails(int id)
         {
