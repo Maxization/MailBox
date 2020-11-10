@@ -10,16 +10,16 @@ namespace MailBox.Models
     {
         public Sender Sender { get; set; }
         public List<Recipient> CCRecipients { get; set; }
-        public List<Recipient> BCRecipients { get; set; }
+        public List<Recipient> BCCRecipients { get; set; }
         public string Topic { get; set; }
         public string Text { get; set; }
         public DateTime Date { get; set; }
         public InboxMail MailReply { get; set; }
-        public NewMail(Sender sender, List<Recipient> CCrecipients, List<Recipient> BCrecipients, string topic, string text, DateTime date, InboxMail mailReply)
+        public NewMail(Sender sender, List<Recipient> CCrecipients, List<Recipient> BCCrecipients, string topic, string text, DateTime date, InboxMail mailReply)
         {
             this.Sender = sender;
             this.CCRecipients = CCrecipients;
-            this.BCRecipients = BCrecipients;
+            this.BCCRecipients = BCCrecipients;
             this.Topic = topic;
             this.Text = text;
             this.Date = date;

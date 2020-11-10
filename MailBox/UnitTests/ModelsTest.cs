@@ -71,15 +71,15 @@ namespace UnitTests
             string address = "testaddress";
             Sender sender = new Sender(name, surname, address);
             List<Recipient> CCrecipients = new List<Recipient>();
-            List<Recipient> BCrecipients = new List<Recipient>();
+            List<Recipient> BCCrecipients = new List<Recipient>();
             string topic = "testtocpic";
             string text = "testtext";
             DateTime dateTime = new DateTime(2021, 1, 1);
             InboxMail nullInboxMail = null;
-            NewMail newMail = new NewMail(sender, CCrecipients, BCrecipients, topic, text, dateTime, nullInboxMail);
+            NewMail newMail = new NewMail(sender, CCrecipients, BCCrecipients, topic, text, dateTime, nullInboxMail);
             Assert.Equal(newMail.Sender, sender);
             Assert.Equal(newMail.CCRecipients, CCrecipients);
-            Assert.Equal(newMail.BCRecipients, BCrecipients);
+            Assert.Equal(newMail.BCCRecipients, BCCrecipients);
             Assert.Equal(newMail.Topic, topic);
             Assert.Equal(newMail.Text, text);
             Assert.Equal(newMail.Date, dateTime);
