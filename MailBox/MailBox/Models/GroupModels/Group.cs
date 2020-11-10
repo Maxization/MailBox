@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 
 namespace MailBox.Models
 {
-    [Serializable]
     public class Group
     {
         public string Name { get; set; }

@@ -7,6 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using MailBox.Models;
 using System.Collections.Generic;
 using MailBox.Models.UserModels;
+using Microsoft.AspNetCore.Mvc.Formatters;
 
 namespace UnitTests
 {
@@ -48,7 +49,8 @@ namespace UnitTests
             string text = "testtext";
             DateTime dateTime = new DateTime(2021, 1, 1);
             InboxMail nullInboxMail = null;
-            InboxMail inboxMail = new InboxMail(read, sender, recipients, topic, text, dateTime, nullInboxMail);
+            int id = 1;
+            InboxMail inboxMail = new InboxMail(id, read, sender, recipients, topic, text, dateTime, nullInboxMail);
             Assert.Equal(inboxMail.Read,read);
             Assert.Equal(inboxMail.Sender,sender);            
             Assert.Equal(inboxMail.Recipients,recipients);            
