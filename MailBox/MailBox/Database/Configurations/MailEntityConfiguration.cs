@@ -21,9 +21,6 @@ namespace MailBox.Database.Configurations
                 .HasMaxLength(100)
                 .IsRequired();
 
-            builder.Property(c => c.Read)
-                .IsRequired();
-
             builder.HasMany(c => c.Mails)
                 .WithOne(c => c.MailReply);
 

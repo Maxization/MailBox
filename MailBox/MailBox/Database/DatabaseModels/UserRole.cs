@@ -7,7 +7,7 @@ namespace MailBox.Database
 {
     public class UserRole
     {
-        public Guid ID { get; set; }
+        public int ID { get; set; }
         public string RoleName { get; set; }
         public ICollection<User> Users { get; set; }
     }

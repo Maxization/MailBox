@@ -12,9 +12,9 @@ namespace MailBox.Database
     }
     public class UserMail
     {
-        public Guid UserID { get; set; }
+        public int UserID { get; set; }
         public User User { get; set; }
-        public Guid MailID { get; set; }
+        public int MailID { get; set; }
         public Mail Mail { get; set; }
         public RecipientType RecipientType { get; set; }
         public bool Read { get; set; }
