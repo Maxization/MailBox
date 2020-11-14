@@ -7,7 +7,7 @@ namespace MailBox.Database
 {
     public class Group
     {
-        public Guid ID { get; set; }
+        public int ID { get; set; }
         public string GroupName { get; set; }
         public User Owner { get; set; }
 
