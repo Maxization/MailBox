@@ -22,7 +22,7 @@ namespace MailBox.Controllers
         [HttpGet]
         public IActionResult UserMails(int id)
         {
-            List<InboxMail> models = new List<InboxMail>();
+            List<MailInboxView> models = new List<MailInboxView>();
             return Json(models);
         }
     }

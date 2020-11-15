@@ -28,7 +28,7 @@ namespace UnitTests
             string topic = "testtocpic";
             string text = "testtext";
             DateTime dateTime = new DateTime(2021, 1, 1);
-            InboxMail nullInboxMail = null;
+            MailInboxView nullInboxMail = null;
             NewMail newMail = new NewMail(sender, CCrecipients, BCCrecipients, topic, text, dateTime, nullInboxMail);
             var validator = new NewMailValidator();
             var result = validator.TestValidate(newMail);
@@ -48,7 +48,7 @@ namespace UnitTests
             string topic = "testtocpic";
             string text = "testtext";
             DateTime dateTime = new DateTime(2021, 1, 1);
-            InboxMail nullInboxMail = null;
+            MailInboxView nullInboxMail = null;
             NewMail newMail = new NewMail(sender, CCrecipients, BCCrecipients, topic, text, dateTime, nullInboxMail);
             var validator = new NewMailValidator();
             var result = validator.TestValidate(newMail);
@@ -67,7 +67,7 @@ namespace UnitTests
             string topic = "testtocpic";
             string text = "testtext";
             DateTime dateTime = new DateTime(2021, 1, 1);
-            InboxMail nullInboxMail = null;
+            MailInboxView nullInboxMail = null;
             NewMail newMail = new NewMail(sender, CCrecipients, BCCrecipients, topic, text, dateTime, nullInboxMail);
             var validator = new NewMailValidator();
             var result = validator.TestValidate(newMail);
@@ -86,7 +86,7 @@ namespace UnitTests
             string topic = "";
             string text = "testtext";
             DateTime dateTime = new DateTime(2021, 1, 1);
-            InboxMail nullInboxMail = null;
+            MailInboxView nullInboxMail = null;
             NewMail newMail = new NewMail(sender, CCrecipients, BCCrecipients, topic, text, dateTime, nullInboxMail);
             var validator = new NewMailValidator();
             var result = validator.TestValidate(newMail);
@@ -105,7 +105,7 @@ namespace UnitTests
             string topic = "testtopic";
             string text = "";
             DateTime dateTime = new DateTime(2021, 1, 1);
-            InboxMail nullInboxMail = null;
+            MailInboxView nullInboxMail = null;
             NewMail newMail = new NewMail(sender, CCrecipients, BCCrecipients, topic, text, dateTime, nullInboxMail);
             var validator = new NewMailValidator();
             var result = validator.TestValidate(newMail);
@@ -131,10 +131,11 @@ namespace UnitTests
             string topic = stringBuilder.ToString();
             string text = "testtext";
             DateTime dateTime = new DateTime(2021, 1, 1);
-            InboxMail nullInboxMail = null;
+            MailInboxView nullInboxMail = null;
             NewMail newMail = new NewMail(sender, CCrecipients, BCCrecipients, topic, text, dateTime, nullInboxMail);           
             var result = validator.TestValidate(newMail);
             result.ShouldHaveValidationErrorFor(m => m.Topic);
+            
         }
 
         [Fact]
@@ -156,7 +157,7 @@ namespace UnitTests
             string topic = "texttopic";
             string text = stringBuilder.ToString();
             DateTime dateTime = new DateTime(2021, 1, 1);
-            InboxMail nullInboxMail = null;
+            MailInboxView nullInboxMail = null;
             NewMail newMail = new NewMail(sender, CCrecipients, BCCrecipients, topic, text, dateTime, nullInboxMail);
             var result = validator.TestValidate(newMail);
             result.ShouldHaveValidationErrorFor(m => m.Text);
