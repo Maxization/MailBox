@@ -8,9 +8,9 @@ using MailBox.Models;
 using System.Collections.Generic;
 using MailBox.Models.UserModels;
 using Microsoft.AspNetCore.Mvc.Formatters;
-using MailBox.Validators;
 using FluentValidation.TestHelper;
 using System.Text;
+using MailBox.Validators.MailValidators;
 
 namespace UnitTests
 {
@@ -19,148 +19,145 @@ namespace UnitTests
         [Fact]
         public void WhenNewMailHaveNoCCOrBCCRecipients_ShouldHaveError()
         {
-            string name = "testname";
-            string surname = "testsurname";
-            string address = "testaddress";
-            Sender sender = new Sender(name, surname, address);
-            List<Recipient> CCrecipients = new List<Recipient>();
-            List<Recipient> BCCrecipients = new List<Recipient>();
-            string topic = "testtocpic";
+            var validator = new NewMailValidator();
+            #region Init variables
+            int senderId = 0;
+            List<string> CCRecipientsAddresses = new List<string>();
+            List<string> BCCRecipientsAddresses = new List<string>();
+            string topic = "testtopic";
             string text = "testtext";
             DateTime dateTime = new DateTime(2021, 1, 1);
-            MailInboxView nullInboxMail = null;
-            NewMail newMail = new NewMail(sender, CCrecipients, BCCrecipients, topic, text, dateTime, nullInboxMail);
-            var validator = new NewMailValidator();
+            #endregion
+            NewMail newMail = new NewMail(senderId, CCRecipientsAddresses, BCCRecipientsAddresses, topic, text, dateTime);
             var result = validator.TestValidate(newMail);
-            result.ShouldHaveValidationErrorFor(x => x.BCCRecipients);
-            result.ShouldHaveValidationErrorFor(x => x.CCRecipients);
+            #region Tests
+            result.ShouldHaveValidationErrorFor(x => x.CCRecipientsAddresses);
+            result.ShouldHaveValidationErrorFor(x => x.BCCRecipientsAddresses);
+            #endregion
         }
 
         [Fact]
         public void WhenNewMailHaveAtLeastOneCCRecipients_ShouldNoHaveError()
         {
-            string name = "testname";
-            string surname = "testsurname";
-            string address = "testaddress";
-            Sender sender = new Sender(name, surname, address);
-            List<Recipient> CCrecipients = new List<Recipient>() { new Recipient(address) };
-            List<Recipient> BCCrecipients = new List<Recipient>();
-            string topic = "testtocpic";
+            var validator = new NewMailValidator();
+            #region Init variables
+            int senderId = 0;
+            List<string> CCRecipientsAddresses = new List<string> { "test@address.com" };
+            List<string> BCCRecipientsAddresses = new List<string>();
+            string topic = "testtopic";
             string text = "testtext";
             DateTime dateTime = new DateTime(2021, 1, 1);
-            MailInboxView nullInboxMail = null;
-            NewMail newMail = new NewMail(sender, CCrecipients, BCCrecipients, topic, text, dateTime, nullInboxMail);
-            var validator = new NewMailValidator();
+            #endregion
+            NewMail newMail = new NewMail(senderId, CCRecipientsAddresses, BCCRecipientsAddresses, topic, text, dateTime);
             var result = validator.TestValidate(newMail);
+            #region Tests
             result.ShouldNotHaveAnyValidationErrors();
+            #endregion
         }
 
         [Fact]
         public void WhenNewMailHaveAtLeastOneBCCRecipients_ShouldNoHaveError()
         {
-            string name = "testname";
-            string surname = "testsurname";
-            string address = "testaddress";
-            Sender sender = new Sender(name, surname, address);
-            List<Recipient> CCrecipients = new List<Recipient>();
-            List<Recipient> BCCrecipients = new List<Recipient>() { new Recipient(address) };
-            string topic = "testtocpic";
+            var validator = new NewMailValidator();
+            #region Init variables
+            int senderId = 0;
+            List<string> CCRecipientsAddresses = new List<string>();
+            List<string> BCCRecipientsAddresses = new List<string> { "test@address.com" };
+            string topic = "testtopic";
             string text = "testtext";
             DateTime dateTime = new DateTime(2021, 1, 1);
-            MailInboxView nullInboxMail = null;
-            NewMail newMail = new NewMail(sender, CCrecipients, BCCrecipients, topic, text, dateTime, nullInboxMail);
-            var validator = new NewMailValidator();
+            #endregion
+            NewMail newMail = new NewMail(senderId, CCRecipientsAddresses, BCCRecipientsAddresses, topic, text, dateTime);
             var result = validator.TestValidate(newMail);
+            #region Tests
             result.ShouldNotHaveAnyValidationErrors();
+            #endregion
         }
 
         [Fact] 
-        public void WhenNewMailHaveNoTitle_ShouldHaveError()
+        public void WhenNewMailHaveNoTopic_ShouldHaveError()
         {
-            string name = "testname";
-            string surname = "testsurname";
-            string address = "testaddress";
-            Sender sender = new Sender(name, surname, address);
-            List<Recipient> CCrecipients = new List<Recipient>() { new Recipient(address) };
-            List<Recipient> BCCrecipients = new List<Recipient>() { new Recipient(address) };
+            var validator = new NewMailValidator();
+            #region Init variables
+            int senderId = 0;
+            List<string> CCRecipientsAddresses = new List<string> { "test@address.com" };
+            List<string> BCCRecipientsAddresses = new List<string> { "test@address.com" };
             string topic = "";
             string text = "testtext";
             DateTime dateTime = new DateTime(2021, 1, 1);
-            MailInboxView nullInboxMail = null;
-            NewMail newMail = new NewMail(sender, CCrecipients, BCCrecipients, topic, text, dateTime, nullInboxMail);
-            var validator = new NewMailValidator();
+            #endregion
+            NewMail newMail = new NewMail(senderId, CCRecipientsAddresses, BCCRecipientsAddresses, topic, text, dateTime);
             var result = validator.TestValidate(newMail);
-            result.ShouldHaveValidationErrorFor(m => m.Topic);
+            #region Tests
+            result.ShouldHaveValidationErrorFor(x => x.Topic);
+            #endregion
         }
 
         [Fact]
         public void WhenNewMailHaveNoText_ShouldHaveError()
         {
-            string name = "testname";
-            string surname = "testsurname";
-            string address = "testaddress";
-            Sender sender = new Sender(name, surname, address);
-            List<Recipient> CCrecipients = new List<Recipient>() { new Recipient(address) };
-            List<Recipient> BCCrecipients = new List<Recipient>() { new Recipient(address) };
+            var validator = new NewMailValidator();
+            #region Init variables
+            int senderId = 0;
+            List<string> CCRecipientsAddresses = new List<string> { "test@address.com" };
+            List<string> BCCRecipientsAddresses = new List<string> { "test@address.com" };
             string topic = "testtopic";
             string text = "";
             DateTime dateTime = new DateTime(2021, 1, 1);
-            MailInboxView nullInboxMail = null;
-            NewMail newMail = new NewMail(sender, CCrecipients, BCCrecipients, topic, text, dateTime, nullInboxMail);
-            var validator = new NewMailValidator();
+            #endregion
+            NewMail newMail = new NewMail(senderId, CCRecipientsAddresses, BCCRecipientsAddresses, topic, text, dateTime);
             var result = validator.TestValidate(newMail);
-            result.ShouldHaveValidationErrorFor(m => m.Text);
+            #region Tests
+            result.ShouldHaveValidationErrorFor(x => x.Text);
+            #endregion
         }
 
         [Fact]
         public void WhenNewMailHaveToLongTopic_ShouldHaveError()
         {
             var validator = new NewMailValidator();
-            string name = "testname";
-            string surname = "testsurname";
-            string address = "testaddress";
-            Sender sender = new Sender(name, surname, address);
-            List<Recipient> CCrecipients = new List<Recipient>() { new Recipient(address) };
-            List<Recipient> BCCrecipients = new List<Recipient>() { new Recipient(address) };
-            //string topic = "testtopic";
+            #region Init variables
+            int senderId = 0;
+            List<string> CCRecipientsAddresses = new List<string> { "test@address.com" };
+            List<string> BCCRecipientsAddresses = new List<string> { "test@address.com" };
             StringBuilder stringBuilder = new StringBuilder();
-            for(int i=0;i<validator.topicMaxLength+1;i++)
+            for (int i = 0; i < validator.topicMaxLength + 1; i++)
             {
                 stringBuilder.Append('x');
             }
             string topic = stringBuilder.ToString();
             string text = "testtext";
             DateTime dateTime = new DateTime(2021, 1, 1);
-            MailInboxView nullInboxMail = null;
-            NewMail newMail = new NewMail(sender, CCrecipients, BCCrecipients, topic, text, dateTime, nullInboxMail);           
+            #endregion
+            NewMail newMail = new NewMail(senderId, CCRecipientsAddresses, BCCRecipientsAddresses, topic, text, dateTime);
             var result = validator.TestValidate(newMail);
-            result.ShouldHaveValidationErrorFor(m => m.Topic);
-            
+            #region Tests
+            result.ShouldHaveValidationErrorFor(x => x.Topic);
+            #endregion          
         }
 
         [Fact]
         public void WhenNewMailHaveToLongText_ShouldHaveError()
         {
             var validator = new NewMailValidator();
-            string name = "testname";
-            string surname = "testsurname";
-            string address = "testaddress";
-            Sender sender = new Sender(name, surname, address);
-            List<Recipient> CCrecipients = new List<Recipient>() { new Recipient(address) };
-            List<Recipient> BCCrecipients = new List<Recipient>() { new Recipient(address) };
-            //string topic = "testtopic";
+            #region Init variables
+            int senderId = 0;
+            List<string> CCRecipientsAddresses = new List<string> { "test@address.com" };
+            List<string> BCCRecipientsAddresses = new List<string> { "test@address.com" };
+            string topic = "testtopic";
             StringBuilder stringBuilder = new StringBuilder();
             for (int i = 0; i < validator.textMaxLength + 1; i++)
             {
                 stringBuilder.Append('x');
             }
-            string topic = "texttopic";
             string text = stringBuilder.ToString();
             DateTime dateTime = new DateTime(2021, 1, 1);
-            MailInboxView nullInboxMail = null;
-            NewMail newMail = new NewMail(sender, CCrecipients, BCCrecipients, topic, text, dateTime, nullInboxMail);
+            #endregion
+            NewMail newMail = new NewMail(senderId, CCRecipientsAddresses, BCCRecipientsAddresses, topic, text, dateTime);
             var result = validator.TestValidate(newMail);
-            result.ShouldHaveValidationErrorFor(m => m.Text);
+            #region Tests
+            result.ShouldHaveValidationErrorFor(x => x.Text);
+            #endregion          
         }
     }
 }

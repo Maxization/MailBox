@@ -7,18 +7,18 @@ using System.Threading.Tasks;
 
 namespace MailBox.Validators
 {
-    public class GroupMemberUpdateValidator : AbstractValidator<GroupMemberUpdate>
+    public class GroupNameUpdateValidator : AbstractValidator<GroupNameUpdate>
     {
-        public GroupMemberUpdateValidator()
+        public readonly int nameMaxLength = 100;
+        public GroupNameUpdateValidator()
         {
             RuleFor(x => x.GroupId)
                 .NotNull();
-            // TODO: Check if exist in the database
-            RuleFor(x => x.GroupMemberAddress)
+
+            RuleFor(x => x.Name)
                 .NotNull()
                 .NotEmpty()
-                .Matches(@"^[\w -\.]+@([\w -] +\.)+[\w -]{2,4}$");
-
+                .MaximumLength(nameMaxLength);
         }
     }
 }
