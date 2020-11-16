@@ -1,29 +1,31 @@
-﻿using MailBox.Models.UserModels;
+﻿
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace MailBox.Models
+namespace MailBox.Models.MailModels
 {
     public class NewMail
     {
-        public Sender Sender { get; set; }
-        public List<Recipient> CCRecipients { get; set; }
-        public List<Recipient> BCRecipients { get; set; }
+        public int SenderID { get; set; }
+        public List<string> CCRecipientsAddresses { get; set; }
+        public List<string> BCCRecipientsAddresses { get; set; }
         public string Topic { get; set; }
         public string Text { get; set; }
         public DateTime Date { get; set; }
-        public InboxMail MailReply { get; set; }
-        public NewMail(Sender sender, List<Recipient> CCrecipients, List<Recipient> BCrecipients, string topic, string text, DateTime date, InboxMail mailReply)
+
+        public NewMail( int senderID, 
+                        List<string> CCRecipientsAddresses, 
+                        List<string> BCCRecipientsAddresses, 
+                        string topic, 
+                        string text,
+                        DateTime date)
         {
-            this.Sender = sender;
-            this.CCRecipients = CCrecipients;
-            this.BCRecipients = BCrecipients;
+            this.SenderID = senderID;
+            this.CCRecipientsAddresses = CCRecipientsAddresses;
+            this.BCCRecipientsAddresses = BCCRecipientsAddresses;
             this.Topic = topic;
             this.Text = text;
             this.Date = date;
-            this.MailReply = mailReply;
         }
     }
 }

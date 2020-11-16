@@ -1,0 +1,132 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{ var groups = ViewBag.groups; }
+<head>
+    <link href="~/css/main.css" rel="stylesheet" />
+    <link href="~/css/inbox.css" rel="stylesheet" />
+    <link href="~/css/newMail.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container-fluid text-white">
+        <div class="row">
+            <div class="col-2 no-float bg-dark-transparent">
+                <div class="container-title">
+                    <h4>Folders</h4>
+                    <hr />
+                </div>
+                <div>
+                    <div class="button-container"><button type="button" class="btn-folder">Inbox</button></div>
+                    <div class="button-container"><button type="button" class="btn-folder">Sent</button></div>
+                    <div class="button-container"><button type="button" class="btn-folder">Spam</button></div>
+                    <div class="button-container"><button type="button" class="btn-folder">Stared</button></div>
+                </div>
+                <div class="row no-gutters container-board-white container-new" id="folders_container">
+                    <div class="col-10 no-gutters">
+                        <input type="text" class="form-control input-new_folder border-0" placeholder=" New folder..." aria-label="Recipient's username" aria-describedby="basic-addon2">
+                    </div>
+                    <div class="col-2 no-gutters">
+                        <button class="bg-black text-light text-center border-0 btn-new" type="button">+</button>
+                    </div>
+                </div>
+                <div><br /></div>
+                <div class="container-title">
+                    <h4>Actions</h4>
+                    <hr />
+                </div>
+                <div>
+                    <div class="button-container"><button type="button" class="btn-folder">New email</button></div>
+                    <div class="button-container"><button type="button" class="btn-folder">Manage groups</button></div>
+                </div>
+            </div>
+            <div class="col-8 no-float bg-dark-transparent">
+                <div class="col-12 no-float bg-dark-transparent container-fluid text-white">
+                    <div class="row no-gutters container-title">
+                        <div class="col-11">
+                            <h4>Groups</h4>
+                            <hr />
+                        </div>
+                        <div class="col-1 content-center-div">
+                            <button class="add-group-button">+</button>
+                        </div>
+                    </div>
+                    <div class="container-groups overflow-auto">
+                        @foreach (var g in groups)
+                        {
+                        <div class="container-group">
+                            <div class="ontainer-group-title">
+                                <div class="row no-gutters">
+                                    <div class="col-6 no-gutters">
+                                        <h5>@g.Name</h5>
+                                    </div>
+                                    <div class="col-3 no-gutters">
+                                        <button class="add-member-button">add member</button>
+                                    </div>
+                                    <div class="col-1 no-gutters">
+                                    </div>
+                                    <div class="col-2 no-gutters">
+                                        <button class="delete-button">delete</button>
+                                    </div>
+                                </div>
+                                <hr />
+                            </div>
+                            <div class="container-contacts overflow-auto">
+                                @foreach (var gm in g.GroupMembers)
+                                {
+                                <div class="container-group-elem">
+                                    <div class="row no-gutters">
+                                        <div class="col-11 no-gutters">
+                                            <div class="row no-gutters">
+                                                <div class="col-3">
+                                                    <span>@gm.Name</span>
+                                                </div>
+                                                <div class="col-3">
+                                                    <span>@gm.Surname</span>
+                                                </div>
+                                                <div class="col-6">
+                                                    <span>@gm.Address</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-1 no-gutters content-center-div">
+                                            <button class="delete-button">X</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                }
+                            </div>
+                        </div>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="col-2 no-float bg-dark-transparent">
+                <div class="container-title">
+                    <h4>Groups</h4>
+                    <hr />
+                </div>
+                <div class="container-groups overflow-auto">
+                    @foreach (var g in groups)
+                    {
+                        <div class="container-group">
+                            <div class="container-group-title">
+                                <div class="row no-gutters">
+                                    <div class="col-12 no-gutters">
+                                        <h6>@g.Name</h6>
+                                    </div>
+                                </div>
+                                <hr />
+                            </div>
+                            <div class="container-contacts overflow-auto">
+                                @foreach (var gm in g.GroupMembers)
+                                {
+                                    <button class="col-form-label-sm bg-blue-button">@gm.Address</button><br />
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
