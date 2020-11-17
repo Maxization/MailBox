@@ -10,7 +10,7 @@ namespace MailBox.Validators.MailValidators
     public class NewMailValidator : AbstractValidator<NewMail>
     {
         public readonly int topicMaxLength = 100;
-        public readonly int textMaxLength = 1000000000;
+        public readonly int textMaxLength = 1000000;
         public readonly string emailRegex = @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z";
         public NewMailValidator()
         {
