@@ -20,7 +20,6 @@ namespace MailBox.Validators.MailValidators
 
             RuleFor(x => x.Text)
                 .NotNull()
-                .NotEmpty()
                 .MaximumLength(textMaxLength);
 
             RuleFor(x => x.Date)

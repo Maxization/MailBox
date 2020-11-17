@@ -1,9 +1,5 @@
-﻿using System;
-using Xunit;
-using MailBox.Models;
-using System.Collections.Generic;
+﻿using Xunit;
 using FluentValidation.TestHelper;
-using System.Text;
 using MailBox.Validators.MailValidators;
 using MailBox.Models.MailModels;
 
@@ -16,13 +12,13 @@ namespace UnitTests.ValidatorsTest.MailValidatorsTests
         {
             var validator = new MailReadUpdateValidator();
             #region Init variables
-            int mailId = 0;
-            bool read = true;
+                int mailId = 0;
+                bool read = true;
             #endregion
             MailReadUpdate mailReadUpdate = new MailReadUpdate(mailId,read);
             var result = validator.TestValidate(mailReadUpdate);
             #region Tests
-            result.ShouldNotHaveAnyValidationErrors();
+                result.ShouldNotHaveAnyValidationErrors();
             #endregion
         }
     }
