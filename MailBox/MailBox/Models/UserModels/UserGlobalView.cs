@@ -5,15 +5,12 @@ using System.Threading.Tasks;
 
 namespace MailBox.Models.UserModels
 {
-    public class Sender
+    public class UserGlobalView
     {
-        public string Name { get; }
-
-        public string Surname { get; }
-
-        public string Address { get; }
-
-        public Sender(string name, string surname, string address)
+        public string Name { get; set; }
+        public string Surname { get; set; }
+        public string Address { get; set; }
+        public UserGlobalView(string name, string surname, string address)
         {
             this.Name = name;
             this.Surname = surname;
