@@ -27,13 +27,18 @@ namespace MailBox.Services
                 .Where(x => x.UserID == userID).AsQueryable();
 
             List<MailInboxView> result = new List<MailInboxView>();
-            foreach(var um in userMails)
+            foreach (var um in userMails)
             {
                 MailInboxView miv = new MailInboxView
                 {
                     MailId = um.MailID,
                     Read = um.Read,
-                    Sender = new UserGlobalView(um.Mail.Sender.FirstName, um.Mail.Sender.LastName, um.Mail.Sender.Email),
+                    Sender = new UserGlobalView
+                    {
+                        Name = um.Mail.Sender.FirstName, 
+                        Surname = um.Mail.Sender.LastName, 
+                        Address = um.Mail.Sender.Email
+                    },
                     RecipientsAddresses = GetMailRecipients(um.Mail.ID),
                     Topic = um.Mail.Topic,
                     Text = um.Mail.Text,
@@ -57,7 +62,12 @@ namespace MailBox.Services
             {
                 MailId = mail.Mail.ID,
                 Read = mail.Read,
-                Sender = new UserGlobalView(mail.Mail.Sender.FirstName, mail.Mail.Sender.LastName, mail.Mail.Sender.Email),
+                Sender = new UserGlobalView
+                { 
+                    Name = mail.Mail.Sender.FirstName, 
+                    Surname = mail.Mail.Sender.LastName, 
+                    Address = mail.Mail.Sender.Email
+                },
                 RecipientsAddresses = GetMailRecipients(mailID),
                 Topic = mail.Mail.Topic,
                 Text = mail.Mail.Text,
