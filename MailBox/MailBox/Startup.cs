@@ -74,6 +74,8 @@ namespace MailBox
             services.AddDbContext<MailBoxDBContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddScoped<IMailService, MailService>();
+
             services.AddMvc()
                 .AddFluentValidation(mvcConfiguration => mvcConfiguration.RegisterValidatorsFromAssemblyContaining<Startup>());
 
