@@ -13,13 +13,14 @@ namespace UnitTests.ModelsTest.GroupModelsTest
         {
             NewGroup newGroup = null;
             #region Init variables
-                int ownerId = 0;
                 string name = "testname";
             #endregion
-            newGroup = new NewGroup(ownerId, name);
+            newGroup = new NewGroup
+            {
+                Name = name
+            };
             #region Tests
                 Assert.NotNull(newGroup);
-                Assert.Equal(newGroup.OwnerId, ownerId);
                 Assert.Equal(newGroup.Name, name);
             #endregion
         }
