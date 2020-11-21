@@ -17,24 +17,5 @@ namespace MailBox.Models
         public string Text { get; set; }
         public DateTime Date { get; set; }
         public MailInboxView MailReply { get; set; }
-
-        public MailInboxView(   int mailId, 
-                                bool read, 
-                                UserGlobalView sender, 
-                                List<string> recipientsAddresses, 
-                                string topic, 
-                                string text, 
-                                DateTime date, 
-                                MailInboxView mailReply)
-        {
-            this.MailId = mailId;
-            this.Read = read;
-            this.Sender = sender;
-            this.RecipientsAddresses = recipientsAddresses;
-            this.Topic = topic;
-            this.Text = text;
-            this.Date = date;
-            this.MailReply = mailReply;
-        }
     }
 }

@@ -17,6 +17,8 @@ using System.Security.Claims;
 using FluentValidation.AspNetCore;
 using FluentValidation;
 using MailBox.Filters;
+using MailBox.Services.Interfaces;
+using MailBox.Services;
 
 namespace MailBox
 {
@@ -54,7 +56,14 @@ namespace MailBox
                                 User usr = new User { FirstName = firstName, LastName = lastName, Email = email, Role = role };
                                 db.Users.Add(usr);
                                 db.SaveChanges();
+
+                                user = db.Users.Where(x => x.Email == email).FirstOrDefault();
                             }
+
+                            var nameIdentifier = context.Principal.Identities.First().Claims.Where(x => x.Type == ClaimTypes.NameIdentifier).First();
+                            context.Principal.Identities.First().RemoveClaim(nameIdentifier);
+                            context.Principal.Identities.First().AddClaim(new Claim(ClaimTypes.NameIdentifier, "4"));//user.ID.ToString()));
+
                             return Task.CompletedTask;
                         },
 
@@ -65,11 +74,13 @@ namespace MailBox
             services.AddDbContext<MailBoxDBContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddMvc( options =>
-                {
-                    options.Filters.Add<ValidationFilter>();
-                })
-                .AddFluentValidation(mvcConfiguration => mvcConfiguration.RegisterValidatorsFromAssemblyContaining<Startup>());
+            services.AddScoped<IUserService, UserService>();
+            
+            services.AddMvc(options =>
+            {
+                options.Filters.Add<ValidationFilter>();
+            })
+            .AddFluentValidation(mvcConfiguration => mvcConfiguration.RegisterValidatorsFromAssemblyContaining<Startup>());
 
             services.AddControllersWithViews();
             services.AddRazorPages();

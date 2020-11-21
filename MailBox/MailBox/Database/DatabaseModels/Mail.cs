@@ -13,7 +13,7 @@ namespace MailBox.Database
         public DateTime Date { get; set; }
         public User Sender { get; set; }
         public ICollection<UserMail> UserMails { get; set; } //Recipients
-        public Mail MailReply { get; set; }
-        public ICollection<Mail> Mails { get; set; }
+        //public Mail MailReply { get; set; }
+        //public ICollection<Mail> Mails { get; set; }
     }
 }
