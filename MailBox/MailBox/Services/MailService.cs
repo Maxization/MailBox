@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace MailBox.Services
 {
-    public class UserService : IUserService
+    public class MailService : IMailService
     {
         MailBoxDBContext _context;
 
-        public UserService(MailBoxDBContext context)
+        public MailService(MailBoxDBContext context)
         {
             _context = context;
         }
@@ -38,7 +38,6 @@ namespace MailBox.Services
                     Topic = um.Mail.Topic,
                     Text = um.Mail.Text,
                     Date = um.Mail.Date,
-                    MailReply = null,
                 };
                 result.Add(miv);
             }
@@ -63,7 +62,6 @@ namespace MailBox.Services
                 Topic = mail.Mail.Topic,
                 Text = mail.Mail.Text,
                 Date = mail.Mail.Date,
-                MailReply = null,
             };
         }
 
@@ -84,10 +82,58 @@ namespace MailBox.Services
             return recipients;
         }
 
-        public void CreateMail(int userID, NewMail mail)
+        public async void CreateMail(int userID, NewMail newMail)
         {
-            //await using var transaction = await context.Database.BeginTransactionAsync();
-            throw new NotImplementedException();
+            await using var transaction = await _context.Database.BeginTransactionAsync();
+
+            try
+            {
+                User usr = _context.Users.Find(userID);
+                Mail mail = new Mail
+                {
+                    Date = DateTime.Now,
+                    Topic = newMail.Topic,
+                    Text = newMail.Text,
+                    Sender = usr,
+                };
+                _context.Mails.Add(mail);
+                await _context.SaveChangesAsync();
+
+                foreach (string email in newMail.BCCRecipientsAddresses)
+                {
+                    usr = _context.Users.Where(x => x.Email == email).FirstOrDefault();
+                    UserMail um = new UserMail
+                    {
+                        UserID = usr.ID,
+                        MailID = mail.ID,
+                        RecipientType = RecipientType.BCC,
+                        Read = false,
+                    };
+                    _context.UserMails.Add(um);
+                }
+
+                foreach (string email in newMail.CCRecipientsAddresses)
+                {
+                    usr = _context.Users.Where(x => x.Email == email).FirstOrDefault();
+                    UserMail um = new UserMail
+                    {
+                        UserID = usr.ID,
+                        MailID = mail.ID,
+                        RecipientType = RecipientType.CC,
+                        Read = false,
+                    };
+                    _context.UserMails.Add(um);
+                }
+
+                await _context.SaveChangesAsync();
+
+                await transaction.CommitAsync();
+            }
+            catch(Exception)
+            {
+                await transaction.RollbackAsync();
+            }
+            
         }
     }
 }

@@ -12,8 +12,6 @@ namespace MailBox.Validators
         public readonly int nameMaxLength = 100;
         public NewGroupValidator()
         {
-            RuleFor(x => x.OwnerId)
-                .NotNull();
 
             RuleFor(x => x.Name)
                 .NotNull()

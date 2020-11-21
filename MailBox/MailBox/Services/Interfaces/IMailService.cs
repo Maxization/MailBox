@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MailBox.Services.Interfaces
 {
-    public interface IUserService
+    public interface IMailService
     {
         List<MailInboxView> GetUserMails(int userId);
         MailInboxView GetMail(int userID, int mailID);

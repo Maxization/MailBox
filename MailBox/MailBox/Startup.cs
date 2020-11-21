@@ -74,7 +74,7 @@ namespace MailBox
             services.AddDbContext<MailBoxDBContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IMailService, MailService>();
             
             services.AddMvc(options =>
             {

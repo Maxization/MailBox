@@ -13,24 +13,24 @@ namespace MailBox.Controllers
     [Authorize]
     public class MailController : Controller
     {
-        IUserService _userService;
+        IMailService _mailService;
 
-        public MailController(IUserService userService)
+        public MailController(IMailService userService)
         {
-            _userService = userService;
+            _mailService = userService;
         }
 
         public IActionResult Index()
         {
             int userID = int.Parse(User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
-            ViewData["Mails"] = _userService.GetUserMails(userID);
+            ViewData["Mails"] = _mailService.GetUserMails(userID);
             return View();
         }
 
         public IActionResult Details(int id)
         {
             int userID = int.Parse(User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
-            var mail = _userService.GetMail(userID, id);
+            var mail = _mailService.GetMail(userID, id);
             if (mail == null) return NotFound();
             return View(mail);
         }
@@ -45,7 +45,7 @@ namespace MailBox.Controllers
         public IActionResult Create(NewMail mail)
         {
             int userID = int.Parse(User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
-            _userService.CreateMail(userID, mail);
+            _mailService.CreateMail(userID, mail);
             return View();
         }
 
