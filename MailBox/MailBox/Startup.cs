@@ -14,6 +14,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using System.Security.Claims;
+using FluentValidation.AspNetCore;
+using FluentValidation;
+using MailBox.Filters;
 
 namespace MailBox
 {
@@ -61,6 +64,12 @@ namespace MailBox
 
             services.AddDbContext<MailBoxDBContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddMvc( options =>
+                {
+                    options.Filters.Add<ValidationFilter>();
+                })
+                .AddFluentValidation(mvcConfiguration => mvcConfiguration.RegisterValidatorsFromAssemblyContaining<Startup>());
 
             services.AddControllersWithViews();
             services.AddRazorPages();
