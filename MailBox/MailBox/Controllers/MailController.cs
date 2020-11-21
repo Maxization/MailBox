@@ -4,26 +4,50 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using MailBox.Models;
+using MailBox.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace MailBox.Controllers
 {
+    [Authorize]
     public class MailController : Controller
     {
+        IMailService _mailService;
+
+        public MailController(IMailService userService)
+        {
+            _mailService = userService;
+        }
+
         public IActionResult Index()
         {
+            int userID = int.Parse(User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
+            ViewData["Mails"] = _mailService.GetUserMails(userID);
             return View();
         }
 
-        public IActionResult NewMail()
+        public IActionResult Details(int id)
+        {
+            int userID = int.Parse(User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
+            var mail = _mailService.GetMail(userID, id);
+            if (mail == null) return NotFound();
+            return View(mail);
+        }
+
+        public IActionResult Create()
         {
             return View();
         }
 
-        [HttpGet]
-        public IActionResult UserMails(int id)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(NewMail mail)
         {
-            List<MailInboxView> models = new List<MailInboxView>();
-            return Json(models);
+            int userID = int.Parse(User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
+            _mailService.CreateMail(userID, mail);
+            return View();
         }
+
     }
 }

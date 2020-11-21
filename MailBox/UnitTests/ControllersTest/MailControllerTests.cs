@@ -8,12 +8,6 @@ namespace UnitTests
 {
     public class MailControllerTests
     {
-        [Fact]
-        public void ReturnedValueOfIndexTest()
-        {
-            var controller = new MailController();
-            var result = controller.Index();
-            Assert.IsType<ViewResult>(result);
-        }
+        
     }
 }

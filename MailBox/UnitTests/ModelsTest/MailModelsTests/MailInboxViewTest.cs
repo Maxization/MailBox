@@ -23,9 +23,17 @@ namespace UnitTests.ModelsTest.MailModelsTest
                 string topic = "testtopic";
                 string text = "testtext";
                 DateTime dateTime = new DateTime(2021, 1, 1);
-                MailInboxView nullInboxMail = null;
             #endregion
-            inboxMail = new MailInboxView(mailId, read, sender, recipientsAddresses, topic, text, dateTime, nullInboxMail);
+            inboxMail = new MailInboxView
+            {
+                MailId = mailId,
+                Read = read,
+                Sender = sender,
+                RecipientsAddresses = recipientsAddresses,
+                Topic = topic,
+                Text = text,
+                Date = dateTime,
+            };
             #region Tests
                 Assert.NotNull(inboxMail);
                 Assert.Equal(inboxMail.MailId, mailId);
@@ -35,7 +43,6 @@ namespace UnitTests.ModelsTest.MailModelsTest
                 Assert.Equal(inboxMail.Topic, topic);
                 Assert.Equal(inboxMail.Text, text);
                 Assert.Equal(inboxMail.Date, dateTime);
-                Assert.Equal(inboxMail.MailReply, nullInboxMail);
             #endregion
         }
     }
