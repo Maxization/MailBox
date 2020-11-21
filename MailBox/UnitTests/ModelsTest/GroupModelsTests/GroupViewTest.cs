@@ -12,13 +12,17 @@ namespace UnitTests.ModelsTest.GroupModelsTest
         [Fact]
         public void ConstructorTest()
         {
-            GroupView groupView = null;
             #region Init variables
                 int groupId = 0;
                 string name = "testname";
                 List<UserGlobalView> groupMembers = new List<UserGlobalView>();
             #endregion
-            groupView = new GroupView(groupId, name, groupMembers);
+            GroupView groupView = new GroupView
+            {
+                GroupId = groupId,
+                Name = name,
+                GroupMembers = groupMembers
+            };
             #region Tests
                 Assert.NotNull(groupView);
                 Assert.Equal(groupView.GroupId, groupId);

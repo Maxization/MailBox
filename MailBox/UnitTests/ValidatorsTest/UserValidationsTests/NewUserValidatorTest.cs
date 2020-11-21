@@ -17,7 +17,12 @@ namespace UnitTests.ValidatorsTest.UserValidationsTests
                 string surname = "testsurname";
                 string address = "test@address.com";
             #endregion
-            NewUser mailReadUpdate = new NewUser(name, surname, address);
+            NewUser mailReadUpdate = new NewUser
+            {
+                Name = name,
+                Surname = surname,
+                Address = address
+            };
             var result = validator.TestValidate(mailReadUpdate);
             #region Tests
                 result.ShouldNotHaveAnyValidationErrors();
@@ -33,7 +38,12 @@ namespace UnitTests.ValidatorsTest.UserValidationsTests
                 string surname = "testsurname";
                 string address = "test@address.com";
             #endregion
-            NewUser mailReadUpdate = new NewUser(name, surname, address);
+            NewUser mailReadUpdate = new NewUser
+            {
+                Name = name,
+                Surname = surname,
+                Address = address
+            };
             var result = validator.TestValidate(mailReadUpdate);
             #region Tests
                 result.ShouldHaveValidationErrorFor(x => x.Name);
@@ -49,7 +59,12 @@ namespace UnitTests.ValidatorsTest.UserValidationsTests
                 string surname = "";
                 string address = "test@address.com";
             #endregion
-            NewUser mailReadUpdate = new NewUser(name, surname, address);
+            NewUser mailReadUpdate = new NewUser
+            {
+                Name = name,
+                Surname = surname,
+                Address = address
+            };
             var result = validator.TestValidate(mailReadUpdate);
             #region Tests
                 result.ShouldHaveValidationErrorFor(x => x.Surname);
@@ -65,7 +80,12 @@ namespace UnitTests.ValidatorsTest.UserValidationsTests
                 string surname = "testsurname";
                 string address = "";
             #endregion
-            NewUser mailReadUpdate = new NewUser(name, surname, address);
+            NewUser mailReadUpdate = new NewUser
+            {
+                Name = name,
+                Surname = surname,
+                Address = address
+            };
             var result = validator.TestValidate(mailReadUpdate);
             #region Tests
                 result.ShouldHaveValidationErrorFor(x => x.Address);
@@ -81,7 +101,12 @@ namespace UnitTests.ValidatorsTest.UserValidationsTests
                 string surname = "testsurname";
                 string address = "testaddress.com";
             #endregion
-            NewUser mailReadUpdate = new NewUser(name, surname, address);
+            NewUser mailReadUpdate = new NewUser
+            {
+                Name = name,
+                Surname = surname,
+                Address = address
+            };
             var result = validator.TestValidate(mailReadUpdate);
             #region Tests
                 result.ShouldHaveValidationErrorFor(x => x.Address);
@@ -97,7 +122,12 @@ namespace UnitTests.ValidatorsTest.UserValidationsTests
                 string surname = "testsurname";
                 string address = "test@address";
             #endregion
-            NewUser mailReadUpdate = new NewUser(name, surname, address);
+            NewUser mailReadUpdate = new NewUser
+            {
+                Name = name,
+                Surname = surname,
+                Address = address
+            };
             var result = validator.TestValidate(mailReadUpdate);
             #region Tests
                 result.ShouldHaveValidationErrorFor(x => x.Address);
@@ -118,7 +148,12 @@ namespace UnitTests.ValidatorsTest.UserValidationsTests
                 string surname = "testsurname";
                 string address = "test@address.com";
             #endregion
-            NewUser mailReadUpdate = new NewUser(name, surname, address);
+            NewUser mailReadUpdate = new NewUser
+            {
+                Name = name,
+                Surname = surname,
+                Address = address
+            };
             var result = validator.TestValidate(mailReadUpdate);
             #region Tests
                 result.ShouldHaveValidationErrorFor(x => x.Name);
@@ -139,7 +174,12 @@ namespace UnitTests.ValidatorsTest.UserValidationsTests
                 string surname = stringBuilder.ToString();
                 string address = "test@address.com";
             #endregion
-            NewUser mailReadUpdate = new NewUser(name, surname, address);
+            NewUser mailReadUpdate = new NewUser
+            {
+                Name = name,
+                Surname = surname,
+                Address = address
+            };
             var result = validator.TestValidate(mailReadUpdate);
             #region Tests
                 result.ShouldHaveValidationErrorFor(x => x.Surname);

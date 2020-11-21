@@ -8,12 +8,15 @@ namespace UnitTests.ModelsTest.UserModelsTests
         [Fact]
         public void ConstructorTest()
         {
-            UserEnableUpdate userEnableUpdate = null;
             #region Init variables
                 string address = "test@address.com";
                 bool enable = false;
             #endregion
-            userEnableUpdate = new UserEnableUpdate(address, enable);
+            UserEnableUpdate userEnableUpdate = new UserEnableUpdate
+            {
+                Address = address,
+                Enable = enable
+            };
             #region Tests
                 Assert.NotNull(userEnableUpdate);
                 Assert.Equal(userEnableUpdate.Address, address);

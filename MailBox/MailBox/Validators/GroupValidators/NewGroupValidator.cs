@@ -9,12 +9,9 @@ namespace MailBox.Validators
 {
     public class NewGroupValidator : AbstractValidator<NewGroup>
     {
-        public readonly int nameMaxLength = 100;
+        public readonly int nameMaxLength = 30;
         public NewGroupValidator()
         {
-            RuleFor(x => x.OwnerId)
-                .NotNull();
-
             RuleFor(x => x.Name)
                 .NotNull()
                 .NotEmpty()

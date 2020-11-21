@@ -10,22 +10,34 @@ namespace UnitTests.ModelsTest.MailModelsTest
     {
         [Fact]
         public void ConstructorTest()
-        {
-            MailInboxView inboxMail = null;
+        {         
             #region Init variables
                 int mailId = 1;
                 bool read = true;
                 string name = "testname";
                 string surname = "testsurname";
                 string address = "test@address.com";
-                UserGlobalView sender = new UserGlobalView(name, surname, address);
+                UserGlobalView sender = new UserGlobalView
+                {
+                    Name = name,
+                    Surname = surname,
+                    Address = address
+                };
                 List<string> recipientsAddresses = new List<string>();
                 string topic = "testtopic";
                 string text = "testtext";
                 DateTime dateTime = new DateTime(2021, 1, 1);
-                MailInboxView nullInboxMail = null;
             #endregion
-            inboxMail = new MailInboxView(mailId, read, sender, recipientsAddresses, topic, text, dateTime, nullInboxMail);
+            MailInboxView inboxMail = new MailInboxView
+            {
+                MailId = mailId,
+                Sender = sender,
+                RecipientsAddresses = recipientsAddresses,
+                Date = dateTime,
+                Text = text,
+                Topic = topic,
+                Read = read
+            };
             #region Tests
                 Assert.NotNull(inboxMail);
                 Assert.Equal(inboxMail.MailId, mailId);
@@ -35,7 +47,6 @@ namespace UnitTests.ModelsTest.MailModelsTest
                 Assert.Equal(inboxMail.Topic, topic);
                 Assert.Equal(inboxMail.Text, text);
                 Assert.Equal(inboxMail.Date, dateTime);
-                Assert.Equal(inboxMail.MailReply, nullInboxMail);
             #endregion
         }
     }

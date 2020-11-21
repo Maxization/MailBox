@@ -15,10 +15,12 @@ namespace UnitTests
         {
             var validator = new NewGroupValidator();
             #region Init variables
-                int ownerId = 0;
                 string name = "testname";
             #endregion
-            NewGroup newGroup = new NewGroup(ownerId, name);
+            NewGroup newGroup = new NewGroup
+            {
+                Name = name
+            };
             var result = validator.TestValidate(newGroup);
             #region Tests
                 result.ShouldNotHaveAnyValidationErrors();
@@ -30,10 +32,12 @@ namespace UnitTests
         {
             var validator = new NewGroupValidator();
             #region Init variables
-                int ownerId = 0;
                 string name = "";
             #endregion
-            NewGroup newGroup = new NewGroup(ownerId, name);
+            NewGroup newGroup = new NewGroup
+            {
+                Name = name
+            };
             var result = validator.TestValidate(newGroup);
             #region Tests
                 result.ShouldHaveValidationErrorFor(x => x.Name);

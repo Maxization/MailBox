@@ -9,10 +9,6 @@ namespace MailBox.Models.UserModels
     {
         public string Address { get; set; }
         public Role Role { get; set; }
-        public UserRoleUpdate(string address, Role role)
-        {
-            this.Address = address;
-            this.Role = role;
-        }
+        public UserRoleUpdate() { }
     }
 }

@@ -9,10 +9,6 @@ namespace MailBox.Models.GroupModels
     {
         public int GroupId { get; set; }
         public string GroupMemberAddress { get; set; }
-        public GroupMemberUpdate(int groupId, string groupMemberAddress)
-        {
-            this.GroupId = groupId;
-            this.GroupMemberAddress = groupMemberAddress;
-        }
+        public GroupMemberUpdate() { }
     }
 }

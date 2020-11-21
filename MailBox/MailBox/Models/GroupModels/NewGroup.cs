@@ -7,12 +7,7 @@ namespace MailBox.Models.GroupModels
 {
     public class NewGroup
     {
-        public int OwnerId { get; set; }
         public string Name { get; set; }
-        public NewGroup(int ownerId, string name)
-        {
-            this.OwnerId = ownerId;
-            this.Name = name;
-        }
+        public NewGroup() { }
     }
 }
