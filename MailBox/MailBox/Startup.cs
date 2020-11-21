@@ -62,7 +62,7 @@ namespace MailBox
 
                             var nameIdentifier = context.Principal.Identities.First().Claims.Where(x => x.Type == ClaimTypes.NameIdentifier).First();
                             context.Principal.Identities.First().RemoveClaim(nameIdentifier);
-                            context.Principal.Identities.First().AddClaim(new Claim(ClaimTypes.NameIdentifier, "4"));//user.ID.ToString()));
+                            context.Principal.Identities.First().AddClaim(new Claim(ClaimTypes.NameIdentifier, user.ID.ToString()));
 
                             return Task.CompletedTask;
                         },
