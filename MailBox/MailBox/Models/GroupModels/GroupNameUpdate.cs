@@ -9,10 +9,5 @@ namespace MailBox.Models.GroupModels
     {
         public int GroupId { get; set; }
         public string Name { get; set; }
-        public GroupNameUpdate(int groupId, string newName)
-        {
-            this.GroupId = groupId;
-            this.Name = newName;
-        }
     }
 }

@@ -15,7 +15,11 @@ namespace UnitTests.ValidatorsTest.MailValidatorsTests
                 int mailId = 0;
                 bool read = true;
             #endregion
-            MailReadUpdate mailReadUpdate = new MailReadUpdate(mailId,read);
+            MailReadUpdate mailReadUpdate = new MailReadUpdate
+            {
+                MailId = mailId,
+                Read = read
+            };
             var result = validator.TestValidate(mailReadUpdate);
             #region Tests
                 result.ShouldNotHaveAnyValidationErrors();

@@ -16,7 +16,11 @@ namespace UnitTests.ValidatorsTest.UserValidationsTests
                 string address = "test@address.com";
                 bool enable = true;
             #endregion
-            UserEnableUpdate mailReadUpdate = new UserEnableUpdate(address, enable);
+            UserEnableUpdate mailReadUpdate = new UserEnableUpdate
+            {
+                Address = address,
+                Enable = enable
+            };
             var result = validator.TestValidate(mailReadUpdate);
             #region Tests
                 result.ShouldNotHaveAnyValidationErrors();
@@ -31,7 +35,11 @@ namespace UnitTests.ValidatorsTest.UserValidationsTests
                 string address = "testaddress.com";
                 bool enable = true;
             #endregion
-            UserEnableUpdate mailReadUpdate = new UserEnableUpdate(address, enable);
+            UserEnableUpdate mailReadUpdate = new UserEnableUpdate
+            {
+                Address = address,
+                Enable = enable
+            };
             var result = validator.TestValidate(mailReadUpdate);
             #region Tests
                 result.ShouldHaveValidationErrorFor(x => x.Address);
@@ -46,7 +54,11 @@ namespace UnitTests.ValidatorsTest.UserValidationsTests
                 string address = "test@address";
                 bool enable = true;
             #endregion
-            UserEnableUpdate mailReadUpdate = new UserEnableUpdate(address, enable);
+            UserEnableUpdate mailReadUpdate = new UserEnableUpdate
+            {
+                Address = address,
+                Enable = enable
+            };
             var result = validator.TestValidate(mailReadUpdate);
             #region Tests
                 result.ShouldHaveValidationErrorFor(x => x.Address);

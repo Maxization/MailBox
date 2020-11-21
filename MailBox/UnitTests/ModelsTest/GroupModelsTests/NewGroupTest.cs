@@ -11,11 +11,10 @@ namespace UnitTests.ModelsTest.GroupModelsTest
         [Fact]
         public void ConstructorTest()
         {
-            NewGroup newGroup = null;
             #region Init variables
                 string name = "testname";
             #endregion
-            newGroup = new NewGroup
+            NewGroup newGroup = new NewGroup
             {
                 Name = name
             };

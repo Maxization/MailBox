@@ -27,7 +27,7 @@ namespace UnitTests
                 BCCRecipientsAddresses = BCCRecipientsAddresses,
                 Topic = topic,
                 Text = text,
-                Date = dateTime,
+                Date = dateTime
             };
             var result = validator.TestValidate(newMail);
             #region Tests
@@ -53,7 +53,7 @@ namespace UnitTests
                 BCCRecipientsAddresses = BCCRecipientsAddresses,
                 Topic = topic,
                 Text = text,
-                Date = dateTime,
+                Date = dateTime
             };
             var result = validator.TestValidate(newMail);
             #region Tests
@@ -78,7 +78,7 @@ namespace UnitTests
                 BCCRecipientsAddresses = BCCRecipientsAddresses,
                 Topic = topic,
                 Text = text,
-                Date = dateTime,
+                Date = dateTime
             };
             var result = validator.TestValidate(newMail);
             #region Tests
@@ -103,7 +103,7 @@ namespace UnitTests
                 BCCRecipientsAddresses = BCCRecipientsAddresses,
                 Topic = topic,
                 Text = text,
-                Date = dateTime,
+                Date = dateTime
             };
             var result = validator.TestValidate(newMail);
             #region Tests
@@ -128,7 +128,7 @@ namespace UnitTests
                 BCCRecipientsAddresses = BCCRecipientsAddresses,
                 Topic = topic,
                 Text = text,
-                Date = dateTime,
+                Date = dateTime
             };
             var result = validator.TestValidate(newMail);
             #region Tests
@@ -158,7 +158,7 @@ namespace UnitTests
                 BCCRecipientsAddresses = BCCRecipientsAddresses,
                 Topic = topic,
                 Text = text,
-                Date = dateTime,
+                Date = dateTime
             };
             var result = validator.TestValidate(newMail);
             #region Tests
@@ -188,7 +188,7 @@ namespace UnitTests
                 BCCRecipientsAddresses = BCCRecipientsAddresses,
                 Topic = topic,
                 Text = text,
-                Date = dateTime,
+                Date = dateTime
             };
             var result = validator.TestValidate(newMail);
             #region Tests
@@ -213,7 +213,7 @@ namespace UnitTests
                 BCCRecipientsAddresses = BCCRecipientsAddresses,
                 Topic = topic,
                 Text = text,
-                Date = dateTime,
+                Date = dateTime
             };
             var result = validator.TestValidate(newMail);
             #region Tests
@@ -238,7 +238,7 @@ namespace UnitTests
                 BCCRecipientsAddresses = BCCRecipientsAddresses,
                 Topic = topic,
                 Text = text,
-                Date = dateTime,
+                Date = dateTime
             };
             var result = validator.TestValidate(newMail);
             #region Tests

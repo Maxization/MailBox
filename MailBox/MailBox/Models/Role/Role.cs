@@ -7,11 +7,7 @@ namespace MailBox.Models
 {
     public class Role
     {
-        public string Name { get; }
+        public string Name { get; set; }
 
-        public Role(string name)
-        {
-            this.Name = name;
-        }
     }
 }

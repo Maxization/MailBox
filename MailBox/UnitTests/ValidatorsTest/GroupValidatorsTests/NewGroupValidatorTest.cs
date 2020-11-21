@@ -19,7 +19,7 @@ namespace UnitTests
             #endregion
             NewGroup newGroup = new NewGroup
             {
-                Name = name,
+                Name = name
             };
             var result = validator.TestValidate(newGroup);
             #region Tests
@@ -36,7 +36,7 @@ namespace UnitTests
             #endregion
             NewGroup newGroup = new NewGroup
             {
-                Name = name,
+                Name = name
             };
             var result = validator.TestValidate(newGroup);
             #region Tests

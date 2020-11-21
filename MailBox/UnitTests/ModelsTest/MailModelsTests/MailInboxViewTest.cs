@@ -10,29 +10,33 @@ namespace UnitTests.ModelsTest.MailModelsTest
     {
         [Fact]
         public void ConstructorTest()
-        {
-            MailInboxView inboxMail = null;
+        {         
             #region Init variables
                 int mailId = 1;
                 bool read = true;
                 string name = "testname";
                 string surname = "testsurname";
                 string address = "test@address.com";
-                UserGlobalView sender = new UserGlobalView(name, surname, address);
+                UserGlobalView sender = new UserGlobalView
+                {
+                    Name = name,
+                    Surname = surname,
+                    Address = address
+                };
                 List<string> recipientsAddresses = new List<string>();
                 string topic = "testtopic";
                 string text = "testtext";
                 DateTime dateTime = new DateTime(2021, 1, 1);
             #endregion
-            inboxMail = new MailInboxView
+            MailInboxView inboxMail = new MailInboxView
             {
                 MailId = mailId,
-                Read = read,
                 Sender = sender,
                 RecipientsAddresses = recipientsAddresses,
-                Topic = topic,
-                Text = text,
                 Date = dateTime,
+                Text = text,
+                Topic = topic,
+                Read = read
             };
             #region Tests
                 Assert.NotNull(inboxMail);

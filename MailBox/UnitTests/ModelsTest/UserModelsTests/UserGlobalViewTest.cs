@@ -8,13 +8,18 @@ namespace UnitTests.ModelsTest.UserModelsTests
         [Fact]
         public void ConstructorTest()
         {
-            UserGlobalView userGlobalView = null;
+            
             #region Init variables
                 string name = "testname";
                 string surname = "testsurname";
                 string address = "test@address.com";
             #endregion
-            userGlobalView = new UserGlobalView(name, surname, address);
+            UserGlobalView userGlobalView = new UserGlobalView
+            {
+                Name = name,
+                Surname = surname,
+                Address = address
+            };
             #region Tests
                 Assert.NotNull(userGlobalView);
                 Assert.Equal(userGlobalView.Name, name);
