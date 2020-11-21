@@ -12,6 +12,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using System.Security.Claims;
 
 namespace MailBox
 {
@@ -29,7 +31,34 @@ namespace MailBox
         {
             services.AddAuthentication(AzureADB2CDefaults.AuthenticationScheme)
                 .AddAzureADB2C(options => Configuration.Bind("AzureAdB2C", options));
-            
+
+            services.Configure<OpenIdConnectOptions>(
+                AzureADB2CDefaults.OpenIdScheme, options =>
+                {
+                    options.Events = new OpenIdConnectEvents
+                    {
+                        OnTokenValidated = context =>
+                        {
+                            var db = context.HttpContext.RequestServices.GetRequiredService<MailBoxDBContext>();
+                            string signedInUserID = context.Principal.FindFirst(ClaimTypes.NameIdentifier).Value;
+                            string email = context.Principal.Identities.First().Claims.Where(x => x.Type == "emails").First().Value;
+                            var user = db.Users.Where(x => x.Email == email).FirstOrDefault();
+                            if (user == null)
+                            {
+                                string firstName = context.Principal.Identities.First().Claims.Where(x => x.Type == ClaimTypes.GivenName).First().Value;
+                                string lastName = context.Principal.Identities.First().Claims.Where(x => x.Type == ClaimTypes.Surname).First().Value;
+                                var role = db.Roles.Where(x => x.ID == 1).FirstOrDefault();
+                                User usr = new User { FirstName = firstName, LastName = lastName, Email = email, Role = role };
+                                db.Users.Add(usr);
+                                db.SaveChanges();
+                            }
+                            return Task.CompletedTask;
+                        },
+
+
+                    };
+                });
+
             services.AddDbContext<MailBoxDBContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
