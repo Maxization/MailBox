@@ -16,5 +16,10 @@ namespace MailBox.Models.UserModels
             this.Surname = surname;
             this.Address = address;
         }
+
+        public NewUser()
+        {
+
+        }
     }
 }

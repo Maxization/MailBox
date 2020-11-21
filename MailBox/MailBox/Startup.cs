@@ -15,6 +15,8 @@ using Microsoft.EntityFrameworkCore;
 using FluentValidation.AspNetCore;
 using FluentValidation;
 using MailBox.Filters;
+using MailBox.Services.ServicesInterfaces;
+using MailBox.Services;
 
 namespace MailBox
 {
@@ -35,6 +37,8 @@ namespace MailBox
             
             services.AddDbContext<MailBoxDBContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddScoped<IUserService, UserService>();
 
             services.AddMvc( options =>
                 {
