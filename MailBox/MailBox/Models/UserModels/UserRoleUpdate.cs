@@ -5,13 +5,14 @@ using System.Threading.Tasks;
 
 namespace MailBox.Models.UserModels
 {
-    public class Recipient
+    public class UserRoleUpdate
     {
-        public string Address { get; }
-
-        public Recipient(string address)
+        public string Address { get; set; }
+        public Role Role { get; set; }
+        public UserRoleUpdate(string address, Role role)
         {
             this.Address = address;
+            this.Role = role;
         }
     }
 }
