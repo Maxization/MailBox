@@ -17,7 +17,7 @@ namespace MailBox.Controllers
             this.groupService = groupService;
         }
 
-        public ActionResult GroupsList()
+        public ActionResult ManageGroups()
         {
             ViewData["groups"] = groupService.GetUserGroupsList(1);
             return View();
@@ -26,36 +26,31 @@ namespace MailBox.Controllers
         public ActionResult ChangeGroupName(GroupNameUpdate groupNameUpdate)
         {
             groupService.ChangeGroupName(groupNameUpdate);
-            ViewData["groups"] = groupService.GetUserGroupsList(1);
-            return View("GroupsList");
+            return RedirectToAction("ManageGroups");
         }
 
-        public ActionResult NewGroup(NewGroup newGroup)
+        public ActionResult AddGroup(NewGroup newGroup)
         {
             groupService.AddGroup(newGroup, 1);
-            ViewData["groups"] = groupService.GetUserGroupsList(1);
-            return View("GroupsList");
+            return RedirectToAction("ManageGroups");
         }
 
         public ActionResult DeleteGroup(int groupID)
         {
             groupService.DeleteGroup(groupID);
-            ViewData["groups"] = groupService.GetUserGroupsList(1);
-            return View("GroupsList");
+            return RedirectToAction("ManageGroups");
         }
 
         public ActionResult AddUserToGroup(GroupMemberUpdate groupMemberUpdate)
         {
             groupService.AddUserToGroup(groupMemberUpdate);
-            ViewData["groups"] = groupService.GetUserGroupsList(1);
-            return View("GroupsList");
+            return RedirectToAction("ManageGroups");
         }
 
         public ActionResult DeleteUserFromGroup(GroupMemberUpdate groupMemberUpdate)
         {
             groupService.DeleteUserFromGroup(groupMemberUpdate);
-            ViewData["groups"] = groupService.GetUserGroupsList(1);
-            return View("GroupsList");
+            return RedirectToAction("ManageGroups");
         }
     }
 }
