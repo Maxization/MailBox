@@ -23,6 +23,15 @@ namespace MailBox.Controllers
             _userService = userService;
         }
 
+        public UserController()
+        {
+        }
+
+        public IActionResult Index()
+        {
+            return View("GlobalList");
+        }
+
         public IActionResult GlobalList()
         {
             return Json(_userService.GetGlobalContactList());
