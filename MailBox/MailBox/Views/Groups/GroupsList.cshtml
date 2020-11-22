@@ -5,7 +5,6 @@
 <head>
     <link href="~/css/main.css" rel="stylesheet" />
     <link href="~/css/inbox.css" rel="stylesheet" />
-    <link href="~/css/newMail.css" rel="stylesheet" />
 </head>
 <body>
     <div class="container-fluid text-white">
@@ -42,61 +41,107 @@
             <div class="col-8 no-float bg-dark-transparent">
                 <div class="col-12 no-float bg-dark-transparent container-fluid text-white">
                     <div class="row no-gutters container-title">
-                        <div class="col-11">
+                        <div class="col-12">
                             <h4>Groups</h4>
                             <hr />
-                        </div>
-                        <div class="col-1 content-center-div">
-                            <button class="add-group-button">+</button>
                         </div>
                     </div>
                     <div class="container-groups overflow-auto">
                         @foreach (var g in groups)
                         {
-                        <div class="container-group">
-                            <div>
+                            <div class="container-group no-gutters">
                                 <div class="row no-gutters">
-                                    <div class="col-7 no-gutters">
-                                        <h5>@g.Name</h5>
-                                    </div>
-                                    <div class="col-2 no-gutters">
-                                        <button class="add-member-button">add user</button>
-                                    </div>
-                                    <div class="col-1 no-gutters">
-                                    </div>
-                                    <div class="col-2 no-gutters">
-                                        <button class="delete-button">delete</button>
-                                    </div>
-                                </div>
-                                <hr />
-                            </div>
-                            <div class="container-contacts overflow-auto">
-                                @foreach (var gm in g.GroupMembers)
-                                {
-                                <div class="container-group-elem">
-                                    <div class="row no-gutters">
-                                        <div class="col-11 no-gutters">
-                                            <div class="row no-gutters">
-                                                <div class="col-3">
-                                                    <span>@gm.Name</span>
-                                                </div>
-                                                <div class="col-3">
-                                                    <span>@gm.Surname</span>
-                                                </div>
-                                                <div class="col-6">
-                                                    <span>@gm.Address</span>
-                                                </div>
+                                    <div class="col-3">
+                                        <div class="row no-gutters">
+                                            <div class="col-12 no-gutters">
+                                                <h5>@g.Name</h5>
                                             </div>
                                         </div>
-                                        <div class="col-1 no-gutters content-center-div">
-                                            <button class="delete-button">X</button>
+                                    </div>
+                                    <div class="col-6">
+                                        @using (Html.BeginForm("ChangeGroupName", "Groups"))
+                                        {
+                                            <div class="row no-gutters">
+                                                <div class="col-2"></div>
+                                                <div class="col-6 no-gutters">
+                                                    <input name="Name" type="text" class="form-control input-new_folder" value="@g.Name" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                                </div>
+                                                <div class="col-4 no-gutters">
+                                                    <button name="GroupID" value="@g.GroupID" class="add-button">change name</button>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                    <div class="col-3">
+                                        @using (Html.BeginForm("DeleteGroup", "Groups"))
+                                        {
+                                            <div class="row no-gutters">
+                                                <div class="col-8"></div>
+                                                <div class="col-4">
+                                                    <button name="groupID" value="@g.GroupID" class="delete-button">X</button>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                    <hr />
+                                </div>
+                                <div class="container-contacts overflow-auto">
+                                    @foreach (var gm in g.GroupMembers)
+                                    {
+                                        <div class="container-group-elem">
+                                            @using (Html.BeginForm("DeleteUserFromGroup", "Groups"))
+                                            {
+                                                <div class="row no-gutters">
+                                                    <div class="col-11 no-gutters">
+                                                        <div class="row no-gutters">
+                                                            <div class="col-3">
+                                                                <span class="span-data">@gm.Name</span>
+                                                            </div>
+                                                            <div class="col-3">
+                                                                <span class="span-data">@gm.Surname</span>
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <input name="GroupMemberAddress" value="@gm.Address" class="form-control input-address" readonly>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-1 no-gutters">
+                                                        <button name="groupID" value="@g.GroupID" class="delete-button">X</button>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                    }
+                                </div>
+                                @using (Html.BeginForm("AddUserToGroup", "Groups"))
+                                {
+                                    <div class="row no-gutters">
+                                        <div class="col-8 no-gutters">
+                                            <input name="GroupMemberAddress" type="text" class="form-control input-new_folder" placeholder=" Type new member..." aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                        </div>
+                                        <div class="col-1 no-gutters">
+                                            <button name="GroupID" value="@g.GroupID" class="add-button">+</button>
                                         </div>
                                     </div>
-                                </div>
                                 }
                             </div>
-                        </div>
                         }
+                    </div>
+                    <div class="row no-gutters container-title">
+                        <div class="col-12">
+                            <hr />
+                            @using (Html.BeginForm("NewGroup", "Groups"))
+                            {
+                                <div class="row">
+                                    <div class="col-10 no-gutters">
+                                        <input name="Name" type="text" class="form-control input-new_folder" placeholder=" Type group name..." aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                    </div>
+                                    <div class="col-2 no-gutters">
+                                        <button class="add-button">+</button>
+                                    </div>
+                                </div>
+                            }
+                        </div>
                     </div>
                 </div>
             </div>
@@ -120,7 +165,7 @@
                             <div class="container-contacts overflow-auto">
                                 @foreach (var gm in g.GroupMembers)
                                 {
-                                    <button class="col-form-label-sm bg-blue-button">@gm.Address</button><br />
+                                    <button class="col-form-label-sm bg-blue-button">@gm.Address</button>
                                 }
                             </div>
                         </div>
