@@ -2,17 +2,17 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MailBox.Services.ServicesInterfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MailBox.Controllers
 {
+    [Authorize]
     public class UserController : Controller
     {
-        private readonly ILogger<UserController> _logger;
         private readonly IUserService _userService;
 
-        public UserController(ILogger<UserController> logger, IUserService userService)
+        public UserController(IUserService userService)
         {
-            _logger = logger;
             _userService = userService;
         }
 

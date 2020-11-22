@@ -12,12 +12,10 @@ namespace MailBox.Services
     public class UserService : IUserService
     {
         private readonly MailBoxDBContext context;
-        private IConfiguration configuration;
 
-        public UserService(MailBoxDBContext context, IConfiguration configuration)
+        public UserService(MailBoxDBContext context)
         {
             this.context = context;
-            this.configuration = configuration;
         }
         public List<UserGlobalView> GetGlobalContactList()
         {
