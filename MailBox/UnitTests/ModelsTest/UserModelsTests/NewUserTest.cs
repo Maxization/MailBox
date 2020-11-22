@@ -9,13 +9,17 @@ namespace UnitTests.ModelsTest.UserModelsTests
         [Fact]
         public void ConstructorTest()
         {
-            NewUser newUser = null;
             #region Init variables
                 string name = "testname";
                 string surname = "surname";
                 string address = "test@address.com";
             #endregion
-            newUser = new NewUser(name, surname, address);
+            NewUser newUser = new NewUser
+            {
+                Name = name,
+                Surname = surname,
+                Address = address
+            };
             #region Tests
                 Assert.NotNull(newUser);
                 Assert.Equal(newUser.Name, name);

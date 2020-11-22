@@ -11,12 +11,15 @@ namespace UnitTests.ModelsTest.GroupModelsTest
         [Fact]
         public void ConstructorTest()
         {
-            GroupNameUpdate groupUpdate = null;
             #region Init variables
                 int groupId = 0;
                 string name = "testname";
             #endregion
-            groupUpdate = new GroupNameUpdate(groupId, name);
+            GroupNameUpdate groupUpdate = new GroupNameUpdate
+            {
+                Name = name,
+                GroupId = groupId
+            };
             #region Tests
                 Assert.NotNull(groupUpdate);
                 Assert.Equal(groupUpdate.GroupId, groupId);

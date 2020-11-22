@@ -16,6 +16,5 @@ namespace MailBox.Models
         public string Topic { get; set; }
         public string Text { get; set; }
         public DateTime Date { get; set; }
-        //public MailInboxView MailReply { get; set; }
     }
 }

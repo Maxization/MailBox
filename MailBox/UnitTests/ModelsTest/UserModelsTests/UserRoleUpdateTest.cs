@@ -9,12 +9,16 @@ namespace UnitTests.ModelsTest.UserModelsTests
         [Fact]
         public void ConstructorTest()
         {
-            UserRoleUpdate userRoleUpdate = null;
+
             #region Init variables
                 string address = "test@address.com";
-                Role role = new Role("testname");
+                Role role = new Role { Name = "testname" };
             #endregion
-            userRoleUpdate = new UserRoleUpdate(address, role);
+            UserRoleUpdate userRoleUpdate = new UserRoleUpdate
+            {
+                Address = address,
+                Role = role
+            };
             #region Tests
                 Assert.NotNull(userRoleUpdate);
                 Assert.Equal(userRoleUpdate.Address, address);

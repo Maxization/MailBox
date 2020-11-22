@@ -12,7 +12,7 @@ namespace UnitTests.ModelsTest.MailModelsTest
         [Fact]
         public void ConstructorTest()
         {
-            NewMail newMail = null;
+            
             #region Init variables
             List<string> CCRecipientsAddresses = new List<string>();
             List<string> BCCRecipientsAddresses = new List<string>();
@@ -20,13 +20,13 @@ namespace UnitTests.ModelsTest.MailModelsTest
             string text = "testtext";
             DateTime dateTime = new DateTime(2021, 1, 1);
             #endregion
-            newMail = new NewMail
+            NewMail newMail = new NewMail
             {
-                CCRecipientsAddresses = CCRecipientsAddresses,
                 BCCRecipientsAddresses = BCCRecipientsAddresses,
-                Topic = topic,
-                Text = text,
+                CCRecipientsAddresses = CCRecipientsAddresses,
                 Date = dateTime,
+                Text = text,
+                Topic = topic
             };
             #region Tests
             Assert.NotNull(newMail);

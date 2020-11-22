@@ -26,7 +26,11 @@ namespace UnitTests
                 int groupId = 0;
                 string address = "wrogaddress.pl";
             #endregion
-            GroupMemberUpdate groupMemberUpdate = new GroupMemberUpdate(groupId, address);
+            GroupMemberUpdate groupMemberUpdate = new GroupMemberUpdate
+            {
+                GroupId = groupId,
+                GroupMemberAddress = address
+            };
             var result = validator.TestValidate(groupMemberUpdate);
             #region Tests
                 result.ShouldHaveValidationErrorFor(x => x.GroupMemberAddress);
@@ -41,7 +45,11 @@ namespace UnitTests
                 int groupId = 0;
                 string address = "wroga@ddresspl";
             #endregion
-            GroupMemberUpdate groupMemberUpdate = new GroupMemberUpdate(groupId, address);
+            GroupMemberUpdate groupMemberUpdate = new GroupMemberUpdate
+            {
+                GroupId = groupId,
+                GroupMemberAddress = address
+            };
             var result = validator.TestValidate(groupMemberUpdate);
             #region Tests
                 result.ShouldHaveValidationErrorFor(x => x.GroupMemberAddress);
@@ -56,7 +64,11 @@ namespace UnitTests
                 int groupId = 0;
                 string address = "test@address.pl";
             #endregion
-            GroupMemberUpdate groupMemberUpdate = new GroupMemberUpdate(groupId, address);
+            GroupMemberUpdate groupMemberUpdate = new GroupMemberUpdate
+            {
+                GroupId = groupId,
+                GroupMemberAddress = address
+            };
             var result = validator.TestValidate(groupMemberUpdate);
             #region Tests
                 result.ShouldNotHaveAnyValidationErrors();

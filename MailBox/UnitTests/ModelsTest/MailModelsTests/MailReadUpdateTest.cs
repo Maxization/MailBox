@@ -12,12 +12,15 @@ namespace UnitTests.ModelsTest.MailModelsTest
         [Fact]
         public void ConstructorTest()
         {
-            MailReadUpdate mailReadUpdate = null;
             #region Init variables
                 int mailId = 0;
                 bool read = true;
             #endregion
-            mailReadUpdate = new MailReadUpdate(mailId, read);
+            MailReadUpdate mailReadUpdate = new MailReadUpdate
+            {
+                MailId = mailId,
+                Read = read
+            };
             #region Tests
                 Assert.NotNull(mailReadUpdate);
                 Assert.Equal(mailReadUpdate.MailId, mailId);

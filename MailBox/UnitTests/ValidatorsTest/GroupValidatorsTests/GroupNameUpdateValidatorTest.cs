@@ -18,7 +18,11 @@ namespace UnitTests
                 int groupId = 0;
                 string name = "testname";
             #endregion
-            GroupNameUpdate groupNameUpdate = new GroupNameUpdate(groupId, name);
+            GroupNameUpdate groupNameUpdate = new GroupNameUpdate
+            {
+                GroupId = groupId,
+                Name = name
+            };
             var result = validator.TestValidate(groupNameUpdate);
             #region Tests
                 result.ShouldNotHaveAnyValidationErrors();
@@ -33,7 +37,11 @@ namespace UnitTests
                 int groupId = 0;
                 string name = "";
             #endregion
-            GroupNameUpdate groupNameUpdate = new GroupNameUpdate(groupId, name);
+            GroupNameUpdate groupNameUpdate = new GroupNameUpdate
+            {
+                GroupId = groupId,
+                Name = name
+            };
             var result = validator.TestValidate(groupNameUpdate);
             #region Tests
                 result.ShouldHaveValidationErrorFor(x => x.Name);

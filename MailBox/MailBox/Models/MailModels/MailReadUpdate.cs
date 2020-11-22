@@ -9,11 +9,5 @@ namespace MailBox.Models.MailModels
     {
         public int MailId { get; set; }
         public bool Read { get; set; }
-
-        public MailReadUpdate(int mailId, bool read)
-        {
-            this.MailId = mailId;
-            this.Read = read;
-        }
     }
 }

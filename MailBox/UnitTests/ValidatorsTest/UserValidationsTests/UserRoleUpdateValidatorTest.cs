@@ -15,9 +15,13 @@ namespace UnitTests.ValidatorsTest.UserValidationsTests
             var validator = new UserRoleUpdateValidator();
             #region Init variables
                 string address = "test@address.com";
-                Role role = new Role("testname");
+                Role role = new Role { Name = "testname" };
             #endregion
-            UserRoleUpdate mailReadUpdate = new UserRoleUpdate(address, role);
+            UserRoleUpdate mailReadUpdate = new UserRoleUpdate
+            {
+                Address = address,
+                Role = role
+            };
             var result = validator.TestValidate(mailReadUpdate);
             #region Tests
                 result.ShouldNotHaveAnyValidationErrors();
@@ -30,9 +34,13 @@ namespace UnitTests.ValidatorsTest.UserValidationsTests
             var validator = new UserRoleUpdateValidator();
             #region Init variables
                 string address = "testaddress.com";
-                Role role = new Role("testname");
+                Role role = new Role { Name = "testname"};
             #endregion
-            UserRoleUpdate mailReadUpdate = new UserRoleUpdate(address, role);
+            UserRoleUpdate mailReadUpdate = new UserRoleUpdate
+            {
+                Address = address,
+                Role = role
+            };
             var result = validator.TestValidate(mailReadUpdate);
             #region Tests
                 result.ShouldHaveValidationErrorFor(x => x.Address);
@@ -45,9 +53,13 @@ namespace UnitTests.ValidatorsTest.UserValidationsTests
             var validator = new UserRoleUpdateValidator();
             #region Init variables
                 string address = "test@address";
-                Role role = new Role("testname");
+                Role role = new Role { Name = "testname" };
             #endregion
-            UserRoleUpdate mailReadUpdate = new UserRoleUpdate(address, role);
+            UserRoleUpdate mailReadUpdate = new UserRoleUpdate
+            {
+                Address = address,
+                Role = role
+            };
             var result = validator.TestValidate(mailReadUpdate);
             #region Tests
                 result.ShouldHaveValidationErrorFor(x => x.Address);
@@ -62,7 +74,11 @@ namespace UnitTests.ValidatorsTest.UserValidationsTests
                 string address = "test@address.com";
                 Role role = null;
             #endregion
-            UserRoleUpdate mailReadUpdate = new UserRoleUpdate(address, role);
+            UserRoleUpdate mailReadUpdate = new UserRoleUpdate
+            {
+                Address = address,
+                Role = role
+            };
             var result = validator.TestValidate(mailReadUpdate);
             #region Tests
                 result.ShouldHaveValidationErrorFor(x => x.Role);
