@@ -19,6 +19,7 @@ using FluentValidation;
 using MailBox.Filters;
 using MailBox.Services.Interfaces;
 using MailBox.Services;
+using MailBox.Services.ServicesInterfaces;
 
 namespace MailBox
 {
@@ -75,6 +76,7 @@ namespace MailBox
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddScoped<IMailService, MailService>();
+            services.AddScoped<IUserService, UserService>();
 
             services.AddMvc()
                 .AddFluentValidation(mvcConfiguration => mvcConfiguration.RegisterValidatorsFromAssemblyContaining<Startup>());

@@ -25,7 +25,12 @@ namespace MailBox.Services
             List<UserGlobalView> users = new List<UserGlobalView>();
             foreach(var dbUser in dbUsers)
             {
-                users.Add(new UserGlobalView(dbUser.FirstName, dbUser.LastName, dbUser.Email));
+                users.Add(new UserGlobalView
+                { 
+                    Name = dbUser.FirstName, 
+                    Surname = dbUser.LastName, 
+                    Address = dbUser.Email
+                });
             }
             return users;
         }

@@ -20,6 +20,10 @@ namespace MailBox.Controllers
             _mailService = userService;
         }
 
+        public MailController()
+        {
+        }
+
         public IActionResult Index()
         {
             int userID = int.Parse(User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);

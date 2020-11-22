@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using MailBox.Models;
 using MailBox.Services.ServicesInterfaces;
-using MailBox.Models.UserModels;
-using MailBox.Validators.UserValidators;
 
 namespace MailBox.Controllers
 {
@@ -21,10 +14,6 @@ namespace MailBox.Controllers
         {
             _logger = logger;
             _userService = userService;
-        }
-
-        public UserController()
-        {
         }
 
         public IActionResult Index()
