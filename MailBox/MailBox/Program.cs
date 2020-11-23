@@ -13,11 +13,8 @@ namespace MailBox
 {
     public class Program
     {
-        public string DoupaDipa = "dua";
         public static void Main(string[] args)
         {
-            
-
             var host = CreateHostBuilder(args).Build();
 
             CreateDbIfNotExists(host);
