@@ -24,7 +24,7 @@ namespace MailBox.Controllers
         public IActionResult Index()
         {
             int userID = int.Parse(User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
-            ViewData["Mails"] = _mailService.GetUserMails(userID);
+            ViewData["Mails"] = _mailService.GetUserMails(1);
             return View();
         }
 
