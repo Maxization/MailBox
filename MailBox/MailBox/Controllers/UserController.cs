@@ -3,10 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MailBox.Services.ServicesInterfaces;
 using Microsoft.AspNetCore.Authorization;
+using MailBox.Models.UserModels;
 
 namespace MailBox.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class UserController : Controller
     {
         private readonly IUserService _userService;

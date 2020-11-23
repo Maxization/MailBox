@@ -78,7 +78,10 @@ namespace MailBox
             services.AddScoped<IMailService, MailService>();
             services.AddScoped<IUserService, UserService>();
 
-            services.AddMvc()
+            services.AddMvc(options =>
+            {
+                options.Filters.Add<ValidationFilter>();
+            })
                 .AddFluentValidation(mvcConfiguration => mvcConfiguration.RegisterValidatorsFromAssemblyContaining<Startup>());
 
             services.AddControllersWithViews();
