@@ -3,10 +3,12 @@ using Xunit;
 using MailBox;
 using MailBox.Controllers;
 using Microsoft.AspNetCore.Mvc;
+using MailBox.Services;
 
-namespace UnitTests
+namespace UnitTests.ControllersTest
 {
-    public class MailControllerTests
+    public class UserControllerTest
     {
+
     }
 }

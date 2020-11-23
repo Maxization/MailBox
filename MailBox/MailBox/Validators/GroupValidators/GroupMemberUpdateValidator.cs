@@ -10,10 +10,7 @@ namespace MailBox.Validators
     public class GroupMemberUpdateValidator : AbstractValidator<GroupMemberUpdate>
     {
         public GroupMemberUpdateValidator()
-        {
-            RuleFor(x => x.GroupId)
-                .NotNull();
-            
+        {            
             RuleFor(x => x.GroupMemberAddress)
                 .NotNull()
                 .NotEmpty()
