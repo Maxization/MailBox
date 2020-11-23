@@ -1,8 +1,7 @@
-﻿using System;
+﻿
+using System;
 using Xunit;
-using MailBox.Models;
 using System.Collections.Generic;
-using MailBox.Models.UserModels;
 using MailBox.Models.MailModels;
 
 namespace UnitTests.ModelsTest.MailModelsTest

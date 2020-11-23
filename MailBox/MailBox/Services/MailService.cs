@@ -1,12 +1,12 @@
-﻿using MailBox.Database;
-using MailBox.Models;
+﻿
+using MailBox.Database;
+using MailBox.Models.MailModels;
 using MailBox.Models.UserModels;
 using MailBox.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace MailBox.Services
 {
@@ -31,7 +31,7 @@ namespace MailBox.Services
             {
                 MailInboxView miv = new MailInboxView
                 {
-                    MailId = um.MailID,
+                    MailID = um.MailID,
                     Read = um.Read,
                     Sender = new UserGlobalView
                     {
@@ -60,7 +60,7 @@ namespace MailBox.Services
             if (mail == null) return null;
             return new MailInboxView
             {
-                MailId = mail.Mail.ID,
+                MailID = mail.Mail.ID,
                 Read = mail.Read,
                 Sender = new UserGlobalView
                 { 

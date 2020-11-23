@@ -1,9 +1,7 @@
-﻿using FluentValidation.TestHelper;
+﻿
+using FluentValidation.TestHelper;
 using MailBox.Models.GroupModels;
 using MailBox.Validators;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Xunit;
 
 namespace UnitTests

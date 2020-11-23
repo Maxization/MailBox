@@ -1,13 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
 using MailBox.Database;
+using MailBox.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.AzureADB2C.UI;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -16,10 +13,10 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using System.Security.Claims;
 using FluentValidation.AspNetCore;
 using FluentValidation;
-using MailBox.Filters;
 using MailBox.Services.Interfaces;
-using MailBox.Services;
-using MailBox.Services.ServicesInterfaces;
+using System.Linq;
+using System.Threading.Tasks;
+using MailBox.Filters;
 
 namespace MailBox
 {
@@ -73,7 +70,14 @@ namespace MailBox
                 });
 
             services.AddDbContext<MailBoxDBContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")), ServiceLifetime.Scoped);
+
+            services.AddScoped<IGroupService, GroupService>();
+
+            services.AddScoped<IMailService, MailService>();
+
+            services.AddMvc(options => { options.Filters.Add<ValidationFilter>(); })
+                .AddFluentValidation(mvcConfiguration => mvcConfiguration.RegisterValidatorsFromAssemblyContaining<Startup>());
 
             services.AddScoped<IMailService, MailService>();
             services.AddScoped<IUserService, UserService>();

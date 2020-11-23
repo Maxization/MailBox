@@ -1,9 +1,8 @@
 ﻿
 using System.Collections.Generic;
-using MailBox.Models.GroupModels;
 using MailBox.Models.UserModels;
 
-namespace MailBox.Services.ServicesInterfaces
+namespace MailBox.Services
 {
     public interface IUserService
     {

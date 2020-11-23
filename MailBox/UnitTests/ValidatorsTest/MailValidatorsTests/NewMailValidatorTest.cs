@@ -1,6 +1,7 @@
-﻿using System;
+﻿
+using System;
 using Xunit;
-using MailBox.Models;
+using MailBox.Models.MailModels;
 using System.Collections.Generic;
 using FluentValidation.TestHelper;
 using System.Text;

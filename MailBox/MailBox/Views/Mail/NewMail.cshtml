@@ -8,18 +8,12 @@
 }
 
 <head>
-    <link href="~/css/bootstrap.css" rel="stylesheet" />
     <link href="~/css/main.css" rel="stylesheet" />
     <link href="~/css/inbox.css" rel="stylesheet" />
-    <link href="~/css/newMail.css" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="~/js/data.js"></script>
 </head>
 <body class="bg-black">
-    <div class="input-group mb-3 container-search">
-        <input type="text" class="form-control" placeholder="Search" aria-label="Recipient's username" aria-describedby="basic-addon2">
-        <div class="input-group-append">
-            <button class="btn btn-outline-secondary btn-primary" type="button">Search</button>
-        </div>
-    </div>
     <div class="container-fluid text-white">
         <div class="row">
             <div class="col-2 no-float bg-dark-transparent">
@@ -28,7 +22,6 @@
                     <hr />
                 </div>
                 <div>
-                    <div class="button-container"><button type="button" class="btn-folder">Compose</button></div>
                     <div class="button-container"><button type="button" class="btn-folder">Inbox</button></div>
                     <div class="button-container"><button type="button" class="btn-folder">Sent</button></div>
                     <div class="button-container"><button type="button" class="btn-folder">Spam</button></div>
@@ -36,11 +29,20 @@
                 </div>
                 <div class="row no-gutters container-board-white container-new" id="folders_container">
                     <div class="col-10 no-gutters">
-                        <input type="text" class="form-control input-new_folder border-0" placeholder="New folder..." aria-label="Recipient's username" aria-describedby="basic-addon2">
+                        <input type="text" class="form-control input-new_folder border-0" placeholder=" New folder..." aria-label="Recipient's username" aria-describedby="basic-addon2">
                     </div>
                     <div class="col-2 no-gutters">
                         <button class="bg-black text-light text-center border-0 btn-new" type="button">+</button>
                     </div>
+                </div>
+                <div><br /></div>
+                <div class="container-title">
+                    <h4>Actions</h4>
+                    <hr />
+                </div>
+                <div>
+                    <div class="button-container"><button type="button" class="btn-folder">New email</button></div>
+                    <div class="button-container"><button onclick="GoToGroupManagement()" type="button" class="btn-folder">Manage groups</button></div>
                 </div>
             </div>
             <div class="col-8 no-float bg-dark-transparent" id="mail_div">
@@ -60,15 +62,20 @@
                                 <label class="col-form-label">To:</label>
                             </div>
                             <div class="col-10">
-                                <input type="email" class="form-control inputS" id="to" placeholder="Type email">
+                                <input type="email" class="form-control margin-0" id="to" placeholder="Type email">
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="col-2">
                                 <label class="col-form-label">Subject:</label>
                             </div>
+<<<<<<< HEAD
+                            <div class="col-10">
+                                <input type="tel" class="form-control margin-0" id="subject" placeholder="Type subject">
+=======
                             <div class="col-8">
                                 <input type="tel" class="form-control inputS" id="subject" placeholder="Type subject">
+>>>>>>> efffa386a89db34d8292260c476eef7cd88c54df
                             </div>
                             <div class ="col-2">
                                 <div class="dropdown">
@@ -106,84 +113,7 @@
                     <h4>Groups</h4>
                     <hr />
                 </div>
-                <div class="container-groups overflow-auto">
-                    <div class="container-group">
-                        <div class="container-group-title">
-                            <div class="row no-gutters">
-                                <div class="col-10 no-gutters">
-                                    <h6>Contacts</h6>
-                                </div>
-                                <div class="col-2 no-gutters">
-                                    <button class="bg-black text-light text-center border-0 btn-new" type="button">...</button>
-                                </div>
-                            </div>
-                            <hr />
-                        </div>
-                        <div class="container-contacts overflow-auto">
-                            <label class="col-form-label-sm bg-blue-label">stanisławż@wp.pl</label><br />
-                            <label class="col-form-label-sm bg-blue-label">stanisławż@wp.pl</label><br />
-                            <label class="col-form-label-sm bg-blue-label">stanisławż@wp.pl</label><br />
-                            <label class="col-form-label-sm bg-blue-label">stanisławż@wp.pl</label><br />
-                            <label class="col-form-label-sm bg-blue-label">stanisławż@wp.pl</label><br />
-                            <label class="col-form-label-sm bg-blue-label">stanisławż@wp.pl</label><br />
-                            <label class="col-form-label-sm bg-blue-label">stanisławż@wp.pl</label><br />
-                            <label class="col-form-label-sm bg-blue-label">stanisławż@wp.pl</label><br />
-                            <label class="col-form-label-sm bg-blue-label">stanisławż@wp.pl</label><br />
-                            <label class="col-form-label-sm bg-blue-label">stanisławż@wp.pl</label><br />
-                            <label class="col-form-label-sm bg-blue-label">stanisławż@wp.pl</label><br />
-                            <label class="col-form-label-sm bg-blue-label">stanisławż@wp.pl</label><br />
-                            <label class="col-form-label-sm bg-blue-label">stanisławż@wp.pl</label><br />
-                        </div>
-                    </div>
-                    <div class="container-group">
-                        <div class="container-group-title">
-                            <div class="row no-gutters">
-                                <div class="col-10 no-gutters">
-                                    <h6>Friends</h6>
-                                </div>
-                                <div class="col-2 no-gutters">
-                                    <button class="bg-black text-light text-center border-0 btn-new" type="button">...</button>
-                                </div>
-                            </div>
-                            <hr />
-                        </div>
-                        <div class="container-contacts overflow-auto">
-                            <label class="col-form-label-sm bg-blue-label">stanisławż@wp.pl</label><br />
-                            <label class="col-form-label-sm bg-blue-label">stanisławż@wp.pl</label><br />
-                            <label class="col-form-label-sm bg-blue-label">stanisławż@wp.pl</label><br />
-                            <label class="col-form-label-sm bg-blue-label">stanisławż@wp.pl</label><br />
-                            <label class="col-form-label-sm bg-blue-label">stanisławż@wp.pl</label><br />
-                            <label class="col-form-label-sm bg-blue-label">stanisławż@wp.pl</label><br />
-                            <label class="col-form-label-sm bg-blue-label">stanisławż@wp.pl</label><br />
-                            <label class="col-form-label-sm bg-blue-label">stanisławż@wp.pl</label><br />
-                            <label class="col-form-label-sm bg-blue-label">stanisławż@wp.pl</label><br />
-                        </div>
-                    </div>
-                    <div class="container-group">
-                        <div class="container-group-title">
-                            <div class="row no-gutters">
-                                <div class="col-10 no-gutters">
-                                    <h6>Work</h6>
-                                </div>
-                                <div class="col-2 no-gutters">
-                                    <button class="bg-black text-light text-center border-0 btn-new" type="button">...</button>
-                                </div>
-                            </div>
-                            <hr />
-                        </div>
-                        <div class="container-contacts overflow-auto">
-                            <label class="col-form-label-sm bg-blue-label">stanisławż@wp.pl</label><br />
-                            <label class="col-form-label-sm bg-blue-label">stanisławż@wp.pl</label><br />
-                        </div>
-                    </div>
-                </div>
-                <div class="row no-gutters container-board-white container-new" id="folders_container">
-                    <div class="col-10 no-gutters">
-                        <input type="text" class="form-control input-new_folder border-0" placeholder="New group..." aria-label="Recipient's username" aria-describedby="basic-addon2">
-                    </div>
-                    <div class="col-2 no-gutters">
-                        <button class="bg-black text-light text-center border-0 btn-new" type="button">+</button>
-                    </div>
+                <div id="groupsPanel" class="container-groups overflow-auto">
                 </div>
             </div>
         </div>

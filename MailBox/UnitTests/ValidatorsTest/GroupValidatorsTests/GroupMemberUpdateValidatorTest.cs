@@ -1,16 +1,6 @@
-﻿using System;
+﻿
 using Xunit;
-using MailBox;
-using MailBox.Controllers;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using MailBox.Models;
-using System.Collections.Generic;
-using MailBox.Models.UserModels;
-using Microsoft.AspNetCore.Mvc.Formatters;
 using FluentValidation.TestHelper;
-using System.Text;
-using MailBox.Validators.MailValidators;
 using MailBox.Validators;
 using MailBox.Models.GroupModels;
 
@@ -23,12 +13,12 @@ namespace UnitTests
         {
             var validator = new GroupMemberUpdateValidator();
             #region Init variables
-                int groupId = 0;
+                int groupID = 0;
                 string address = "wrogaddress.pl";
             #endregion
             GroupMemberUpdate groupMemberUpdate = new GroupMemberUpdate
             {
-                GroupId = groupId,
+                GroupID = groupID,
                 GroupMemberAddress = address
             };
             var result = validator.TestValidate(groupMemberUpdate);
@@ -42,12 +32,12 @@ namespace UnitTests
         {
             var validator = new GroupMemberUpdateValidator();
             #region Init variables
-                int groupId = 0;
+                int groupID = 0;
                 string address = "wroga@ddresspl";
             #endregion
             GroupMemberUpdate groupMemberUpdate = new GroupMemberUpdate
             {
-                GroupId = groupId,
+                GroupID = groupID,
                 GroupMemberAddress = address
             };
             var result = validator.TestValidate(groupMemberUpdate);
@@ -61,12 +51,12 @@ namespace UnitTests
         {
             var validator = new GroupMemberUpdateValidator();
             #region Init variables
-                int groupId = 0;
+                int groupID = 0;
                 string address = "test@address.pl";
             #endregion
             GroupMemberUpdate groupMemberUpdate = new GroupMemberUpdate
             {
-                GroupId = groupId,
+                GroupID = groupID,
                 GroupMemberAddress = address
             };
             var result = validator.TestValidate(groupMemberUpdate);

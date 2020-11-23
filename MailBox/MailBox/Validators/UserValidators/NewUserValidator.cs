@@ -1,9 +1,6 @@
-﻿using FluentValidation;
+﻿
+using FluentValidation;
 using MailBox.Models.UserModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace MailBox.Validators.UserValidators
 {

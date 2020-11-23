@@ -1,8 +1,7 @@
-﻿using MailBox.Contracts.Responses;
+
+using MailBox.Contracts.Responses;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -29,9 +28,7 @@ namespace MailBox.Filters
                         {
                             FieldName = error.Key,
                             Message = subError
-
                         };
-
                         errorResponse.Errors.Add(errorModel);
                     }
                 }

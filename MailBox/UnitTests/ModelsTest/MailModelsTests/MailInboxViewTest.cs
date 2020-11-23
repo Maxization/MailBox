@@ -1,6 +1,7 @@
-﻿using System;
+﻿
+using System;
 using Xunit;
-using MailBox.Models;
+using MailBox.Models.MailModels;
 using System.Collections.Generic;
 using MailBox.Models.UserModels;
 
@@ -12,7 +13,7 @@ namespace UnitTests.ModelsTest.MailModelsTest
         public void ConstructorTest()
         {         
             #region Init variables
-                int mailId = 1;
+                int mailID = 1;
                 bool read = true;
                 string name = "testname";
                 string surname = "testsurname";
@@ -30,7 +31,7 @@ namespace UnitTests.ModelsTest.MailModelsTest
             #endregion
             MailInboxView inboxMail = new MailInboxView
             {
-                MailId = mailId,
+                MailID = mailID,
                 Sender = sender,
                 RecipientsAddresses = recipientsAddresses,
                 Date = dateTime,
@@ -40,7 +41,7 @@ namespace UnitTests.ModelsTest.MailModelsTest
             };
             #region Tests
                 Assert.NotNull(inboxMail);
-                Assert.Equal(inboxMail.MailId, mailId);
+                Assert.Equal(inboxMail.MailID, mailID);
                 Assert.Equal(inboxMail.Read, read);
                 Assert.Equal(inboxMail.Sender, sender);
                 Assert.Equal(inboxMail.RecipientsAddresses, recipientsAddresses);

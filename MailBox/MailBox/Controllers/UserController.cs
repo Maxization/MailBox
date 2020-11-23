@@ -1,9 +1,7 @@
 ﻿
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using MailBox.Services.ServicesInterfaces;
+using MailBox.Services;
 using Microsoft.AspNetCore.Authorization;
-using MailBox.Models.UserModels;
 
 namespace MailBox.Controllers
 {

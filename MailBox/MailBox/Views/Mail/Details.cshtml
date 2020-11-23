@@ -1,4 +1,4 @@
-﻿@model MailBox.Models.MailInboxView
+﻿@model MailBox.Models.MailModels.MailInboxView
 
 @{
     ViewData["Title"] = "View";
@@ -11,6 +11,7 @@
     <hr />
     <dl class="row text-white">
         <dt class="col-sm-2">
+
             @Html.DisplayNameFor(model => model.Read)
         </dt>
         <dd class="col-sm-10">
