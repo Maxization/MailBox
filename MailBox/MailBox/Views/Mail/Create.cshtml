@@ -2,7 +2,11 @@
 
 @{
     ViewData["Title"] = "Create";
+
 }
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="~/js/newMail.js"></script>
 
 <h4 class="text-white">Create new Mail</h4>
 
@@ -19,18 +23,34 @@
                 <div class="col-2">
                     <label class="col-form-label">To (CC):</label>
                 </div>
-                <div class="col-10">
+                <div class="col-6">
                     <input name="CC" asp-for="CCRecipientsAddresses" class="form-control" />
                     <span id="CCError" class="text-danger"></span>
+                </div>
+                <div class="col-4">
+                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Global Contact List
+                    </button>
+                    <div id="globalListCC" class="dropdown-menu" aria-labelledby="Global Contact List">
+
+                    </div>
                 </div>
             </div>
             <div class="form-row">
                 <div class="col-2">
                     <label class="col-form-label">To (BCC):</label>
                 </div>
-                <div class="col-10">
+                <div class="col-6">
                     <input name="BCC" asp-for="BCCRecipientsAddresses" class="form-control" />
-                    <span asp-validation-for="BCCRecipientsAddresses" class="text-danger"></span>
+                    <span id="BCCError" class="text-danger"></span>
+                </div>
+                <div class="col-4">
+                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Global Contact List
+                    </button>
+                    <div id="globalListBCC" class="dropdown-menu" aria-labelledby="Global Contact List">
+
+                    </div>
                 </div>
             </div>
             <div class="form-row">
@@ -48,7 +68,7 @@
             <div class="form-row">
                 <div class="col-12 form-group">
                     <textarea name="Text" asp-for="Text" class="form-control" rows="15" placeholder="Click here"></textarea>
-                    <span asp-validation-for="Text" class="text-danger"></span>
+                    <span id="TextError" class="text-danger"></span>
                 </div>
             </div>
             <div class="form-row">
@@ -61,11 +81,9 @@
     </div>
 </div>
 
-@section scripts{
+@section scripts{ 
     <script>
-        $(function () {
             $('#submit').on('click', function (e) {
-
                 var BCC = $('input[name=BCC]').val().replace(/\s/g, '').split(',');
                 var CC = $('input[name=CC]').val().replace(/\s/g, '').split(',');
                 var dataToSend =
@@ -83,22 +101,36 @@
                     cache: true,
                     error: function (xhr) {
                         document.getElementById("CCError").innerHTML = "";
+                        document.getElementById("BCCError").innerHTML = "";
+                        document.getElementById("TopicError").innerHTML = "";
+                        document.getElementById("TextError").innerHTML = "";
+                        console.log(xhr.responseJSON.errors);
                         xhr.responseJSON.errors.forEach(function (item, index) {
                             switch (item.fieldName) {
                                 case 'CCRecipientsAddresses':
-                                    document.getElementById("CCError").innerHTML += item.message;
+                                    document.getElementById("CCError").innerHTML += item.message + "</br>";
+                                    break;
+                                case 'BCCRecipientsAddresses':
+                                    document.getElementById("BCCError").innerHTML += item.message + "</br>";
                                     break;
                                 case 'Topic':
-                                    document.getElementById("TopicError").innerHTML += item.message;
+                                    document.getElementById("TopicError").innerHTML += item.message + "</br>";
+                                    break;
+                                case 'Text':
+                                    document.getElementById("TextError").innerHTML += item.message + "</br>";
+                                    break;
                                 default:
                                     break;
                             }
                         })
+                    },
+                    success: function () {
+                        window.location = '/Mail';
                     }
                 });
 
                 e.preventDefault();
             });
-        });
     </script>
 }
+

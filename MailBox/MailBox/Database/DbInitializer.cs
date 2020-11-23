@@ -118,10 +118,10 @@ namespace MailBox.Database
                 new UserMail{UserID=4,MailID=4, RecipientType=RecipientType.BCC, Read = true},
                 new UserMail{UserID=5,MailID=5, RecipientType=RecipientType.BCC, Read = true},
                 new UserMail{UserID=3,MailID=6, RecipientType=RecipientType.BCC, Read = false},
-                new UserMail{UserID=4,MailID=7, RecipientType=RecipientType.CC, Read = true},
-                new UserMail{UserID=4,MailID=8, RecipientType=RecipientType.CC, Read = false},
-                new UserMail{UserID=5,MailID=9, RecipientType=RecipientType.BCC, Read = false},
-                new UserMail{UserID=1,MailID=10, RecipientType=RecipientType.CC, Read = true},
+                new UserMail{UserID=4,MailID=1, RecipientType=RecipientType.CC, Read = true},
+                new UserMail{UserID=4,MailID=2, RecipientType=RecipientType.CC, Read = false},
+                new UserMail{UserID=5,MailID=3, RecipientType=RecipientType.BCC, Read = false},
+                new UserMail{UserID=1,MailID=4, RecipientType=RecipientType.CC, Read = true},
             };
             foreach (UserMail um in userMails)
             {

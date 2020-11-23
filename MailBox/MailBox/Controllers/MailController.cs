@@ -23,6 +23,7 @@ namespace MailBox.Controllers
         public IActionResult Index()
         {
             int userID = int.Parse(User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
+            var test = _mailService.GetUserMails(userID);
             ViewData["Mails"] = _mailService.GetUserMails(userID);
             return View();
         }
@@ -43,14 +44,9 @@ namespace MailBox.Controllers
         [HttpPost]
         public IActionResult Create(NewMail mail)
         {
-            mail.Date = DateTime.Now;
-            if(!ModelState.IsValid)
-            {
-                return View(mail);
-            }
-            //int userID = int.Parse(User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
-            //_mailService.CreateMail(userID, mail);
-            return View();
+            int userID = int.Parse(User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
+            _mailService.CreateMail(userID, mail);
+            return RedirectToAction("Index");
         }
 
     }
