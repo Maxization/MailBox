@@ -1,4 +1,5 @@
-﻿using Xunit;
+﻿
+using Xunit;
 using MailBox.Models.UserModels;
 
 namespace UnitTests.ModelsTest.UserModelsTests

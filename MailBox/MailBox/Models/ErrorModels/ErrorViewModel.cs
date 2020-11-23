@@ -1,11 +1,9 @@
-using System;
 
 namespace MailBox.Models
 {
     public class ErrorViewModel
     {
-        public string RequestId { get; set; }
-
-        public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
+        public string RequestID { get; set; }
+        public bool ShowRequestID => !string.IsNullOrEmpty(RequestID);
     }
 }

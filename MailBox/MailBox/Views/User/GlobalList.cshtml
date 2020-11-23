@@ -1,0 +1,104 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+<!DOCTYPE html>
+<head>
+
+    <link href="~/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/css/main.css" rel="stylesheet" />
+    <link href="~/css/inbox.css" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="~/js/globallist.js"></script>
+    <script src="~/js/data.js"></script>
+</head>
+<body>
+    <div class="container-fluid text-white">
+        <div class="row">
+            <div class="col-2 no-float bg-dark-transparent">
+                <div class="container-title">
+                    <h4>Folders</h4>
+                    <hr />
+                </div>
+                <div>
+                    <div class="button-container"><button type="button" class="btn-folder">Inbox</button></div>
+                    <div class="button-container"><button type="button" class="btn-folder">Sent</button></div>
+                    <div class="button-container"><button type="button" class="btn-folder">Spam</button></div>
+                    <div class="button-container"><button type="button" class="btn-folder">Stared</button></div>
+                </div>
+                <div class="row no-gutters container-board-white container-new" id="folders_container">
+                    <div class="col-10 no-gutters">
+                        <input type="text" class="form-control input-new_folder border-0" placeholder=" New folder..." aria-label="Recipient's username" aria-describedby="basic-addon2">
+                    </div>
+                    <div class="col-2 no-gutters">
+                        <button class="bg-black text-light text-center border-0 btn-new" type="button">+</button>
+                    </div>
+                </div>
+                <div><br /></div>
+                <div class="container-title">
+                    <h4>Actions</h4>
+                    <hr />
+                </div>
+                <div>
+                    <div class="button-container"><button type="button" class="btn-folder">New email</button></div>
+                    <div class="button-container"><button onclick="GoToGroupManagement()" type="button" class="btn-folder">Manage groups</button></div>
+                </div>
+            </div>
+            <div class="col-8 no-float bg-dark-transparent" id="main_div">
+                <div class="container-fluid">
+                    <div class="row bg-dark2">
+                        <div class="col-5 no-gutters">
+                            <div class="row no-gutters">
+                                <div class="col-3 no-gutters">
+                                    <input class="input-group-text" style="width: 100%; height: 70%; margin-top: 7%" id="filter" name="nameFilter" value="" onchange="DisplayList()" on />
+                                </div>
+                                <div class="col-1 no-gutters"></div>
+                                <div class="col-8 no-gutters">
+                                    <div class="dropdown">
+                                        <button class="btn btn-secondary dropdown-toggle bg-black" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Filtering
+                                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <button id="no_filtering" style="background-color: gray" onclick="SetNoFiltering()" class="dropdown-item" href="#">No filtering</button>
+                                            <button id="filtering_name" style="background-color: white" onclick="SetNameFiltering()" class="dropdown-item" href="#">Filtr Name</button>
+                                            <button id="filtering_surname" style="background-color: white" onclick="SetSurnameFiltering()" class="dropdown-item" href="#">Filtr Surname</button>
+                                            <button id="filtering_address" style="background-color: white" onclick="SetAddressFiltering()" class="dropdown-item" href="#">Filtr Address</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4 no-gutters"></div>
+                        <div class="col-3 no-gutters">
+                            <div class="row no-gutters">
+                                <div class="dropdown">
+                                    <button class="btn btn-secondary dropdown-toggle bg-black" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Sorting
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <button id="no_sorting" style="background-color: gray" onclick="SetNoSorting()" class="dropdown-item" href="#">No sorting</button>
+                                        <button id="sort_by_name" style="background-color: white" onclick="SetSortingByName()" class="dropdown-item" href="#">Sort by Name</button>
+                                        <button id="sort_by_surname" style="background-color: white" onclick="SetSortingBySurname()" class="dropdown-item" href="#">Sort by Surname</button>
+                                        <button id="sort_by_address" style="background-color: white" onclick="SetSortingByAddress()" class="dropdown-item" href="#">Sort by Address</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row bg-warning">
+                        <table id="user_global_list" style="width: 100%; height: 100%" class="table-bordered bg-dark2">
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-2 no-float bg-dark-transparent">
+                <div class="container-title">
+                    <h4>Groups</h4>
+                    <hr />
+                </div>
+                <div id="groupsPanel" class="container-groups overflow-auto">
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

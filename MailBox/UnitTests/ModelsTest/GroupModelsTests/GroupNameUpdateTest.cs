@@ -1,7 +1,5 @@
-﻿using System;
+﻿
 using Xunit;
-using MailBox.Models;
-using System.Collections.Generic;
 using MailBox.Models.GroupModels;
 
 namespace UnitTests.ModelsTest.GroupModelsTest
@@ -12,17 +10,17 @@ namespace UnitTests.ModelsTest.GroupModelsTest
         public void ConstructorTest()
         {
             #region Init variables
-                int groupId = 0;
+                int groupID = 0;
                 string name = "testname";
             #endregion
             GroupNameUpdate groupUpdate = new GroupNameUpdate
             {
                 Name = name,
-                GroupId = groupId
+                GroupID = groupID
             };
             #region Tests
                 Assert.NotNull(groupUpdate);
-                Assert.Equal(groupUpdate.GroupId, groupId);
+                Assert.Equal(groupUpdate.GroupID, groupID);
                 Assert.Equal(groupUpdate.Name, name);
             #endregion
         }

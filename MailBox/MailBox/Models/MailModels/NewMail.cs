@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace MailBox.Models
+using System;
+using System.Collections.Generic;
+
+namespace MailBox.Models.MailModels
 {
     public class NewMail
     {

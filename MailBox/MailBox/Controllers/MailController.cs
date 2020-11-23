@@ -1,4 +1,5 @@
-﻿using System;
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ using MailBox.Models;
 using MailBox.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using MailBox.Models.MailModels;
 
 namespace MailBox.Controllers
 {
@@ -14,7 +16,6 @@ namespace MailBox.Controllers
     public class MailController : Controller
     {
         IMailService _mailService;
-
         public MailController(IMailService userService)
         {
             _mailService = userService;
@@ -41,11 +42,11 @@ namespace MailBox.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public IActionResult Create(NewMail mail)
         {
             int userID = int.Parse(User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
             _mailService.CreateMail(userID, mail);
+
             return View();
         }
 

@@ -1,14 +1,12 @@
-﻿using MailBox.Models;
-using System;
+﻿
+using MailBox.Models.MailModels;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace MailBox.Services.Interfaces
 {
     public interface IMailService
     {
-        List<MailInboxView> GetUserMails(int userId);
+        List<MailInboxView> GetUserMails(int userID);
         MailInboxView GetMail(int userID, int mailID);
         void CreateMail(int userID, NewMail mail);
     }

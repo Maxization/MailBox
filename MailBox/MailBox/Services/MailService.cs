@@ -1,12 +1,12 @@
-﻿using MailBox.Database;
-using MailBox.Models;
+﻿
+using MailBox.Database;
+using MailBox.Models.MailModels;
 using MailBox.Models.UserModels;
 using MailBox.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace MailBox.Services
 {
@@ -31,7 +31,7 @@ namespace MailBox.Services
             {
                 MailInboxView miv = new MailInboxView
                 {
-                    MailId = um.MailID,
+                    MailID = um.MailID,
                     Read = um.Read,
                     Sender = new UserGlobalView
                     {
@@ -60,7 +60,7 @@ namespace MailBox.Services
             if (mail == null) return null;
             return new MailInboxView
             {
-                MailId = mail.Mail.ID,
+                MailID = mail.Mail.ID,
                 Read = mail.Read,
                 Sender = new UserGlobalView
                 { 
@@ -92,9 +92,12 @@ namespace MailBox.Services
             return recipients;
         }
 
-        public async void CreateMail(int userID, NewMail newMail)
+        public void CreateMail(int userID, NewMail newMail)
         {
-            await using var transaction = await _context.Database.BeginTransactionAsync();
+            newMail.BCCRecipientsAddresses = newMail.BCCRecipientsAddresses.Distinct().ToList();
+            newMail.CCRecipientsAddresses = newMail.CCRecipientsAddresses.Distinct().ToList();
+
+            var transaction = _context.Database.BeginTransaction();
 
             try
             {
@@ -107,24 +110,13 @@ namespace MailBox.Services
                     Sender = usr,
                 };
                 _context.Mails.Add(mail);
-                await _context.SaveChangesAsync();
-
-                foreach (string email in newMail.BCCRecipientsAddresses)
-                {
-                    usr = _context.Users.Where(x => x.Email == email).FirstOrDefault();
-                    UserMail um = new UserMail
-                    {
-                        UserID = usr.ID,
-                        MailID = mail.ID,
-                        RecipientType = RecipientType.BCC,
-                        Read = false,
-                    };
-                    _context.UserMails.Add(um);
-                }
+                _context.SaveChanges();
 
                 foreach (string email in newMail.CCRecipientsAddresses)
                 {
                     usr = _context.Users.Where(x => x.Email == email).FirstOrDefault();
+                    if (usr == null)
+                        continue;
                     UserMail um = new UserMail
                     {
                         UserID = usr.ID,
@@ -135,13 +127,30 @@ namespace MailBox.Services
                     _context.UserMails.Add(um);
                 }
 
-                await _context.SaveChangesAsync();
+                foreach (string email in newMail.BCCRecipientsAddresses)
+                {
+                    usr = _context.Users.Where(x => x.Email == email).FirstOrDefault();
+                    if (usr == null || newMail.CCRecipientsAddresses.Contains(email))
+                        continue;
+                    UserMail um = new UserMail
+                    {
+                        UserID = usr.ID,
+                        MailID = mail.ID,
+                        RecipientType = RecipientType.BCC,
+                        Read = false,
+                    };
+                    _context.UserMails.Add(um);
+                }
 
-                await transaction.CommitAsync();
+                
+
+                _context.SaveChanges();
+
+                transaction.Commit();
             }
-            catch(Exception)
+            catch(Exception ex)
             {
-                await transaction.RollbackAsync();
+                transaction.Rollback();
             }
             
         }
