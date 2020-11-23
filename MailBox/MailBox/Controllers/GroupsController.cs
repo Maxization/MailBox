@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Authorization;
 using System.Linq;
 using System.Security.Claims;
 using System.Collections.Generic;
+using System;
+using MailBox.Contracts.Responses;
 
 namespace MailBox.Controllers
 {
@@ -57,8 +59,18 @@ namespace MailBox.Controllers
 
         public IActionResult AddUserToGroup(GroupMemberUpdate groupMemberUpdate)
         {
-            groupService.AddUserToGroup(groupMemberUpdate);
-            return RedirectToAction("ManageGroups");
+            try
+            {
+                groupService.AddUserToGroup(groupMemberUpdate);
+                return RedirectToAction("ManageGroups");
+            }
+            catch (Exception e)
+            {
+                ErrorResponse errorResponse = new ErrorResponse();
+                errorResponse.Errors.Add(new ErrorModel { FieldName = "GroupMemberAddress", Message = e.Message });
+                Response.StatusCode = 400;
+                return Json(errorResponse);
+            }
         }
 
         public IActionResult DeleteUserFromGroup(GroupMemberUpdate groupMemberUpdate)

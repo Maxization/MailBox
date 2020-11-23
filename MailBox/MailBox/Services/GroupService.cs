@@ -6,18 +6,17 @@ using MailBox.Models.UserModels;
 using MailBox.Database;
 using MailBox.Services.Interfaces;
 using Microsoft.Extensions.Configuration;
+using System;
 
 namespace MailBox.Services
 {
     public class GroupService : IGroupService
     {
         private readonly MailBoxDBContext context;
-        private IConfiguration configuration;
 
-        public GroupService(MailBoxDBContext context, IConfiguration configuration)
+        public GroupService(MailBoxDBContext context)
         {
             this.context = context;
-            this.configuration = configuration;
         }
 
         public List<GroupView> GetUserGroupsList(int userID)
@@ -71,7 +70,9 @@ namespace MailBox.Services
 
         public void AddUserToGroup(GroupMemberUpdate gmu)
         {
-            User user = context.Users.Where(u => u.Email == gmu.GroupMemberAddress).AsQueryable().First();
+            User user = context.Users.Where(u => u.Email == gmu.GroupMemberAddress).FirstOrDefault();
+            if (user == null)
+                throw new Exception("No such user address in database.");
             GroupUser groupUser = new GroupUser
             {
                 UserID = user.ID,

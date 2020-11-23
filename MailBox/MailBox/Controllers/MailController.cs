@@ -32,6 +32,11 @@ namespace MailBox.Controllers
             return View(mail);
         }
 
+        public IActionResult Create()
+        {
+            return View();
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(NewMail mail)

@@ -16,6 +16,7 @@ using FluentValidation;
 using MailBox.Services.Interfaces;
 using System.Linq;
 using System.Threading.Tasks;
+using MailBox.Filters;
 
 namespace MailBox
 {
@@ -75,7 +76,7 @@ namespace MailBox
 
             services.AddScoped<IMailService, MailService>();
 
-            services.AddMvc()
+            services.AddMvc(options => { options.Filters.Add<ValidationFilter>(); })
                 .AddFluentValidation(mvcConfiguration => mvcConfiguration.RegisterValidatorsFromAssemblyContaining<Startup>());
 
             services.AddControllersWithViews();
