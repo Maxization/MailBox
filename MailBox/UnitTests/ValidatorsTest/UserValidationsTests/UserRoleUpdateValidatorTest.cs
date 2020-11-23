@@ -1,4 +1,5 @@
-﻿using Xunit;
+﻿
+using Xunit;
 using FluentValidation.TestHelper;
 using MailBox.Validators.UserValidators;
 using MailBox.Models.UserModels;

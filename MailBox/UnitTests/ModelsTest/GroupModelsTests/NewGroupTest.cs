@@ -1,7 +1,5 @@
-﻿using System;
+﻿
 using Xunit;
-using MailBox.Models;
-using System.Collections.Generic;
 using MailBox.Models.GroupModels;
 
 namespace UnitTests.ModelsTest.GroupModelsTest

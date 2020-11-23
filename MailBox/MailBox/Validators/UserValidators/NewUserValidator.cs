@@ -23,7 +23,7 @@ namespace MailBox.Validators.UserValidators
             RuleFor(x => x.Address)
                 .NotNull()
                 .NotEmpty()
-                .Matches(@"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z");
+                .Matches(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
         }
     }
 }

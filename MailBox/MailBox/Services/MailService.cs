@@ -1,5 +1,5 @@
-﻿using MailBox.Database;
-using MailBox.Models;
+﻿
+using MailBox.Database;
 using MailBox.Models.MailModels;
 using MailBox.Models.UserModels;
 using MailBox.Services.Interfaces;

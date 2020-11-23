@@ -1,4 +1,5 @@
-﻿using Xunit;
+﻿
+using Xunit;
 using FluentValidation.TestHelper;
 using MailBox.Validators.MailValidators;
 using MailBox.Models.MailModels;
@@ -12,12 +13,12 @@ namespace UnitTests.ValidatorsTest.MailValidatorsTests
         {
             var validator = new MailReadUpdateValidator();
             #region Init variables
-                int mailId = 0;
+                int mailID = 0;
                 bool read = true;
             #endregion
             MailReadUpdate mailReadUpdate = new MailReadUpdate
             {
-                MailID = mailId,
+                MailID = mailID,
                 Read = read
             };
             var result = validator.TestValidate(mailReadUpdate);

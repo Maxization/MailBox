@@ -8,9 +8,6 @@ namespace MailBox.Validators.MailValidators
     {
         public MailReadUpdateValidator()
         {
-            RuleFor(x => x.MailID)
-                .NotNull();
-
             RuleFor(x => x.Read)
                 .NotNull();
         }

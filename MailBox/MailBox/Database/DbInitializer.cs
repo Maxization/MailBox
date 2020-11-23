@@ -80,6 +80,7 @@ namespace MailBox.Database
                 new Mail{Topic="Gk Lab - zadanie2", Text="Zadanie do oddania za tydzien", Date=DateTime.Parse("2020-11-07"), Sender=users[3]},
                 new Mail{Topic="Jutrzejszy wykład", Text="Jutrzejszy wykład zostaje przełożony", Date=DateTime.Parse("2020-10-20"), Sender=users[4]}
             };
+
             foreach (Mail m in mails)
             {
                 context.Mails.Add(m);

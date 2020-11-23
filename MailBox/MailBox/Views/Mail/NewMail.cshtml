@@ -1,6 +1,11 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+
 *@
+@{ 
+    var globalListJson = new System.Net.WebClient().DownloadString("https://localhost:44311/user/globallist");
+    var globalList = Newtonsoft.Json.JsonConvert.DeserializeObject<List<MailBox.Models.UserModels.UserGlobalView>>(globalListJson);
+}
 
 <head>
     <link href="~/css/main.css" rel="stylesheet" />
@@ -63,9 +68,27 @@
                             <div class="col-2">
                                 <label class="col-form-label">Subject:</label>
                             </div>
+<<<<<<< HEAD
                             <div class="col-10">
                                 <input type="tel" class="form-control margin-0" id="subject" placeholder="Type subject">
+=======
+                            <div class="col-8">
+                                <input type="tel" class="form-control inputS" id="subject" placeholder="Type subject">
+>>>>>>> efffa386a89db34d8292260c476eef7cd88c54df
                             </div>
+                            <div class ="col-2">
+                                <div class="dropdown">
+                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Global list
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        @foreach (var user in globalList)
+                                        {
+                                            <a class="dropdown-item" href="#">@user.Address</a>
+                                        }
+                                    </div>
+                                </div>
+</div>
                         </div>
                         <div class="form-row">
                             <br />

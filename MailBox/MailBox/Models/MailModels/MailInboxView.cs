@@ -3,7 +3,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace MailBox.Models
+namespace MailBox.Models.MailModels
 {
     public class MailInboxView
     {

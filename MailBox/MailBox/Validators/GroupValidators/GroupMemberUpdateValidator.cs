@@ -8,13 +8,10 @@ namespace MailBox.Validators
     {
         public GroupMemberUpdateValidator()
         {
-            RuleFor(x => x.GroupID)
-                .NotNull();
-            
             RuleFor(x => x.GroupMemberAddress)
                 .NotNull()
                 .NotEmpty()
-                .Matches(@"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z");
+                .Matches(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
         }
     }
 }

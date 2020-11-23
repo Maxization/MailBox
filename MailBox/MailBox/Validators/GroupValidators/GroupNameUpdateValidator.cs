@@ -9,9 +9,6 @@ namespace MailBox.Validators
         public readonly int nameMaxLength = 30;
         public GroupNameUpdateValidator()
         {
-            RuleFor(x => x.GroupID)
-                .NotNull();
-
             RuleFor(x => x.Name)
                 .NotNull()
                 .NotEmpty()

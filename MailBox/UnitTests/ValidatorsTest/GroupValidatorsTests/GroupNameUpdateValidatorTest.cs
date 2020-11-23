@@ -1,9 +1,7 @@
-﻿using FluentValidation.TestHelper;
+﻿
+using FluentValidation.TestHelper;
 using MailBox.Models.GroupModels;
 using MailBox.Validators;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Xunit;
 
 namespace UnitTests
@@ -15,12 +13,12 @@ namespace UnitTests
         {
             var validator = new GroupNameUpdateValidator();
             #region Init variables
-                int groupId = 0;
+                int groupID = 0;
                 string name = "testname";
             #endregion
             GroupNameUpdate groupNameUpdate = new GroupNameUpdate
             {
-                GroupID = groupId,
+                GroupID = groupID,
                 Name = name
             };
             var result = validator.TestValidate(groupNameUpdate);
@@ -34,12 +32,12 @@ namespace UnitTests
         {
             var validator = new GroupNameUpdateValidator();
             #region Init variables
-                int groupId = 0;
+                int groupID = 0;
                 string name = "";
             #endregion
             GroupNameUpdate groupNameUpdate = new GroupNameUpdate
             {
-                GroupID = groupId,
+                GroupID = groupID,
                 Name = name
             };
             var result = validator.TestValidate(groupNameUpdate);

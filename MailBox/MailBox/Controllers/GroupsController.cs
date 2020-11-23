@@ -38,45 +38,40 @@ namespace MailBox.Controllers
             return groupService.GetUserGroupsList(userID);
         }
 
-        public IActionResult ChangeGroupName(GroupNameUpdate groupNameUpdate)
+        public void ChangeGroupName(GroupNameUpdate groupNameUpdate)
         {
             groupService.ChangeGroupName(groupNameUpdate);
-            return RedirectToAction("ManageGroups");
         }
 
-        public IActionResult AddGroup(NewGroup newGroup)
+        public void AddGroup(NewGroup newGroup)
         {
             int userID = int.Parse(User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
             groupService.AddGroup(newGroup, userID);
-            return RedirectToAction("ManageGroups");
         }
 
-        public IActionResult DeleteGroup(int groupID)
+        public void DeleteGroup(int groupID)
         {
             groupService.DeleteGroup(groupID);
-            return RedirectToAction("ManageGroups");
         }
 
         public IActionResult AddUserToGroup(GroupMemberUpdate groupMemberUpdate)
         {
+            ErrorResponse errorResponse = new ErrorResponse();
             try
             {
                 groupService.AddUserToGroup(groupMemberUpdate);
-                return RedirectToAction("ManageGroups");
             }
             catch (Exception e)
             {
-                ErrorResponse errorResponse = new ErrorResponse();
                 errorResponse.Errors.Add(new ErrorModel { FieldName = "GroupMemberAddress", Message = e.Message });
                 Response.StatusCode = 400;
-                return Json(errorResponse);
             }
+            return Json(errorResponse);
         }
 
-        public IActionResult DeleteUserFromGroup(GroupMemberUpdate groupMemberUpdate)
+        public void DeleteUserFromGroup(GroupMemberUpdate groupMemberUpdate)
         {
             groupService.DeleteUserFromGroup(groupMemberUpdate);
-            return RedirectToAction("ManageGroups");
         }
     }
 }

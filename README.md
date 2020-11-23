@@ -1,19 +1,18 @@
 # Introduction 
-The project is a simple mailbox. 
+The project is a simple mailbox.
+ 
 User can:
-- send emails to any user from a global users list,
+- send emails to any user from a global contact list,
 - display inbox,
 - open incoming emails,
 - manage emails (change status[read/unread], move them between folders, filter and search),
-- manage folders (create and delete folders), 
-- create groups of users,
-- manage and edit single contact,
-- add contacts to his/her own contacts list,
+- manage folders (create and delete folders),
+- create groups of users.
 
 As a group owner user can:
 - create and delete groups,
 - add and remove users from group,
-- assign roles to users in group.
+- change group name.
 
 Admin (user with special permissions):
 - display users list,

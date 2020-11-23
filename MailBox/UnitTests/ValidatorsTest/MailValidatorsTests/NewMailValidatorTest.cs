@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using Xunit;
 using MailBox.Models.MailModels;
 using System.Collections.Generic;

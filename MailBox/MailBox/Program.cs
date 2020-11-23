@@ -5,13 +5,19 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using System.Net.Http;
+using System.Net;
+using System.IO;
 
 namespace MailBox
 {
     public class Program
     {
+        public string DoupaDipa = "dua";
         public static void Main(string[] args)
         {
+            
+
             var host = CreateHostBuilder(args).Build();
 
             CreateDbIfNotExists(host);

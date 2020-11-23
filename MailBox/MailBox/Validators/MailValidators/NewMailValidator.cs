@@ -8,7 +8,7 @@ namespace MailBox.Validators.MailValidators
     {
         public readonly int topicMaxLength = 100;
         public readonly int textMaxLength = 1000000;
-        public readonly string emailRegex = @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z";
+        public readonly string emailRegex = @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$";
 
         public NewMailValidator()
         {
@@ -31,9 +31,6 @@ namespace MailBox.Validators.MailValidators
                 .NotNull()
                 .NotEmpty()
                 .MaximumLength(textMaxLength);
-
-            RuleFor(x => x.Date)
-                .NotNull();
         }
     }
 }
