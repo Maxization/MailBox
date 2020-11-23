@@ -11,9 +11,6 @@ namespace MailBox.Validators.MailValidators
     {
         public MailReadUpdateValidator()
         {
-            RuleFor(x => x.MailId)
-                .NotNull();
-
             RuleFor(x => x.Read)
                 .NotNull();
         }

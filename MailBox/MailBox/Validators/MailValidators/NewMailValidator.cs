@@ -34,9 +34,6 @@ namespace MailBox.Validators.MailValidators
                 .NotNull()
                 .NotEmpty()
                 .MaximumLength(textMaxLength);
-
-            RuleFor(x => x.Date)
-                .NotNull();
         }
     }
 }
