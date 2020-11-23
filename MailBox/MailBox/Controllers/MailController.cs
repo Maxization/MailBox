@@ -41,11 +41,15 @@ namespace MailBox.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public IActionResult Create(NewMail mail)
         {
-            int userID = int.Parse(User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
-            _mailService.CreateMail(userID, mail);
+            mail.Date = DateTime.Now;
+            if(!ModelState.IsValid)
+            {
+                return View(mail);
+            }
+            //int userID = int.Parse(User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
+            //_mailService.CreateMail(userID, mail);
             return View();
         }
 
