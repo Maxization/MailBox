@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using MailBox.Models.GroupModels;
 
-namespace MailBox.Services.ServicesInterfaces
+namespace MailBox.Services.Interfaces
 {
     public interface IGroupService
     {

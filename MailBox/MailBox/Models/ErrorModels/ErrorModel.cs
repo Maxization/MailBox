@@ -1,4 +1,4 @@
-﻿
+
 namespace MailBox.Contracts.Responses
 {
     public class ErrorModel

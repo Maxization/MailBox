@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using MailBox.Models.GroupModels;
 using MailBox.Models.UserModels;
 using MailBox.Database;
-using MailBox.Services.ServicesInterfaces;
+using MailBox.Services.Interfaces;
 using Microsoft.Extensions.Configuration;
 
 namespace MailBox.Services
@@ -27,7 +27,7 @@ namespace MailBox.Services
             foreach (var dbG in dbGroups)
             {
                 var dbGroupUsers = context.GroupUsers.Where(gu => gu.GroupID == dbG.ID).AsQueryable();
-                groups.Add(new GroupView(dbG.ID, dbG.GroupName, GetGroupMembers(dbGroupUsers.ToList())));
+                groups.Add(new GroupView { GroupID = dbG.ID, Name = dbG.GroupName, GroupMembers = GetGroupMembers(dbGroupUsers.ToList()) });
             }
             return groups;
         }
@@ -38,7 +38,7 @@ namespace MailBox.Services
             foreach (var dbGU in dbGroupUsers)
             {
                 var gMember = context.Users.Find(dbGU.UserID);
-                groupMembers.Add(new UserGlobalView(gMember.FirstName, gMember.LastName, gMember.Email));
+                groupMembers.Add(new UserGlobalView { Name = gMember.FirstName, Surname = gMember.LastName, Address = gMember.Email });
             }
             return groupMembers;
         }

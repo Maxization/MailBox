@@ -1,5 +1,5 @@
-﻿
-using FluentValidation;
+
+﻿using FluentValidation;
 using MailBox.Models.MailModels;
 
 namespace MailBox.Validators.MailValidators

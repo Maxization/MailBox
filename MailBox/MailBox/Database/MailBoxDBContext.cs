@@ -24,7 +24,6 @@ namespace MailBox.Database
             modelBuilder.ApplyConfiguration(new UserEntityConfiguration());
             modelBuilder.ApplyConfiguration(new UserMailEntityConfiguration());
             modelBuilder.ApplyConfiguration(new UserRoleEntityConfiguration());
-
         }
     }
 }

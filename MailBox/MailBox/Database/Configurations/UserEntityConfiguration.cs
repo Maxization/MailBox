@@ -8,6 +8,9 @@ namespace MailBox.Database.Configurations
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
+            builder.HasIndex(c => c.Email)
+                .IsUnique();
+
             builder.HasKey(c => c.ID);
             
             builder.Property(c => c.FirstName)

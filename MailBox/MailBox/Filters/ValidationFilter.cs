@@ -1,47 +1,18 @@
-﻿
-using MailBox.Contracts.Responses;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace MailBox.Filters
 {
-    public class ValidationFilter : IAsyncActionFilter
+    public class ModelStateFilter : IActionFilter
     {
-        public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
+        public void OnActionExecuting(ActionExecutingContext context)
         {
-            //before controller
-            if(!context.ModelState.IsValid)
+            if (!context.ModelState.IsValid)
             {
-                var errorsInModelState = context.ModelState
-                    .Where(x => x.Value.Errors.Count > 0)
-                    .ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Errors.Select(x => x.ErrorMessage)).ToArray();
-
-                var errorResponse = new ErrorResponse();
-
-                foreach(var error in errorsInModelState)
-                {
-                    foreach(var subError in error.Value)
-                    {
-                        var errorModel = new ErrorModel
-                        {
-                            FieldName = error.Key,
-                            Message = subError
-
-                        };
-
-                        errorResponse.Errors.Add(errorModel);
-                    }
-                }
-
-                context.Result = new BadRequestObjectResult(errorResponse);
-                return;
+                context.Result = new BadRequestObjectResult(context.ModelState);
             }
-
-            await next();
-
-            //after controller
         }
+        public void OnActionExecuted(ActionExecutedContext context) { }
     }
 }

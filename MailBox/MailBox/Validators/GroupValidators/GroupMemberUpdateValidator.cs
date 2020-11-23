@@ -1,5 +1,5 @@
-﻿
-using FluentValidation;
+
+﻿using FluentValidation;
 using MailBox.Models.GroupModels;
 
 namespace MailBox.Validators
@@ -10,7 +10,7 @@ namespace MailBox.Validators
         {
             RuleFor(x => x.GroupID)
                 .NotNull();
-
+            
             RuleFor(x => x.GroupMemberAddress)
                 .NotNull()
                 .NotEmpty()

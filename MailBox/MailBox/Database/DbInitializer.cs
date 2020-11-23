@@ -86,29 +86,6 @@ namespace MailBox.Database
             }
             context.SaveChanges();
 
-            var mailReplies = new Mail[]
-            {
-                new Mail{Topic="Czesc", Text="Nowa wiadomosc", Date=DateTime.Parse("2020-11-15"), Sender=users[1], MailReply=mails[0]},
-                new Mail{Topic="Siemanko", Text="Nowa wiadomosc", Date=DateTime.Parse("2020-09-15"), Sender=users[2], MailReply=mails[0]},
-
-            };
-            foreach (Mail m in mailReplies)
-            {
-                context.Mails.Add(m);
-            }
-            context.SaveChanges();
-
-            var mailReplies2 = new Mail[]
-            {
-                new Mail{Topic="Co tam?", Text="Nowa wiadomosc", Date=DateTime.Parse("2020-09-20"), Sender=users[3], MailReply=mailReplies[0]},
-                new Mail{Topic="Jak tam?", Text="Nowa wiadomosc", Date=DateTime.Parse("2020-09-01"), Sender=users[4], MailReply=mailReplies[1]},
-            };
-            foreach (Mail m in mailReplies2)
-            {
-                context.Mails.Add(m);
-            }
-            context.SaveChanges();
-
             var userMails = new UserMail[]
             {
                 new UserMail{UserID=1, MailID=1, RecipientType=RecipientType.BCC, Read = true},

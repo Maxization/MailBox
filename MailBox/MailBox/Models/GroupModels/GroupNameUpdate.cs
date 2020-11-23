@@ -1,4 +1,4 @@
-﻿
+
 namespace MailBox.Models.GroupModels
 {
     public class GroupNameUpdate

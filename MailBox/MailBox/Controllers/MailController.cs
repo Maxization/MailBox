@@ -1,40 +1,45 @@
 ﻿
-using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+using MailBox.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 using MailBox.Models.MailModels;
-using MailBox.Services.ServicesInterfaces;
 
 namespace MailBox.Controllers
 {
+    [Authorize]
     public class MailController : Controller
     {
-        private readonly ILogger<MailController> _logger;
-        private readonly IGroupService _groupService;
-
-        public MailController(ILogger<MailController> logger, IGroupService groupService)
+        IMailService _mailService;
+        public MailController(IMailService userService)
         {
-            _logger = logger;
-            _groupService = groupService;
+            _mailService = userService;
         }
 
         public IActionResult Index()
         {
-            ViewData["groups"] = _groupService.GetUserGroupsList(1);
+            int userID = int.Parse(User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
+            ViewData["Mails"] = _mailService.GetUserMails(userID);
             return View();
         }
 
-        public IActionResult NewMail()
+        public IActionResult Details(int id)
         {
-            ViewData["groups"] = _groupService.GetUserGroupsList(1);
+            int userID = int.Parse(User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
+            var mail = _mailService.GetMail(userID, id);
+            if (mail == null) return NotFound();
+            return View(mail);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(NewMail mail)
+        {
+            int userID = int.Parse(User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
+            _mailService.CreateMail(userID, mail);
             return View();
         }
 
-        [HttpGet]
-        public IActionResult UserMails(int ID)
-        {
-            List<MailInboxView> models = new List<MailInboxView>();
-            return Json(models);
-        }
     }
 }
