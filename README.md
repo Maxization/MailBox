@@ -25,7 +25,13 @@ Used technologies:
 - project management - Azure DevOps,
 - web framework - ASP.NET Core 3.1.,
 - authentication - Azure Active Directory B2C,
-- UI - Bootstrap, CSS.
+- UI - Bootstrap, CSS,
+- dynamic user-server interaction - Razor, AJAX,
+- validations - FluentValidation,
+- unit tests - xUnit.
+
+Idea of external API use:
+When an email is sent by one user to another, the relevant data are sent to API. The user has a desktop application that periodically sends to API requests for notifications. In case of receiving non-empty data, the application saves them in its memory and sends a command to the API to delete the received notifications. Then the user receives a notification via the desktop application that he/she has new emails in his/her Mailbox.
 
 # Getting Started
 The project builds on ASP.NET Core 3.1. Can be opened in Visual Studio 2019.
