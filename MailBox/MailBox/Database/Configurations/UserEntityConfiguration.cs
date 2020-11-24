@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace MailBox.Database.Configurations
 {
-    public class UserEntityConfiguration: IEntityTypeConfiguration<User>
+    public class UserEntityConfiguration : IEntityTypeConfiguration<User>
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
@@ -12,14 +12,14 @@ namespace MailBox.Database.Configurations
                 .IsUnique();
 
             builder.HasKey(c => c.ID);
-            
+
             builder.Property(c => c.FirstName)
                 .HasMaxLength(30)
                 .IsRequired();
-            
+
             builder.Property(c => c.LastName)
                 .HasMaxLength(30);
-            
+
             builder.Property(c => c.Email)
                 .IsRequired()
                 .HasMaxLength(30);

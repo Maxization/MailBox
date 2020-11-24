@@ -1,10 +1,6 @@
 
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using MailBox.Models;
 using MailBox.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
@@ -31,7 +27,7 @@ namespace MailBox.Controllers
         public IActionResult Details(int id)
         {
             int userID = int.Parse(User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
-            var mail = _mailService.GetMail(userID, id);
+            var mail = _mailService.GetMail(1, id);
             if (mail == null) return NotFound();
             return View(mail);
         }
@@ -46,7 +42,6 @@ namespace MailBox.Controllers
         {
             int userID = int.Parse(User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
             _mailService.CreateMail(userID, mail);
-
             return View();
         }
 

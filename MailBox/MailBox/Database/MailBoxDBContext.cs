@@ -6,7 +6,7 @@ namespace MailBox.Database
 {
     public class MailBoxDBContext : DbContext
     {
-        public MailBoxDBContext(DbContextOptions<MailBoxDBContext> options): base(options) { }
+        public MailBoxDBContext(DbContextOptions<MailBoxDBContext> options) : base(options) { }
         public DbSet<User> Users { get; set; }
         public DbSet<Mail> Mails { get; set; }
         public DbSet<Group> Groups { get; set; }

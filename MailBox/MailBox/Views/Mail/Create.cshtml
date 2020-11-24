@@ -2,135 +2,146 @@
 
 @{
     ViewData["Title"] = "Create";
-
 }
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="~/js/newMail.js"></script>
-
-<h4 class="text-white">Create new Mail</h4>
-
-<div class="col-12 no-float bg-dark-transparent text-white" id="mail_div">
-    <div class="container bg-dark2">
-        <div class="form-row">
-            <div class="col-12 form-group">
-                <input type="button" class="btn btn-secondary float-left" value="&#8592;" onclick="window.location='@Url.Action("Index", "Mail")'" />
+<head>
+    <link href="~/css/main.css" rel="stylesheet" />
+    <link href="~/css/inbox.css" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="~/js/data.js"></script>
+    <script src="~/js/newmail.js"></script>
+</head>
+<body class="bg-black">
+    <div class="container-fluid text-white">
+        <div class="row">
+            <div id="foldersactions" class="col-2 no-float bg-dark-transparent">
+            </div>
+            <div class="col-8 no-float bg-dark-transparent text-white" id="mail_div">
+                <div class="container bg-dark2">
+                    <div class="form-row">
+                        <div class="col-12">
+                            <button type="button" class="btn btn-secondary float-left" onclick="window.location='@Url.Action("Index", "mail")'">&#8592</button>
+                        </div>
+                    </div>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <form asp-action="Create">
+                        <div class="form-row">
+                            <div class="col-2">
+                                <label class="col-form-label">To (CC):</label>
+                            </div>
+                            <div class="col-6">
+                                <input name="CC" asp-for="CCRecipientsAddresses" class="form-control" />
+                                <span id="CCError" class="text-danger"></span>
+                            </div>
+                            <div class="col-4">
+                                <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Global Contact List
+                                </button>
+                                <div id="globalListCC" class="dropdown-menu" aria-labelledby="Global Contact List">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-2">
+                                <label class="col-form-label">To (BCC):</label>
+                            </div>
+                            <div class="col-6">
+                                <input name="BCC" asp-for="BCCRecipientsAddresses" class="form-control" />
+                                <span id="BCCError" class="text-danger"></span>
+                            </div>
+                            <div class="col-4">
+                                <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Global Contact List
+                                </button>
+                                <div id="globalListBCC" class="dropdown-menu" aria-labelledby="Global Contact List">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-2">
+                                <label class="col-form-label">Topic:</label>
+                            </div>
+                            <div class="col-10">
+                                <input name="Topic" asp-for="Topic" class="form-control" />
+                                <span id="TopicError" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-12 form-group">
+                                <textarea name="Text" asp-for="Text" class="form-control overflow-auto" rows="15" placeholder="Click here"></textarea>
+                                <span id="TextError" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-secondary float-left">attach files</button>
+                                <button id="submit" type="submit" class="btn btn-success float-right">Send</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-2 no-float bg-dark-transparent">
+                <div class="container-title">
+                    <h4>Groups</h4>
+                    <hr />
+                </div>
+                <div id="groupsPanel" class="container-groups overflow-auto">
+                </div>
             </div>
         </div>
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <form asp-action="Create">
-            <div class="form-row">
-                <div class="col-2">
-                    <label class="col-form-label">To (CC):</label>
-                </div>
-                <div class="col-6">
-                    <input name="CC" asp-for="CCRecipientsAddresses" class="form-control" />
-                    <span id="CCError" class="text-danger"></span>
-                </div>
-                <div class="col-4">
-                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Global Contact List
-                    </button>
-                    <div id="globalListCC" class="dropdown-menu" aria-labelledby="Global Contact List">
-
-                    </div>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="col-2">
-                    <label class="col-form-label">To (BCC):</label>
-                </div>
-                <div class="col-6">
-                    <input name="BCC" asp-for="BCCRecipientsAddresses" class="form-control" />
-                    <span id="BCCError" class="text-danger"></span>
-                </div>
-                <div class="col-4">
-                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Global Contact List
-                    </button>
-                    <div id="globalListBCC" class="dropdown-menu" aria-labelledby="Global Contact List">
-
-                    </div>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="col-2">
-                    <label class="col-form-label">Topic:</label>
-                </div>
-                <div class="col-10">
-                    <input name="Topic" asp-for="Topic" class="form-control" />
-                    <span id="TopicError" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="form-row">
-                <br />
-            </div>
-            <div class="form-row">
-                <div class="col-12 form-group">
-                    <textarea name="Text" asp-for="Text" class="form-control" rows="15" placeholder="Click here"></textarea>
-                    <span id="TextError" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="col-12 form-group">
-                    <button type="submit" class="btn btn-secondary float-left">attach files</button>
-                    <input id="submit" type="submit" value="Send" class="btn btn-success float-right" />
-                </div>
-            </div>
-        </form>
     </div>
-</div>
+</body>
 
-@section scripts{ 
+@section scripts{
     <script>
-            $('#submit').on('click', function (e) {
-                var BCC = $('input[name=BCC]').val().replace(/\s/g, '').split(',');
-                var CC = $('input[name=CC]').val().replace(/\s/g, '').split(',');
-                var dataToSend =
-                {
-                    'Topic': $('input[name=Topic]').val(),
-                    'Text': $('textarea[name=Text]').val(),
-                    'CCRecipientsAddresses': CC,
-                    'BCCRecipientsAddresses': BCC
-                };
+        $('#submit').on('click', function (e) {
+            var BCC = $('input[name=BCC]').val().replace(/\s/g, '').split(',');
+            var CC = $('input[name=CC]').val().replace(/\s/g, '').split(',');
+            var dataToSend =
+            {
+                'Topic': $('input[name=Topic]').val(),
+                'Text': $('textarea[name=Text]').val(),
+                'CCRecipientsAddresses': CC,
+                'BCCRecipientsAddresses': BCC
+            };
 
-                $.ajax({
-                    url: '/Mail/Create',
-                    type: "POST",
-                    data: dataToSend,
-                    cache: true,
-                    error: function (xhr) {
-                        document.getElementById("CCError").innerHTML = "";
-                        document.getElementById("BCCError").innerHTML = "";
-                        document.getElementById("TopicError").innerHTML = "";
-                        document.getElementById("TextError").innerHTML = "";
-                        console.log(xhr.responseJSON.errors);
-                        xhr.responseJSON.errors.forEach(function (item, index) {
-                            switch (item.fieldName) {
-                                case 'CCRecipientsAddresses':
-                                    document.getElementById("CCError").innerHTML += item.message + "</br>";
-                                    break;
-                                case 'BCCRecipientsAddresses':
-                                    document.getElementById("BCCError").innerHTML += item.message + "</br>";
-                                    break;
-                                case 'Topic':
-                                    document.getElementById("TopicError").innerHTML += item.message + "</br>";
-                                    break;
-                                case 'Text':
-                                    document.getElementById("TextError").innerHTML += item.message + "</br>";
-                                    break;
-                                default:
-                                    break;
-                            }
-                        })
-                    },
-                    success: function () {
-                        window.location = '/Mail';
-                    }
-                });
-
-                e.preventDefault();
+            $.ajax({
+                url: '/Mail/Create',
+                type: "POST",
+                data: dataToSend,
+                cache: true,
+                error: function (xhr) {
+                    document.getElementById("CCError").innerHTML = "";
+                    document.getElementById("BCCError").innerHTML = "";
+                    document.getElementById("TopicError").innerHTML = "";
+                    document.getElementById("TextError").innerHTML = "";
+                    console.log(xhr.responseJSON.errors);
+                    xhr.responseJSON.errors.forEach(function (item, index) {
+                        switch (item.fieldName) {
+                            case 'CCRecipientsAddresses':
+                                document.getElementById("CCError").innerHTML += item.message + "</br>";
+                                break;
+                            case 'BCCRecipientsAddresses':
+                                document.getElementById("BCCError").innerHTML += item.message + "</br>";
+                                break;
+                            case 'Topic':
+                                document.getElementById("TopicError").innerHTML += item.message + "</br>";
+                                break;
+                            case 'Text':
+                                document.getElementById("TextError").innerHTML += item.message + "</br>";
+                                break;
+                            default:
+                                break;
+                        }
+                    })
+                },
+                success: function () {
+                    window.location = '/mail';
+                }
             });
+
+            e.preventDefault();
+        });
     </script>
 }
-

@@ -57,7 +57,8 @@ namespace MailBox.Services
                 .ThenInclude(x => x.Sender)
                 .Where(x => x.MailID == mailID && x.UserID == userID)
                 .FirstOrDefault();
-            if (mail == null) return null;
+            if (mail == null)
+                return null;
             return new MailInboxView
             {
                 MailID = mail.Mail.ID,
@@ -142,17 +143,15 @@ namespace MailBox.Services
                     _context.UserMails.Add(um);
                 }
 
-                
-
                 _context.SaveChanges();
 
                 transaction.Commit();
             }
-            catch(Exception ex)
+            catch (Exception)
             {
                 transaction.Rollback();
             }
-            
+
         }
     }
 }
