@@ -154,5 +154,13 @@ namespace MailBox.Services
             }
             
         }
+
+        public void UpdateMailRead(int userID, MailReadUpdate mailReadUpdate)
+        {
+            Mail mail = _context.Mails.Find(mailReadUpdate.MailID);
+            UserMail userMail = _context.UserMails.Where(um => um.MailID == mailReadUpdate.MailID && um.UserID == userID).First();
+            userMail.Read = mailReadUpdate.Read;
+            _context.SaveChanges();
+        }
     }
 }
