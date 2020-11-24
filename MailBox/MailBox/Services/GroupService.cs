@@ -78,6 +78,8 @@ namespace MailBox.Services
                 UserID = user.ID,
                 GroupID = gmu.GroupID
             };
+            if (context.GroupUsers.Find(groupUser.UserID, groupUser.GroupID) != null)
+                throw new Exception("This user is already in that group.");
             context.GroupUsers.Add(groupUser);
             context.SaveChanges();
         }

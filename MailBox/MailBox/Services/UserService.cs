@@ -16,12 +16,12 @@ namespace MailBox.Services
         {
             var dbUsers = context.Users.AsQueryable();
             List<UserGlobalView> users = new List<UserGlobalView>();
-            foreach(var dbUser in dbUsers)
+            foreach (var dbUser in dbUsers)
             {
                 users.Add(new UserGlobalView
-                { 
-                    Name = dbUser.FirstName, 
-                    Surname = dbUser.LastName, 
+                {
+                    Name = dbUser.FirstName,
+                    Surname = dbUser.LastName,
                     Address = dbUser.Email
                 });
             }
