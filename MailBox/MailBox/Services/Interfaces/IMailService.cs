@@ -9,5 +9,6 @@ namespace MailBox.Services.Interfaces
         List<MailInboxView> GetUserMails(int userID);
         MailInboxView GetMail(int userID, int mailID);
         void CreateMail(int userID, NewMail mail);
+        void UpdateMailRead(int userID, MailReadUpdate mailReadUpdate);
     }
 }

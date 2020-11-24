@@ -1,12 +1,17 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
-@{ var mails = ViewData["Mails"] as List<MailBox.Models.MailModels.MailInboxView>; }
+@{ 
+    var mails = ViewData["Mails"] as List<MailBox.Models.MailModels.MailInboxView>;
+    HashSet<string> dates = new HashSet<string>();
+    foreach (var mail in mails) dates.Add(mail.Date.ToString("yyyyMMdd"));
+    }
 <head>
     <link href="~/css/main.css" rel="stylesheet" />
     <link href="~/css/inbox.css" rel="stylesheet" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="~/js/data.js"></script>
+    <script src="~/js/inbox.js"></script>
 </head>
 <body class="bg-black">
     <div>
@@ -52,19 +57,61 @@
             <div class="col-8 no-float bg-dark-transparent" id="main_div">
                 <div class="container bg-dark2 table-inbox" id="inbox_table" border="1">
                     <div class="row no-gutters">
-                        <div class="col-1 no-gutters"><span>Read</span></div>
-                        <div class="col-2 no-gutters"><span>Sender</span></div>
-                        <div class="col-7 no-gutters"><span>Text</span></div>
-                        <div class="col-2 no-gutters"><span>Date</span></div>
+                        <div class="col-4 no-gutters">
+                            <a asp-action="SortByDate">Sort by date</a>
+                            <a asp-action="SortByTopic">Sort by topic</a>
+                        </div>
+                        <div class="col-4 no-gutters">
+
+                        </div>
+                        <div class="col-4 no-gutters">
+                            <label>Topic filter</label>
+                            <input id="topic_filter" value=""  style="height: 20px; width: 100px"/>
+                            <a href="/GetFilterInput()">Filter</a>
+                        </div>
                     </div>
-                    <div class="mail-list">
-                        @foreach (MailBox.Models.MailModels.MailInboxView item in mails)
+                    <div class="row no-gutters">
+                        <div class="col-2 no-gutters">
+                            <div class="row no-gutters">
+                                <span>Date</span>
+                            </div>
+                        </div>
+                        <div class="col-10 no-gutters">
+                            <div class="row no-gutters">
+                                <div class="col-1 no-gutters"><span>Read</span></div>
+                                <div class="col-3 no-gutters"><span>Sender</span></div>
+                                <div class="col-8 no-gutters"><span>Topic</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="mail_container" class="mail-list">
+                        @foreach (var date in dates)
                         {
                             <div class="row no-gutters">
-                                <div class="col-1 no-gutters"><span><div class="form-check"><input class="form-check-input position-static" type="checkbox" id="blankCheckbox" value="option1" aria-label="..."></div></span></div>
-                                <div class="col-2 no-gutters"><span>@Html.DisplayFor(modelItem => item.Sender.Name)</span></div>
-                                <div class="col-7 no-gutters"><a asp-action="Details" asp-route-id=@item.MailID>@Html.DisplayFor(modelItem => item.Text)</a>  </div>
-                                <div class="col-2 no-gutters"><span>@Html.DisplayFor(modelItem => item.Date)</span></div>
+                                <div class="col-2">
+                                    <p>
+                                        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="@($"#collapse{date}")" aria-expanded="false" aria-controls="@($"collapse{date}")">
+                                            @($"{date.Substring(0,2)}-{date.Substring(2, 2)}-{date.Substring(4, 4)}")
+                                        </button>
+                                    </p>
+                                </div>
+                                <div class="col-10">
+                                    <div class="collapse bg-dark2" id="@($"collapse{date}")">
+                                        <div class="card card-body bg-dark">
+                                            @foreach (MailBox.Models.MailModels.MailInboxView item in mails)
+                                            {
+                                                if (item.Date.ToString("yyyyMMdd") == date)
+                                                {
+                                                    <div class="row no-gutters" style="border-bottom-style: solid; border-bottom-width: 1px; border-bottom-color: gray; margin-top: 10px;">
+                                                        <div class="col-1 no-gutters"><div class="form-check"><input onchange="ChangeReadStatus(@(item.MailID),@(item.Read?"false":"true"))" class="form-check-input position-static" type="checkbox" id="blankCheckbox" value="option1" aria-label="..." @(item.Read ? "checked" : "")></div></div>
+                                                        <div class="col-3 no-gutters"><span>@($"{item.Sender.Name} {item.Sender.Surname}")</span></div>
+                                                        <div class="col-8 no-gutters"><span>@(item.Topic)</span></div>
+                                                    </div>
+                                                }
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         }
                     </div>
