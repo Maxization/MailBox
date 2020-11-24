@@ -4,52 +4,70 @@
     ViewData["Title"] = "View";
 }
 
-<h1>View</h1>
-
-<div>
-    <h4>MailInboxView</h4>
-    <hr />
-    <dl class="row text-white">
-        <dt class="col-sm-2">
-
-            @Html.DisplayNameFor(model => model.Read)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Read)
-        </dd>
-        <dt class="col-sm-2">
-            Recipients Addresses
-        </dt>
-        <dd class="col-sm-10">
-            <div>
-                @foreach (var k in Model.RecipientsAddresses)
-                {
-                    <label>@k</label><br/>
-                }
+<head>
+    <link href="~/css/main.css" rel="stylesheet" />
+    <link href="~/css/inbox.css" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="~/js/data.js"></script>
+    <script src="~/js/newmail.js"></script>
+</head>
+<body class="bg-black">
+    <div class="container-fluid text-white">
+        <div class="row">
+            <div id="foldersactions" class="col-2 no-float bg-dark-transparent">
             </div>
-        </dd>
-
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Topic)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Topic)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Text)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Text)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Date)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Date)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
- 
+            <div class="col-8 no-float bg-dark-transparent text-white" id="mail_div">
+                <div class="container bg-dark2">
+                    <div class="row no-float no-gutters" style="padding-top: 5px; padding-bottom: 10px">
+                        <button type="button" class="btn btn-secondary float-left" onclick="window.location='@Url.Action("Index", "mail")'">&#8592</button>
+                    </div>
+                    <hr />
+                    <dl class="row text-white no-gutters">
+                        <dt class="col-1">@Html.DisplayNameFor(model => model.Read)</dt>
+                        <dt class="col-3">@Html.DisplayNameFor(model => model.Date)</dt>
+                        <dt class="col-8">@Html.DisplayNameFor(model => model.Topic)</dt>
+                    </dl>
+                    <dl class="row text-white no-gutters">
+                        <dd class="col-1">@Html.DisplayFor(model => model.Read)</dd>
+                        <dd class="col-3">@Html.DisplayFor(model => model.Date)</dd>
+                        <dd class="col-8">@Html.DisplayFor(model => model.Topic)</dd>
+                    </dl>
+                    <hr />
+                    <dl class="row text-white no-gutters">
+                        <dt class="col-3">Recipients</dt>
+                        <dt class="col-1" style="border-left: 1px solid white"></dt>
+                        <dt class="col-8">Text</dt>
+                    </dl>
+                    <hr />
+                    <dl class="row no-gutters">
+                        <dd class="col-3 text-white overflow-auto">
+                            @foreach (var r in Model.RecipientsAddresses)
+                            {
+                                <label class="overflow-auto">@r</label><br />
+                            }
+                        </dd>
+                        <dd class="col-1" style="border-left: 1px solid white"></dd>
+                        <dd class="col-8 bg-white overflow-auto" style="color: black; padding: 5px; height: 300px; overflow-wrap: break-word">
+                            @Html.DisplayFor(model => model.Text)          
+                        </dd>
+                    </dl>
+                    <hr />
+                    <div class="row no-gutters">
+                        <div class="col-9"></div>
+                        <div class="col-3">
+                            <button type="submit" class="btn add-button float-right">download all attachments</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-2 no-float bg-dark-transparent">
+                <div class="container-title">
+                    <h4>Groups</h4>
+                    <hr />
+                </div>
+                <div id="groupsPanel" class="container-groups overflow-auto">
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

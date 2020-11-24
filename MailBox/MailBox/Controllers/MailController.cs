@@ -27,8 +27,9 @@ namespace MailBox.Controllers
         public IActionResult Details(int id)
         {
             int userID = int.Parse(User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
-            var mail = _mailService.GetMail(1, id);
-            if (mail == null) return NotFound();
+            var mail = _mailService.GetMail(userID, id);
+            if (mail == null)
+                return NotFound();
             return View(mail);
         }
 
