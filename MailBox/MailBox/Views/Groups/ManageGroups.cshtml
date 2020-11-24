@@ -13,34 +13,7 @@
 <body>
     <div class="container-fluid text-white">
         <div class="row">
-            <div class="col-2 no-float bg-dark-transparent">
-                <div class="container-title">
-                    <h4>Folders</h4>
-                    <hr />
-                </div>
-                <div>
-                    <div class="button-container"><button type="button" class="btn-folder">Inbox</button></div>
-                    <div class="button-container"><button type="button" class="btn-folder">Sent</button></div>
-                    <div class="button-container"><button type="button" class="btn-folder">Spam</button></div>
-                    <div class="button-container"><button type="button" class="btn-folder">Stared</button></div>
-                </div>
-                <div class="row no-gutters container-board-white container-new" id="folders_container">
-                    <div class="col-10 no-gutters">
-                        <input type="text" class="form-control input-new_folder border-0" placeholder=" New folder..." aria-label="Recipient's username" aria-describedby="basic-addon2">
-                    </div>
-                    <div class="col-2 no-gutters">
-                        <button class="bg-black text-light text-center border-0 btn-new" type="button">+</button>
-                    </div>
-                </div>
-                <div><br /></div>
-                <div class="container-title">
-                    <h4>Actions</h4>
-                    <hr />
-                </div>
-                <div>
-                    <div class="button-container"><button type="button" class="btn-folder">New email</button></div>
-                    <div class="button-container"><button onclick="GoToGroupManagement()" type="button" class="btn-folder">Manage groups</button></div>
-                </div>
+            <div id="foldersactions" class="col-2 no-float bg-dark-transparent">
             </div>
             <div class="col-8 no-float bg-dark-transparent">
                 <div class="col-12 no-float bg-dark-transparent container-fluid text-white">
@@ -75,35 +48,35 @@
                                     @foreach (var gm in g.GroupMembers)
                                     {
                                         <div class="container-group-elem">
-                                                <div class="row no-gutters">
-                                                    <div class="col-11 no-gutters">
-                                                        <div class="row no-gutters">
-                                                            <div class="col-3">
-                                                                <span class="span-data">@gm.Name</span>
-                                                            </div>
-                                                            <div class="col-3">
-                                                                <span class="span-data">@gm.Surname</span>
-                                                            </div>
-                                                            <div class="col-6">
-                                                                <span id="@g.GroupID-@gm.Address" class="span-data">@gm.Address</span>
-                                                            </div>
+                                            <div class="row no-gutters">
+                                                <div class="col-11 no-gutters">
+                                                    <div class="row no-gutters">
+                                                        <div class="col-3">
+                                                            <span class="span-data">@gm.Name</span>
+                                                        </div>
+                                                        <div class="col-3">
+                                                            <span class="span-data">@gm.Surname</span>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <span id="@g.GroupID-@gm.Address" class="span-data">@gm.Address</span>
                                                         </div>
                                                     </div>
-                                                    <div class="col-1 no-gutters">
-                                                        <button onclick="DeleteUserFromGroup(document.getElementById('@g.GroupID-@gm.Address').textContent, @g.GroupID)" class="delete-button">X</button>
-                                                    </div>
                                                 </div>
+                                                <div class="col-1 no-gutters">
+                                                    <button onclick="DeleteUserFromGroup(document.getElementById('@g.GroupID-@gm.Address').textContent, @g.GroupID)" class="delete-button">X</button>
+                                                </div>
+                                            </div>
                                         </div>
                                     }
                                 </div>
-                                    <div class="row no-gutters">
-                                        <div class="col-8 no-gutters">
-                                            <input id="GroupMemberAddress-@g.GroupID" type="text" class="form-control input-new_folder" placeholder=" Type new member..." aria-label="Recipient's username" aria-describedby="basic-addon2">
-                                        </div>
-                                        <div class="col-1 no-gutters">
-                                            <button onclick="AddUserToGroup(document.getElementById('GroupMemberAddress-@g.GroupID').value, @g.GroupID)" class="add-button">+</button>
-                                        </div>
+                                <div class="row no-gutters">
+                                    <div class="col-8 no-gutters">
+                                        <input id="GroupMemberAddress-@g.GroupID" type="text" class="form-control input-new_folder" placeholder=" Type new member..." aria-label="Recipient's username" aria-describedby="basic-addon2">
                                     </div>
+                                    <div class="col-1 no-gutters">
+                                        <button onclick="AddUserToGroup(document.getElementById('GroupMemberAddress-@g.GroupID').value, @g.GroupID)" class="add-button">+</button>
+                                    </div>
+                                </div>
                             </div>
                         }
                     </div>

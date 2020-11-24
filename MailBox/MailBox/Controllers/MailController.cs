@@ -1,16 +1,11 @@
 
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using MailBox.Models;
 using MailBox.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using MailBox.Models.MailModels;
-using System.Diagnostics.CodeAnalysis;
-using FluentValidation.Validators;
+using System;
 
 namespace MailBox.Controllers
 {
@@ -23,11 +18,10 @@ namespace MailBox.Controllers
         {
             _mailService = userService;
         }
-
         public IActionResult Index()
         {
             int userID = int.Parse(User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
-            ViewData["Mails"] = _mailService.GetUserMails(1);
+            ViewData["Mails"] = _mailService.GetUserMails(userID);
             return View();
         }
 
@@ -35,18 +29,21 @@ namespace MailBox.Controllers
         {
             int userID = int.Parse(User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
             var mail = _mailService.GetMail(userID, id);
-            if (mail == null) return NotFound();
+            if (mail == null)
+                return NotFound();
             return View(mail);
         }
 
         public IActionResult SortByDate()
         {
             int userID = int.Parse(User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
-            var mails = _mailService.GetUserMails(1);
-            Comparison<MailInboxView> dateComparison = new Comparison<MailInboxView>((MailInboxView a,MailInboxView b) => 
+            var mails = _mailService.GetUserMails(userID);
+            Comparison<MailInboxView> dateComparison = new Comparison<MailInboxView>((MailInboxView a, MailInboxView b) =>
             {
-                if(a.Date > b.Date) return -1;
-                if (a.Date < b.Date) return 1;
+                if (a.Date > b.Date)
+                    return -1;
+                if (a.Date < b.Date)
+                    return 1;
                 return 0;
             });
             mails.Sort(dateComparison);
@@ -57,7 +54,7 @@ namespace MailBox.Controllers
         public IActionResult SortByTopic()
         {
             int userID = int.Parse(User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
-            var mails = _mailService.GetUserMails(1);
+            var mails = _mailService.GetUserMails(userID);
             Comparison<MailInboxView> dateComparison = new Comparison<MailInboxView>((MailInboxView a, MailInboxView b) =>
             {
                 return a.Topic.CompareTo(b.Topic);
@@ -77,14 +74,13 @@ namespace MailBox.Controllers
         {
             int userID = int.Parse(User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
             _mailService.CreateMail(userID, mail);
-
             return View();
         }
 
         [HttpPut]
         public IActionResult UpdateRead(MailReadUpdate mail)
         {
-            int userID = 1;// int.Parse(User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
+            int userID = int.Parse(User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
             _mailService.UpdateMailRead(userID, mail);
 
             return View();

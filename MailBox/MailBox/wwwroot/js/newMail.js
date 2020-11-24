@@ -1,4 +1,5 @@
-﻿function OnClickBCC(id) {
+﻿
+function OnClickBCC(id) {
     var inp = $('input[name=BCC]');
     var email = inp.val() + document.getElementById(id).innerHTML + ", ";
     inp.val(email); 

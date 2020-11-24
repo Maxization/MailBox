@@ -35,11 +35,11 @@ namespace MailBox.Services
                     Read = um.Read,
                     Sender = new UserGlobalView
                     {
-                        Name = um.Mail.Sender.FirstName, 
-                        Surname = um.Mail.Sender.LastName, 
+                        Name = um.Mail.Sender.FirstName,
+                        Surname = um.Mail.Sender.LastName,
                         Address = um.Mail.Sender.Email
                     },
-                    RecipientsAddresses = GetMailRecipients(um.Mail.ID),
+                    RecipientsAddresses = GetMailRecipients(userID, um.Mail.ID),
                     Topic = um.Mail.Topic,
                     Text = um.Mail.Text,
                     Date = um.Mail.Date,
@@ -52,30 +52,31 @@ namespace MailBox.Services
 
         public MailInboxView GetMail(int userID, int mailID)
         {
-            var mail =_context.UserMails
+            var mail = _context.UserMails
                 .Include(x => x.Mail)
                 .ThenInclude(x => x.Sender)
                 .Where(x => x.MailID == mailID && x.UserID == userID)
                 .FirstOrDefault();
-            if (mail == null) return null;
+            if (mail == null)
+                return null;
             return new MailInboxView
             {
                 MailID = mail.Mail.ID,
                 Read = mail.Read,
                 Sender = new UserGlobalView
-                { 
-                    Name = mail.Mail.Sender.FirstName, 
-                    Surname = mail.Mail.Sender.LastName, 
+                {
+                    Name = mail.Mail.Sender.FirstName,
+                    Surname = mail.Mail.Sender.LastName,
                     Address = mail.Mail.Sender.Email
                 },
-                RecipientsAddresses = GetMailRecipients(mailID),
+                RecipientsAddresses = GetMailRecipients(userID, mailID),
                 Topic = mail.Mail.Topic,
                 Text = mail.Mail.Text,
                 Date = mail.Mail.Date,
             };
         }
 
-        private List<string> GetMailRecipients(int mailID)
+        private List<string> GetMailRecipients(int userID, int mailID)
         {
             var userMails = _context.UserMails
                 .Include(x => x.User)
@@ -83,10 +84,13 @@ namespace MailBox.Services
                 .AsQueryable();
 
             List<string> recipients = new List<string>();
-            foreach(UserMail um in userMails)
+            var user = _context.Users.Find(userID);
+            recipients.Add(user.Email);
+            foreach (UserMail um in userMails)
             {
-                if(um.RecipientType == RecipientType.CC)
-                    recipients.Add(um.User.Email);
+                if (um.RecipientType == RecipientType.CC)
+                    if (um.UserID != userID)
+                        recipients.Add(um.User.Email);
             }
 
             return recipients;
@@ -142,17 +146,15 @@ namespace MailBox.Services
                     _context.UserMails.Add(um);
                 }
 
-                
-
                 _context.SaveChanges();
 
                 transaction.Commit();
             }
-            catch(Exception ex)
+            catch (Exception)
             {
                 transaction.Rollback();
             }
-            
+
         }
 
         public void UpdateMailRead(int userID, MailReadUpdate mailReadUpdate)
