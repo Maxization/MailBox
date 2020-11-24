@@ -28,10 +28,10 @@
                 <div class="container bg-dark2 table-inbox" id="inbox_table" border="1">
                     <div class="row no-gutters">
                         <div class="col-2 no-gutters">
-                            <a asp-action="sortbydate" class="bg-blue-button" style="height: 100%; width: 100%" aria-pressed="true">Sort by date</a>
+                            <a asp-action="sortbydate" class="bg-blue-button" style="height: 100%; width: 100%">Sort by date</a>
                         </div>
                         <div class="col-2 no-gutters">
-                            <a asp-action="sortbytopic" class="bg-blue-button"  style="height: 100%; width: 100%" aria-pressed="true">Sort by topic</a>
+                            <a asp-action="sortbytopic" class="bg-blue-button"  style="height: 100%; width: 100%">Sort by topic</a>
                         </div>
                         <div class="col-4 no-gutters"></div>
                         <div class="col-4 no-gutters" style="display: inline-block">
@@ -73,7 +73,7 @@
                                             if (item.Date.ToString("yyyyMMdd") == date)
                                             {
                                                 <a asp-action="details" asp-route-id=@item.MailID class="col-12 no-gutters btn btn-secondary active" style="margin-bottom: 1px; text-decoration: none" role="button" aria-pressed="true">
-                                                    <div class="row" style="border-bottom-style: solid; border-bottom-width: 1px; border-bottom-color: gray">
+                                                    <div class="row no-gutters" style="border-bottom-style: solid; border-bottom-width: 1px; border-bottom-color: gray">
                                                         <div class="col-1 no-gutters">
                                                             <div class="form-check">
                                                                 <input onchange="ChangeReadStatus(@(item.MailID),@(item.Read?"false":"true"))" class="form-check-input position-static" type="checkbox" id="blankCheckbox" value="option1" aria-label="..." @(item.Read ? "checked" : "")>
