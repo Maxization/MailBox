@@ -12,6 +12,11 @@
     width: 100%;
 }
 
+.input-fill-div {
+    min-width: 100%;
+    max-width: 100%;
+}
+
 /*colors*/
 .bg-dark-transparent {
     background: rgba(41, 41, 41, 0.10)
