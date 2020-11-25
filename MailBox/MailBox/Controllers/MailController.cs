@@ -13,7 +13,7 @@ namespace MailBox.Controllers
     [Authorize]
     public class MailController : Controller
     {
-        IMailService _mailService;
+        private readonly IMailService _mailService;
         public MailController(IMailService userService)
         {
             _mailService = userService;

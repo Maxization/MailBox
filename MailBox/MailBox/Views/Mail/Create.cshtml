@@ -33,13 +33,15 @@
                                 <input name="CC" asp-for="CCRecipientsAddresses" class="form-control" />
                                 <span id="CCError" class="text-danger"></span>
                             </div>
-                            <div class="col-4">
-                                <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <div class="col-3">
+                                <button type="button" class="btn btn-info dropdown-toggle" style="width: 100%" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Global Contact List
                                 </button>
-                                <div id="globalListCC" class="dropdown-menu" aria-labelledby="Global Contact List">
+                                <div id="globalListCC" class="dropdown-menu overflow-auto" style="width: 100%; height: 200px" aria-labelledby="Global Contact List">
+                                    <input oninput="OnFilter('CC', this.value)" class="btn btn-light dropdown-item" style="width: 90%; height: 22px" id="FilterCC" placeholder=" Type email..." />
                                 </div>
                             </div>
+                            <div class="col-1"></div>
                         </div>
                         <div class="form-row">
                             <div class="col-2">
@@ -49,15 +51,17 @@
                                 <input name="BCC" asp-for="BCCRecipientsAddresses" class="form-control" />
                                 <span id="BCCError" class="text-danger"></span>
                             </div>
-                            <div class="col-4">
-                                <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <div class="col-3">
+                                <button type="button" class="btn btn-info dropdown-toggle" style="width: 100%" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Global Contact List
                                 </button>
-                                <div id="globalListBCC" class="dropdown-menu" aria-labelledby="Global Contact List">
+                                <div id="globalListBCC" class="dropdown-menu overflow-auto" style="width: 100%; height: 200px" aria-labelledby="Global Contact List">
+                                    <input oninput="OnFilter('BCC', this.value)" class="btn btn-light dropdown-item" style="width: 90%; height: 22px" id="FilterBCC" placeholder=" Type email..." />
                                 </div>
                             </div>
+                            <div class="col-1"></div>
                         </div>
-                        <div class="form-row">
+                        <div class="form-row" style="padding-right: 10px">
                             <div class="col-2">
                                 <label class="col-form-label">Topic:</label>
                             </div>
@@ -67,8 +71,8 @@
                             </div>
                         </div>
                         <div class="form-row">
-                            <div class="col-12 form-group">
-                                <textarea name="Text" asp-for="Text" class="form-control overflow-auto" rows="15" placeholder="Click here"></textarea>
+                            <div class="col-12">
+                                <textarea name="Text" asp-for="Text" class="form-control overflow-auto" rows="15" placeholder="Click here..."></textarea>
                                 <span id="TextError" class="text-danger"></span>
                             </div>
                         </div>
@@ -96,8 +100,8 @@
 @section scripts{
     <script>
         $('#submit').on('click', function (e) {
-            var BCC = $('input[name=BCC]').val().replace(/\s/g, '').split(',');
-            var CC = $('input[name=CC]').val().replace(/\s/g, '').split(',');
+            var BCC = $('input[name=BCC]').val().replace(/\s/g, '').split(';');
+            var CC = $('input[name=CC]').val().replace(/\s/g, '').split(';');
             var dataToSend =
             {
                 'Topic': $('input[name=Topic]').val(),
