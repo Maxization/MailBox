@@ -112,6 +112,7 @@
                 data: dataToSend,
                 cache: true,
                 error: function (xhr) {
+                    console.log(xhr);
                     document.getElementById("CCError").innerHTML = "";
                     document.getElementById("BCCError").innerHTML = "";
                     document.getElementById("TopicError").innerHTML = "";
