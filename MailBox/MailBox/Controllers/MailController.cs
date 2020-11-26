@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using MailBox.Models.MailModels;
 using System;
+using MailBox.Contracts.Responses;
 
 namespace MailBox.Controllers
 {
@@ -42,6 +43,7 @@ namespace MailBox.Controllers
         [HttpPost]
         public IActionResult Create(NewMail mail)
         {
+            
             int userID = int.Parse(User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
             _mailService.CreateMail(userID, mail);
             return View();
@@ -59,7 +61,7 @@ namespace MailBox.Controllers
         public IActionResult GetMails()
         {
             int userID = int.Parse(User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
-            return  Json(_mailService.GetUserMails(1));
+            return  Json(_mailService.GetUserMails(userID));
         }
 
     }
