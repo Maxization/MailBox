@@ -59,7 +59,7 @@ namespace MailBox.Controllers
         public IActionResult GetMails()
         {
             int userID = int.Parse(User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
-            return  Json(_mailService.GetUserMails(userID));
+            return  Json(_mailService.GetUserMails(1));
         }
 
     }

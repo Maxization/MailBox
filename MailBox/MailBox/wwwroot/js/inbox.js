@@ -149,8 +149,10 @@ function SetSortingMailsByDateFromNew() {
     document.getElementById("no_mails_sorting").style.backgroundColor = "white";
     document.getElementById("sort_mails_by_date_from_old").style.backgroundColor = "white";
     document.getElementById("sort_mails_by_date_from_new").style.backgroundColor = "gray";
-    document.getElementById("sort_mails_by_sender").style.backgroundColor = "white";
-    document.getElementById("sort_mails_by_topic").style.backgroundColor = "white";
+    document.getElementById("sort_mails_by_sender_az").style.backgroundColor = "white";
+    document.getElementById("sort_mails_by_sender_za").style.backgroundColor = "white";
+    document.getElementById("sort_mails_by_topic_az").style.backgroundColor = "white";
+    document.getElementById("sort_mails_by_topic_za").style.backgroundColor = "white";
 }
 
 function SetSortingMailsByDateFromOld() {
@@ -159,28 +161,58 @@ function SetSortingMailsByDateFromOld() {
     document.getElementById("no_mails_sorting").style.backgroundColor = "white";
     document.getElementById("sort_mails_by_date_from_old").style.backgroundColor = "gray";
     document.getElementById("sort_mails_by_date_from_new").style.backgroundColor = "white";
-    document.getElementById("sort_mails_by_sender").style.backgroundColor = "white";
-    document.getElementById("sort_mails_by_topic").style.backgroundColor = "white";
+    document.getElementById("sort_mails_by_sender_az").style.backgroundColor = "white";
+    document.getElementById("sort_mails_by_sender_za").style.backgroundColor = "white";
+    document.getElementById("sort_mails_by_topic_az").style.backgroundColor = "white";
+    document.getElementById("sort_mails_by_topic_za").style.backgroundColor = "white";
 }
 
-function SetSortingMailsBySender() {
-    MailSortFunc = SortMailsBySender;
+function SetSortingMailsBySenderAZ() {
+    MailSortFunc = SortMailsBySenderAZ;
     DisplayMailsList();
     document.getElementById("no_mails_sorting").style.backgroundColor = "white";
     document.getElementById("sort_mails_by_date_from_old").style.backgroundColor = "white";
     document.getElementById("sort_mails_by_date_from_new").style.backgroundColor = "white";
-    document.getElementById("sort_mails_by_sender").style.backgroundColor = "gray";
-    document.getElementById("sort_mails_by_topic").style.backgroundColor = "white";
+    document.getElementById("sort_mails_by_sender_az").style.backgroundColor = "gray";
+    document.getElementById("sort_mails_by_sender_za").style.backgroundColor = "white";
+    document.getElementById("sort_mails_by_topic_az").style.backgroundColor = "white";
+    document.getElementById("sort_mails_by_topic_za").style.backgroundColor = "white";
 }
 
-function SetSortingMailsByTopic() {
-    MailSortFunc = SortMailsByTopic;
+function SetSortingMailsBySenderZA() {
+    MailSortFunc = SortMailsBySenderZA;
     DisplayMailsList();
     document.getElementById("no_mails_sorting").style.backgroundColor = "white";
     document.getElementById("sort_mails_by_date_from_old").style.backgroundColor = "white";
     document.getElementById("sort_mails_by_date_from_new").style.backgroundColor = "white";
-    document.getElementById("sort_mails_by_sender").style.backgroundColor = "white";
-    document.getElementById("sort_mails_by_topic").style.backgroundColor = "gray";
+    document.getElementById("sort_mails_by_sender_az").style.backgroundColor = "white";
+    document.getElementById("sort_mails_by_sender_za").style.backgroundColor = "gray";
+    document.getElementById("sort_mails_by_topic_az").style.backgroundColor = "white";
+    document.getElementById("sort_mails_by_topic_za").style.backgroundColor = "white";
+}
+
+function SetSortingMailsByTopicAZ() {
+    MailSortFunc = SortMailsByTopicAZ;
+    DisplayMailsList();
+    document.getElementById("no_mails_sorting").style.backgroundColor = "white";
+    document.getElementById("sort_mails_by_date_from_old").style.backgroundColor = "white";
+    document.getElementById("sort_mails_by_date_from_new").style.backgroundColor = "white";
+    document.getElementById("sort_mails_by_sender_az").style.backgroundColor = "white";
+    document.getElementById("sort_mails_by_sender_za").style.backgroundColor = "white";
+    document.getElementById("sort_mails_by_topic_az").style.backgroundColor = "gray";
+    document.getElementById("sort_mails_by_topic_za").style.backgroundColor = "white";
+}
+
+function SetSortingMailsByTopicZA() {
+    MailSortFunc = SortMailsByTopicZA;
+    DisplayMailsList();
+    document.getElementById("no_mails_sorting").style.backgroundColor = "white";
+    document.getElementById("sort_mails_by_date_from_old").style.backgroundColor = "white";
+    document.getElementById("sort_mails_by_date_from_new").style.backgroundColor = "white";
+    document.getElementById("sort_mails_by_sender_az").style.backgroundColor = "white";
+    document.getElementById("sort_mails_by_sender_za").style.backgroundColor = "white";
+    document.getElementById("sort_mails_by_topic_az").style.backgroundColor = "white";
+    document.getElementById("sort_mails_by_topic_za").style.backgroundColor = "gray";
 }
 
 function SetNoMailsSorting() {
@@ -189,8 +221,10 @@ function SetNoMailsSorting() {
     document.getElementById("no_mails_sorting").style.backgroundColor = "gray";
     document.getElementById("sort_mails_by_date_from_old").style.backgroundColor = "white";
     document.getElementById("sort_mails_by_date_from_new").style.backgroundColor = "white";
-    document.getElementById("sort_mails_by_sender").style.backgroundColor = "white";
-    document.getElementById("sort_mails_by_topic").style.backgroundColor = "white";
+    document.getElementById("sort_mails_by_sender_az").style.backgroundColor = "white";
+    document.getElementById("sort_mails_by_sender_za").style.backgroundColor = "white";
+    document.getElementById("sort_mails_by_topic_az").style.backgroundColor = "white";
+    document.getElementById("sort_mails_by_topic_za").style.backgroundColor = "white";
 }
 
 // Sorting
@@ -203,12 +237,20 @@ function SortMailsByDateFromNew(list) {
     return list.sort(compareDatesFromNew);
 }
 
-function SortMailsBySender(list) {
-    return list.sort(compareSender);
+function SortMailsBySenderAZ(list) {
+    return list.sort(compareSenderAZ);
 }
 
-function SortMailsByTopic(list) {
-    return list.sort(compareTopic);
+function SortMailsBySenderZA(list) {
+    return list.sort(compareSenderZA);
+}
+
+function SortMailsByTopicAZ(list) {
+    return list.sort(compareTopicAZ);
+}
+
+function SortMailsByTopicAZ(list) {
+    return list.sort(compareTopicZA);
 }
 
 function NoMailsSorting(list) {
@@ -217,18 +259,34 @@ function NoMailsSorting(list) {
 
 //Comparing
 
-function compareSender(a, b) {
+function compareSenderAZ(a, b) {
+    if (a.sender.name < b.sender.name) {
+        return -1;
+    }
+    if (a.sender.name > b.sender.name) {
+        return 1;
+    }
     if (a.sender.surname < b.sender.surname) {
         return -1;
     }
     if (a.sender.surname > b.sender.surname) {
         return 1;
     }
+    return 0;
+}
+
+function compareSenderZA(a, b) {
     if (a.sender.name < b.sender.name) {
-        return -1;
+        return 1;
     }
     if (a.sender.name > b.sender.name) {
+        return -1;
+    }
+    if (a.sender.surname < b.sender.surname) {
         return 1;
+    }
+    if (a.sender.surname > b.sender.surname) {
+        return -1;
     }
     return 0;
 }
@@ -253,12 +311,22 @@ function compareDatesFromNew(a, b) {
     return 0;
 }
 
-function compareTopic(a, b) {
+function compareTopicAZ(a, b) {
     if (a.topic < b.topic) {
         return -1;
     }
     if (a.topic > b.topic) {
         return 1;
+    }
+    return 0;
+}
+
+function compareTopicZA(a, b) {
+    if (a.topic < b.topic) {
+        return 1;
+    }
+    if (a.topic > b.topic) {
+        return -1;
     }
     return 0;
 }
