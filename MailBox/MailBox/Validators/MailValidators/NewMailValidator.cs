@@ -15,12 +15,12 @@ namespace MailBox.Validators.MailValidators
             RuleFor(x => x.CCRecipientsAddresses)
                 .NotNull()
                 .NotEmpty().When(x => (x.BCCRecipientsAddresses == null || x.BCCRecipientsAddresses.Count == 0)).WithMessage("You should select at least one CC or BCC recipient")
-                .ForEach(x => x.Matches(emailRegex));
+                .ForEach(x => x.Matches(emailRegex).WithMessage("Niepoprawny emaila"));
 
             RuleFor(x => x.BCCRecipientsAddresses)
                 .NotNull()
                 .NotEmpty().When(x => (x.CCRecipientsAddresses == null || x.CCRecipientsAddresses.Count == 0)).WithMessage("You should select at least one CC or BCC recipient")
-                .ForEach(x => x.Matches(emailRegex));
+                .ForEach(x => x.Matches(emailRegex).WithMessage("Niepoprawny email"));
 
             RuleFor(x => x.Topic)
                 .NotNull()

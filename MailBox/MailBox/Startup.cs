@@ -73,14 +73,12 @@ namespace MailBox
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")), ServiceLifetime.Scoped);
 
             services.AddScoped<IGroupService, GroupService>();
-
             services.AddScoped<IMailService, MailService>();
+            services.AddScoped<IUserService, UserService>();
 
             services.AddMvc(options => { options.Filters.Add<ValidationFilter>(); })
                 .AddFluentValidation(mvcConfiguration => mvcConfiguration.RegisterValidatorsFromAssemblyContaining<Startup>());
-
-            services.AddScoped<IMailService, MailService>();
-            services.AddScoped<IUserService, UserService>();
+            
 
             services.AddControllersWithViews();
             services.AddRazorPages();
