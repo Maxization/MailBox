@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using MailBox.Models.MailModels;
 using System;
+using MailBox.Contracts.Responses;
 
 namespace MailBox.Controllers
 {
@@ -34,36 +35,6 @@ namespace MailBox.Controllers
             return View(mail);
         }
 
-        public IActionResult SortByDate()
-        {
-            int userID = int.Parse(User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
-            var mails = _mailService.GetUserMails(userID);
-            Comparison<MailInboxView> dateComparison = new Comparison<MailInboxView>((MailInboxView a, MailInboxView b) =>
-            {
-                if (a.Date > b.Date)
-                    return -1;
-                if (a.Date < b.Date)
-                    return 1;
-                return 0;
-            });
-            mails.Sort(dateComparison);
-            ViewData["Mails"] = mails;
-            return View("Index");
-        }
-
-        public IActionResult SortByTopic()
-        {
-            int userID = int.Parse(User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
-            var mails = _mailService.GetUserMails(userID);
-            Comparison<MailInboxView> dateComparison = new Comparison<MailInboxView>((MailInboxView a, MailInboxView b) =>
-            {
-                return a.Topic.CompareTo(b.Topic);
-            });
-            mails.Sort(dateComparison);
-            ViewData["Mails"] = mails;
-            return View("Index");
-        }
-
         public IActionResult Create()
         {
             return View();
@@ -72,6 +43,7 @@ namespace MailBox.Controllers
         [HttpPost]
         public IActionResult Create(NewMail mail)
         {
+            
             int userID = int.Parse(User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
             _mailService.CreateMail(userID, mail);
             return View();
@@ -84,6 +56,12 @@ namespace MailBox.Controllers
             _mailService.UpdateMailRead(userID, mail);
 
             return View();
+        }
+
+        public IActionResult GetMails()
+        {
+            int userID = int.Parse(User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
+            return  Json(_mailService.GetUserMails(userID));
         }
 
     }
