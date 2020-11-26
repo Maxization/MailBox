@@ -45,7 +45,17 @@ namespace MailBox.Controllers
         {
             
             int userID = int.Parse(User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
-            _mailService.CreateMail(userID, mail);
+            ErrorResponse errorResponse = new ErrorResponse();
+            try
+            {
+                _mailService.CreateMail(userID, mail);
+            }
+            catch(Exception ex)
+            {
+                errorResponse.Errors.Add(new ErrorModel { FieldName = ex.Message, Message = ex.InnerException.Message });
+                Response.StatusCode = 400;
+                return Json(errorResponse);
+            }
             return View();
         }
 
