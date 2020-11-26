@@ -96,8 +96,9 @@
 @section scripts{
     <script>
         $('#submit').on('click', function (e) {
-            var BCC = $('input[name=BCC]').val().replace(/\s/g, '').split(',');
-            var CC = $('input[name=CC]').val().replace(/\s/g, '').split(',');
+            var BCC = $('input[name=BCC]').val().replace(/\s/g, '').split(',').filter((el) => el);
+            var CC = $('input[name=CC]').val().replace(/\s/g, '').split(',').filter((el) => el);
+
             var dataToSend =
             {
                 'Topic': $('input[name=Topic]').val(),
@@ -112,12 +113,17 @@
                 data: dataToSend,
                 cache: true,
                 error: function (xhr) {
+                    console.log(xhr);
                     document.getElementById("CCError").innerHTML = "";
                     document.getElementById("BCCError").innerHTML = "";
                     document.getElementById("TopicError").innerHTML = "";
                     document.getElementById("TextError").innerHTML = "";
                     console.log(xhr.responseJSON.errors);
                     xhr.responseJSON.errors.forEach(function (item, index) {
+                        if (item.fieldName.includes('BCCRecipientsAddresses'))
+                            item.fieldName = 'BCCRecipientsAddresses';
+                        else if (item.fieldName.includes('CCRecipientsAddresses'))
+                            item.fieldName = 'CCRecipientsAddresses';
                         switch (item.fieldName) {
                             case 'CCRecipientsAddresses':
                                 document.getElementById("CCError").innerHTML += item.message + "</br>";

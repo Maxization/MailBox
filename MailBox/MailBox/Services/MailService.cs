@@ -98,8 +98,32 @@ namespace MailBox.Services
 
         public void CreateMail(int userID, NewMail newMail)
         {
-            newMail.BCCRecipientsAddresses = newMail.BCCRecipientsAddresses.Distinct().ToList();
-            newMail.CCRecipientsAddresses = newMail.CCRecipientsAddresses.Distinct().ToList();
+            if(newMail.BCCRecipientsAddresses != null)
+                newMail.BCCRecipientsAddresses = newMail.BCCRecipientsAddresses.Distinct().ToList();
+            if(newMail.CCRecipientsAddresses != null)
+                newMail.CCRecipientsAddresses = newMail.CCRecipientsAddresses.Distinct().ToList();
+
+            var users = _context.Users.ToList();
+            List<string> emails = new List<string>();
+            foreach(User usr in users)
+            {
+                emails.Add(usr.Email);
+            }
+
+            if(newMail.BCCRecipientsAddresses != null)
+            foreach(string email in newMail.BCCRecipientsAddresses)
+            {
+                if (!emails.Contains(email))
+                    throw new Exception("BCCRecipientsAddresses", new Exception("Emaila nie ma w global list"));
+            }
+
+            if(newMail.CCRecipientsAddresses != null)
+            foreach(string email in newMail.CCRecipientsAddresses)
+            {
+                if(!emails.Contains(email))
+                    throw new Exception("CCRecipientsAddresses", new Exception("Emaila nie ma w global list"));
+            }
+
 
             var transaction = _context.Database.BeginTransaction();
 
@@ -116,6 +140,7 @@ namespace MailBox.Services
                 _context.Mails.Add(mail);
                 _context.SaveChanges();
 
+                if(newMail.CCRecipientsAddresses != null)
                 foreach (string email in newMail.CCRecipientsAddresses)
                 {
                     usr = _context.Users.Where(x => x.Email == email).FirstOrDefault();
@@ -131,6 +156,7 @@ namespace MailBox.Services
                     _context.UserMails.Add(um);
                 }
 
+                if(newMail.BCCRecipientsAddresses != null)
                 foreach (string email in newMail.BCCRecipientsAddresses)
                 {
                     usr = _context.Users.Where(x => x.Email == email).FirstOrDefault();
