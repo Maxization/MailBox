@@ -5,7 +5,10 @@
 
 var groups = new Array();
 
-window.onload += $.getJSON("/Groups/GetUserGroupsListAsJson", function (result) {
+
+function GetGroupsOnLoad()
+{
+    $.getJSON("/Groups/GetUserGroupsListAsJson", function (result) {
     groups = [];
     $.each(result, function (i, g) {
         var GroupMembers = new Array();
@@ -69,7 +72,10 @@ window.onload += $.getJSON("/Groups/GetUserGroupsListAsJson", function (result) 
         + "<div class=\"button-container\"><button onclick=\"GoToGroupManagement()\" type=\"button\" class=\"btn-folder\">Manage groups</button></div>"
         + "</div>"
     );
-});
+    });
+}
+
+window.onload += GetGroupsOnLoad();
 
 function GoToGroupManagement() {
     setTimeout(() => window.location.replace("/groups/managegroups"), 250);
