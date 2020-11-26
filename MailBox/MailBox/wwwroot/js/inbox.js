@@ -249,7 +249,7 @@ function SortMailsByTopicAZ(list) {
     return list.sort(compareTopicAZ);
 }
 
-function SortMailsByTopicAZ(list) {
+function SortMailsByTopicZA(list) {
     return list.sort(compareTopicZA);
 }
 
