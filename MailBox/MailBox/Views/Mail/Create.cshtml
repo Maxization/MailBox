@@ -100,8 +100,8 @@
 @section scripts{
     <script>
         $('#submit').on('click', function (e) {
-            var BCC = $('input[name=BCC]').val().replace(/\s/g, '').split(',').filter((el) => el);
-            var CC = $('input[name=CC]').val().replace(/\s/g, '').split(',').filter((el) => el);
+            var BCC = $('input[name=BCC]').val().replace(/\s/g, '').split(';').filter((el) => el);
+            var CC = $('input[name=CC]').val().replace(/\s/g, '').split(';').filter((el) => el);
             var dataToSend =
             {
                 'Topic': $('input[name=Topic]').val(),
