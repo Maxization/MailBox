@@ -3,15 +3,18 @@ var usersGlobalList = new Array();
 var SortFunc = NoSorting;
 var FiltrFunc = NoFiltering;
 
-window.onload += $.getJSON("user/globallist", function (result) {
-    $.each(result, function (i, field) {
-        //$("#container").append("<li>" + field.name + " " + field.surname + " " + field.address + "</li><br/>");
-        var user = { name: field.name, surname: field.surname, address: field.address };
-        usersGlobalList.push(user);
-    });
+window.onload += GetUsersOnLoad();
 
-    Show(usersGlobalList);
-});
+function GetUsersOnLoad() {
+    $.getJSON("user/globallist", function (result) {
+        $.each(result, function (i, field) {
+            //$("#container").append("<li>" + field.name + " " + field.surname + " " + field.address + "</li><br/>");
+            var user = { name: field.name, surname: field.surname, address: field.address };
+            usersGlobalList.push(user);
+        });
+        Show(usersGlobalList);
+    });
+}
 
 function DisplayList() {
     Show(SortFunc([...usersGlobalList]));

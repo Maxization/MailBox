@@ -30,7 +30,7 @@ $(document).ready(function () {
                 + "</div>"
                 + "<hr />"
                 + "</div>"
-                + "<div id=\"" + idd + "\" class=\"container-contacts overflow-auto\">"
+                + "<div id=\"" + idd + "\" class=\"container-contacts overflow-auto\" style=\"max-height: 120px\">"
                 + "</div>"
                 + "</div>");
             var div = document.getElementById(idd);

@@ -1,5 +1,4 @@
-﻿
-var addresses = [];
+
 function OnClickBCC(id) {
     var inp = $('input[name=BCC]');
     var email = inp.val() + document.getElementById(id).innerHTML + "; ";
@@ -27,5 +26,9 @@ $(document).ready(function () {
             document.getElementById("globalListBCC").innerHTML += item1;
             document.getElementById("globalListCC").innerHTML += item2;
         });
+    });
+    $('input').keypress(function (event) {
+        if (event.keyCode == 13)
+            event.preventDefault();
     });
 });

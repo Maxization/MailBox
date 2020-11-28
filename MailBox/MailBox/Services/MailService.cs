@@ -12,7 +12,7 @@ namespace MailBox.Services
 {
     public class MailService : IMailService
     {
-        MailBoxDBContext _context;
+        private readonly MailBoxDBContext _context;
 
         public MailService(MailBoxDBContext context)
         {
@@ -98,8 +98,31 @@ namespace MailBox.Services
 
         public void CreateMail(int userID, NewMail newMail)
         {
-            newMail.BCCRecipientsAddresses = newMail.BCCRecipientsAddresses.Distinct().ToList();
-            newMail.CCRecipientsAddresses = newMail.CCRecipientsAddresses.Distinct().ToList();
+            if (newMail.BCCRecipientsAddresses != null)
+                newMail.BCCRecipientsAddresses = newMail.BCCRecipientsAddresses.Distinct().ToList();
+            if (newMail.CCRecipientsAddresses != null)
+                newMail.CCRecipientsAddresses = newMail.CCRecipientsAddresses.Distinct().ToList();
+
+            var users = _context.Users.ToList();
+            List<string> emails = new List<string>();
+            foreach (User usr in users)
+            {
+                emails.Add(usr.Email);
+            }
+
+            if (newMail.BCCRecipientsAddresses != null)
+                foreach (string email in newMail.BCCRecipientsAddresses)
+                {
+                    if (!emails.Contains(email))
+                        throw new Exception("BCCRecipientsAddresses", new Exception("No such email in global contacts list."));
+                }
+
+            if (newMail.CCRecipientsAddresses != null)
+                foreach (string email in newMail.CCRecipientsAddresses)
+                {
+                    if (!emails.Contains(email))
+                        throw new Exception("CCRecipientsAddresses", new Exception("No such email in global contacts list."));
+                }
 
             var transaction = _context.Database.BeginTransaction();
 
@@ -116,35 +139,37 @@ namespace MailBox.Services
                 _context.Mails.Add(mail);
                 _context.SaveChanges();
 
-                foreach (string email in newMail.CCRecipientsAddresses)
-                {
-                    usr = _context.Users.Where(x => x.Email == email).FirstOrDefault();
-                    if (usr == null)
-                        continue;
-                    UserMail um = new UserMail
+                if (newMail.CCRecipientsAddresses != null)
+                    foreach (string email in newMail.CCRecipientsAddresses)
                     {
-                        UserID = usr.ID,
-                        MailID = mail.ID,
-                        RecipientType = RecipientType.CC,
-                        Read = false,
-                    };
-                    _context.UserMails.Add(um);
-                }
+                        usr = _context.Users.Where(x => x.Email == email).FirstOrDefault();
+                        if (usr == null)
+                            continue;
+                        UserMail um = new UserMail
+                        {
+                            UserID = usr.ID,
+                            MailID = mail.ID,
+                            RecipientType = RecipientType.CC,
+                            Read = false,
+                        };
+                        _context.UserMails.Add(um);
+                    }
 
-                foreach (string email in newMail.BCCRecipientsAddresses)
-                {
-                    usr = _context.Users.Where(x => x.Email == email).FirstOrDefault();
-                    if (usr == null || newMail.CCRecipientsAddresses.Contains(email))
-                        continue;
-                    UserMail um = new UserMail
+                if (newMail.BCCRecipientsAddresses != null)
+                    foreach (string email in newMail.BCCRecipientsAddresses)
                     {
-                        UserID = usr.ID,
-                        MailID = mail.ID,
-                        RecipientType = RecipientType.BCC,
-                        Read = false,
-                    };
-                    _context.UserMails.Add(um);
-                }
+                        usr = _context.Users.Where(x => x.Email == email).FirstOrDefault();
+                        if (usr == null || newMail.CCRecipientsAddresses.Contains(email))
+                            continue;
+                        UserMail um = new UserMail
+                        {
+                            UserID = usr.ID,
+                            MailID = mail.ID,
+                            RecipientType = RecipientType.BCC,
+                            Read = false,
+                        };
+                        _context.UserMails.Add(um);
+                    }
 
                 _context.SaveChanges();
 

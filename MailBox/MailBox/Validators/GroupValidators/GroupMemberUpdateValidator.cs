@@ -9,9 +9,8 @@ namespace MailBox.Validators
         public GroupMemberUpdateValidator()
         {
             RuleFor(x => x.GroupMemberAddress)
-                .NotNull()
-                .NotEmpty()
-                .Matches(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
+                .NotEmpty().WithMessage("New member field cannot be empty.")
+                .Matches(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$").WithMessage("New member is not correct email address.");
         }
     }
 }

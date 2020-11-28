@@ -1,10 +1,8 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
-@{
+@{ 
     var mails = ViewData["Mails"] as List<MailBox.Models.MailModels.MailInboxView>;
-    HashSet<string> dates = new HashSet<string>();
-    foreach (var mail in mails) dates.Add(mail.Date.ToString("yyyyMMdd"));
 }
 <head>
     <link href="~/css/main.css" rel="stylesheet" />
@@ -28,19 +26,42 @@
                 <div class="container bg-dark2 table-inbox" id="inbox_table" border="1">
                     <div class="row no-gutters">
                         <div class="col-2 no-gutters">
-                            <a asp-action="sortbydate" class="bg-blue-button" style="height: 100%; width: 100%">Sort by date</a>
+                            <div class="dropdown fill-parent">
+                                <button class="btn btn-secondary dropdown-toggle bg-black content-center" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Sorting
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <button id="no_mails_sorting" style="background-color: gray" onclick="SetNoMailsSorting()" class="dropdown-item" href="#">No sorting</button>
+                                    <button id="sort_mails_by_date_from_old" style="background-color: white" onclick="SetSortingMailsByDateFromOld()" class="dropdown-item" href="#">Sort by date: from oldest</button>
+                                    <button id="sort_mails_by_date_from_new" style="background-color: white" onclick="SetSortingMailsByDateFromNew()" class="dropdown-item" href="#">Sort by date: from newest</button>
+                                    <button id="sort_mails_by_sender_az" style="background-color: white" onclick="SetSortingMailsBySenderAZ()" class="dropdown-item" href="#">Sort by sender: A-Z</button>
+                                    <button id="sort_mails_by_sender_za" style="background-color: white" onclick="SetSortingMailsBySenderZA()" class="dropdown-item" href="#">Sort by sender: Z-A</button>
+                                    <button id="sort_mails_by_topic_az" style="background-color: white" onclick="SetSortingMailsByTopicAZ()" class="dropdown-item" href="#">Sort by topic: A-Z</button>
+                                    <button id="sort_mails_by_topic_za" style="background-color: white" onclick="SetSortingMailsByTopicZA()" class="dropdown-item" href="#">Sort by topic: Z-A</button>
+                                </div>
+                            </div>
                         </div>
                         <div class="col-2 no-gutters">
-                            <a asp-action="sortbytopic" class="bg-blue-button"  style="height: 100%; width: 100%">Sort by topic</a>
+                           
                         </div>
                         <div class="col-4 no-gutters"></div>
                         <div class="col-4 no-gutters" style="display: inline-block">
                             <div class="row">
-                                <div class="col-8">
-                                    <input id="topic_filter" placeholder=" Topic filter..." value="" style="height: 100%; width: 100%" />
+                                <div class="col-5">
+                                    <input id="mail_filter" oninput="DisplayMailsList()" placeholder=" Mail filter..." value="" style="height: 100%; width: 100%" />
                                 </div>
-                                <div class="col-4">
-                                    <button class="bg-blue-button" style="width: 30%">Filter</button>
+                                <div class="col-7">
+                                    <div class="dropdown fill-parent">
+                                        <button class="btn btn-secondary dropdown-toggle bg-black content-center" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Filtering
+                                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <button id="no_mail_filtering" style="background-color: gray" onclick="SetNoMailFiltering()" class="dropdown-item" href="#">No filtering</button>
+                                            <button id="filtering_mail_topic" style="background-color: white" onclick="SetMailTopicFiltering()" class="dropdown-item" href="#">Filtr Topic</button>
+                                            <button id="filtering_mail_sender_name" style="background-color: white" onclick="SetMailSenderNameFiltering()" class="dropdown-item" href="#">Filtr Sender Name</button>
+                                            <button id="filtering_mail_sender_surname" style="background-color: white" onclick="SetMailSenderSurnameFiltering()" class="dropdown-item" href="#">Filtr Sender Surname</button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -58,37 +79,7 @@
                     </div>
                     <hr />
                     <div id="mail_container" class="mail-list">
-                        @foreach (var date in dates)
-                        {
-                            <div class="row no-gutters">
-                                <div class="col-2">
-                                    <button class="bg-blue-button" type="button" data-toggle="collapse" data-target="@($"#collapse{date}")" aria-expanded="false" aria-controls="@($"collapse{date}")">
-                                        @($"{date.Substring(0,4)}-{date.Substring(4, 2)}-{date.Substring(6, 2)}")
-                                    </button>
-                                </div>
-                                <div class="col-10">
-                                    <div class="row no-gutters collapse bg-dark card-body" style="padding: 28px 0 0 0" id="@($"collapse{date}")">
-                                        @foreach (MailBox.Models.MailModels.MailInboxView item in mails)
-                                        {
-                                            if (item.Date.ToString("yyyyMMdd") == date)
-                                            {
-                                                <a asp-action="details" asp-route-id=@item.MailID class="col-12 no-gutters btn btn-secondary active" style="margin-bottom: 1px; text-decoration: none" role="button" aria-pressed="true">
-                                                    <div class="row no-gutters" style="border-bottom-style: solid; border-bottom-width: 1px; border-bottom-color: gray">
-                                                        <div class="col-1 no-gutters">
-                                                            <div class="form-check">
-                                                                <input onchange="ChangeReadStatus(@(item.MailID),@(item.Read?"false":"true"))" class="form-check-input position-static" type="checkbox" id="blankCheckbox" value="option1" aria-label="..." @(item.Read ? "checked" : "")>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-3"><span>@($"{item.Sender.Name} {item.Sender.Surname}")</span></div>
-                                                        <div class="col-8"><span>@(item.Topic)</span></div>
-                                                    </div>
-                                                </a>
-                                            }
-                                        }
-                                    </div>
-                                </div>
-                            </div>
-                        }
+
                     </div>
                 </div>
             </div>

@@ -61,9 +61,9 @@ namespace MailBox.Controllers
             {
                 groupService.AddUserToGroup(groupMemberUpdate);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                errorResponse.Errors.Add(new ErrorModel { FieldName = "GroupMemberAddress", Message = e.Message });
+                errorResponse.Errors.Add(new ErrorModel { FieldName = ex.Message, Message = ex.InnerException.Message });
                 Response.StatusCode = 400;
             }
             return Json(errorResponse);

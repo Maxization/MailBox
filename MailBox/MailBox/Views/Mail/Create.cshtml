@@ -30,7 +30,7 @@
                                 <label class="col-form-label">To (CC):</label>
                             </div>
                             <div class="col-6">
-                                <input name="CC" asp-for="CCRecipientsAddresses" class="form-control" />
+                                <input name="CC" asp-for="CCRecipientsAddresses" class="form-control" style="margin: 0" />
                                 <span id="CCError" class="text-danger"></span>
                             </div>
                             <div class="col-3">
@@ -48,7 +48,7 @@
                                 <label class="col-form-label">To (BCC):</label>
                             </div>
                             <div class="col-6">
-                                <input name="BCC" asp-for="BCCRecipientsAddresses" class="form-control" />
+                                <input name="BCC" asp-for="BCCRecipientsAddresses" class="form-control" style="margin: 0" />
                                 <span id="BCCError" class="text-danger"></span>
                             </div>
                             <div class="col-3">
@@ -61,12 +61,12 @@
                             </div>
                             <div class="col-1"></div>
                         </div>
-                        <div class="form-row" style="padding-right: 10px">
+                        <div class="form-row">
                             <div class="col-2">
                                 <label class="col-form-label">Topic:</label>
                             </div>
                             <div class="col-10">
-                                <input name="Topic" asp-for="Topic" class="form-control" />
+                                <input name="Topic" asp-for="Topic" class="form-control" style="margin: 0" />
                                 <span id="TopicError" class="text-danger"></span>
                             </div>
                         </div>
@@ -100,8 +100,8 @@
 @section scripts{
     <script>
         $('#submit').on('click', function (e) {
-            var BCC = $('input[name=BCC]').val().replace(/\s/g, '').split(';');
-            var CC = $('input[name=CC]').val().replace(/\s/g, '').split(';');
+            var BCC = $('input[name=BCC]').val().replace(/\s/g, '').split(';').filter((el) => el);
+            var CC = $('input[name=CC]').val().replace(/\s/g, '').split(';').filter((el) => el);
             var dataToSend =
             {
                 'Topic': $('input[name=Topic]').val(),
@@ -116,12 +116,17 @@
                 data: dataToSend,
                 cache: true,
                 error: function (xhr) {
+                    console.log(xhr);
                     document.getElementById("CCError").innerHTML = "";
                     document.getElementById("BCCError").innerHTML = "";
                     document.getElementById("TopicError").innerHTML = "";
                     document.getElementById("TextError").innerHTML = "";
                     console.log(xhr.responseJSON.errors);
                     xhr.responseJSON.errors.forEach(function (item, index) {
+                        if (item.fieldName.includes('BCCRecipientsAddresses'))
+                            item.fieldName = 'BCCRecipientsAddresses';
+                        else if (item.fieldName.includes('CCRecipientsAddresses'))
+                            item.fieldName = 'CCRecipientsAddresses';
                         switch (item.fieldName) {
                             case 'CCRecipientsAddresses':
                                 document.getElementById("CCError").innerHTML += item.message + "</br>";
