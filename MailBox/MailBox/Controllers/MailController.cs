@@ -45,7 +45,6 @@ namespace MailBox.Controllers
         [HttpPost]
         public IActionResult Create(NewMail mail)
         {
-
             int userID = int.Parse(User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
             ErrorResponse errorResponse = new ErrorResponse();
             try

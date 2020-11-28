@@ -59,8 +59,7 @@ function DisplayMailsList() {
     });
 }
 
-function GetMailsOnLoad()
-{
+function GetMailsOnLoad() {
     $.getJSON("/mail/getmails", function (result) {
         $.each(result, function (i, field) {
             var user = { name: field.sender.name, surname: field.sender.surname, address: field.sender.address };
@@ -69,7 +68,7 @@ function GetMailsOnLoad()
                 recipients.push(recipient);
             });
             var messDate = new Date(Date.parse(field.date));
-           
+
             var mail = { id: field.mailID, read: field.read, sender: user, recipients: recipients, topic: field.topic, text: field.text, date: messDate.toISOString().split('T')[0] };
             mailsList.push(mail);
         });

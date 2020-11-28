@@ -106,9 +106,7 @@ namespace MailBox.Services
             var users = _context.Users.ToList();
             List<string> emails = new List<string>();
             foreach (User usr in users)
-            {
                 emails.Add(usr.Email);
-            }
 
             if (newMail.BCCRecipientsAddresses != null)
                 foreach (string email in newMail.BCCRecipientsAddresses)
