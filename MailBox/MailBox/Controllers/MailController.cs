@@ -15,10 +15,12 @@ namespace MailBox.Controllers
     public class MailController : Controller
     {
         private readonly IMailService _mailService;
+
         public MailController(IMailService userService)
         {
             _mailService = userService;
         }
+
         public IActionResult Index()
         {
             int userID = int.Parse(User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
@@ -43,14 +45,13 @@ namespace MailBox.Controllers
         [HttpPost]
         public IActionResult Create(NewMail mail)
         {
-            
             int userID = int.Parse(User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
             ErrorResponse errorResponse = new ErrorResponse();
             try
             {
                 _mailService.CreateMail(userID, mail);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 errorResponse.Errors.Add(new ErrorModel { FieldName = ex.Message, Message = ex.InnerException.Message });
                 Response.StatusCode = 400;
@@ -64,14 +65,13 @@ namespace MailBox.Controllers
         {
             int userID = int.Parse(User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
             _mailService.UpdateMailRead(userID, mail);
-
             return View();
         }
 
         public IActionResult GetMails()
         {
             int userID = int.Parse(User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
-            return  Json(_mailService.GetUserMails(userID));
+            return Json(_mailService.GetUserMails(userID));
         }
 
     }

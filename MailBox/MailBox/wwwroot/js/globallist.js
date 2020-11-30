@@ -5,7 +5,6 @@ var FiltrFunc = NoFiltering;
 
 window.onload += GetUsersOnLoad();
 
-
 function GetUsersOnLoad() {
     $.getJSON("user/globallist", function (result) {
         $.each(result, function (i, field) {
@@ -13,11 +12,9 @@ function GetUsersOnLoad() {
             var user = { name: field.name, surname: field.surname, address: field.address };
             usersGlobalList.push(user);
         });
-
         Show(usersGlobalList);
     });
 }
-
 
 function DisplayList() {
     Show(SortFunc([...usersGlobalList]));

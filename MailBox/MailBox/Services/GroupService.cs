@@ -5,7 +5,6 @@ using MailBox.Models.GroupModels;
 using MailBox.Models.UserModels;
 using MailBox.Database;
 using MailBox.Services.Interfaces;
-using Microsoft.Extensions.Configuration;
 using System;
 
 namespace MailBox.Services
@@ -72,14 +71,14 @@ namespace MailBox.Services
         {
             User user = context.Users.Where(u => u.Email == gmu.GroupMemberAddress).FirstOrDefault();
             if (user == null)
-                throw new Exception("No such user address in database.");
+                throw new Exception("GroupMemberAddress", new Exception("No such user address in database."));
             GroupUser groupUser = new GroupUser
             {
                 UserID = user.ID,
                 GroupID = gmu.GroupID
             };
-            if (context.GroupUsers.Find(groupUser.UserID, groupUser.GroupID) != null)
-                throw new Exception("This user is already in that group.");
+            if (context.GroupUsers.Find(groupUser.GroupID, groupUser.UserID) != null)
+                throw new Exception("GroupMemberAddress", new Exception("This user is already in that group."));
             context.GroupUsers.Add(groupUser);
             context.SaveChanges();
         }

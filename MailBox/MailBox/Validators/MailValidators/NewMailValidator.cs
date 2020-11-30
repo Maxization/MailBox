@@ -14,13 +14,13 @@ namespace MailBox.Validators.MailValidators
         {
             RuleFor(x => x.CCRecipientsAddresses)
                 .NotNull()
-                .NotEmpty().When(x => (x.BCCRecipientsAddresses == null || x.BCCRecipientsAddresses.Count == 0)).WithMessage("You should select at least one CC or BCC recipient")
-                .ForEach(x => x.Matches(emailRegex).WithMessage("Niepoprawny emaila"));
+                .NotEmpty().When(x => (x.BCCRecipientsAddresses == null || x.BCCRecipientsAddresses.Count == 0)).WithMessage("You should select at least one CC or BCC recipient.")
+                .ForEach(x => x.Matches(emailRegex).WithMessage("Incorrect email."));
 
             RuleFor(x => x.BCCRecipientsAddresses)
                 .NotNull()
-                .NotEmpty().When(x => (x.CCRecipientsAddresses == null || x.CCRecipientsAddresses.Count == 0)).WithMessage("You should select at least one CC or BCC recipient")
-                .ForEach(x => x.Matches(emailRegex).WithMessage("Niepoprawny email"));
+                .NotEmpty().When(x => (x.CCRecipientsAddresses == null || x.CCRecipientsAddresses.Count == 0)).WithMessage("You should select at least one CC or BCC recipient.")
+                .ForEach(x => x.Matches(emailRegex).WithMessage("Incorrect email."));
 
             RuleFor(x => x.Topic)
                 .NotNull()

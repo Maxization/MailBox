@@ -37,7 +37,7 @@ function DisplayMailsList() {
                     "</button>" +
                     "</div>" +
                     "<div class=\"col-10\">" +
-                    "<div class=\"row no-gutters collapse bg-dark card-body\" style=\"padding: 28px 0 0 0\" id=\"mails" + mail.date + "\">" +
+                    "<div class=\"row no-gutters collapse show bg-dark card-body\" style=\"padding: 28px 0 0 0\" id=\"mails" + mail.date + "\">" +
                     "</div>" +
                     "</div >" +
                     "</div >")
@@ -59,8 +59,7 @@ function DisplayMailsList() {
     });
 }
 
-function GetMailsOnLoad()
-{
+function GetMailsOnLoad() {
     $.getJSON("/mail/getmails", function (result) {
         $.each(result, function (i, field) {
             var user = { name: field.sender.name, surname: field.sender.surname, address: field.sender.address };
@@ -69,7 +68,7 @@ function GetMailsOnLoad()
                 recipients.push(recipient);
             });
             var messDate = new Date(Date.parse(field.date));
-           
+
             var mail = { id: field.mailID, read: field.read, sender: user, recipients: recipients, topic: field.topic, text: field.text, date: messDate.toISOString().split('T')[0] };
             mailsList.push(mail);
         });
@@ -83,7 +82,6 @@ function GetMailsOnLoad()
 
 $('document').ready(GetMailsOnLoad());
 //document.read += GetMailsOnLoad();
-
 
 // Set Filtering
 
@@ -123,7 +121,6 @@ function SetMailSenderSurnameFiltering() {
     document.getElementById("filtering_mail_sender_surname").style.backgroundColor = "gray";
 }
 
-
 // Filtering
 
 function NoMailFiltering(item) {
@@ -143,6 +140,7 @@ function FiltrSenderSurname(item) {
 }
 
 // Set Sorting
+
 function SetSortingMailsByDateFromNew() {
     MailSortFunc = SortMailsByDateFromNew;
     DisplayMailsList();
