@@ -81,7 +81,7 @@ namespace MailBox.Services
             var userMails = _context.UserMails
                 .Include(x => x.User)
                 .Where(x => x.MailID == mailID)
-                .AsQueryable();
+                .ToList();
 
             List<string> recipients = new List<string>();
             var user = _context.Users.Find(userID);

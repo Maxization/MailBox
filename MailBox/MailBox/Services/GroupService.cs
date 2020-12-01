@@ -21,11 +21,11 @@ namespace MailBox.Services
         public List<GroupView> GetUserGroupsList(int userID)
         {
             var groups = new List<GroupView>();
-            var dbGroups = context.Groups.Where(g => g.Owner.ID == userID).AsQueryable();
+            var dbGroups = context.Groups.Where(g => g.Owner.ID == userID).ToList();
             foreach (var dbG in dbGroups)
             {
-                var dbGroupUsers = context.GroupUsers.Where(gu => gu.GroupID == dbG.ID).AsQueryable();
-                groups.Add(new GroupView { GroupID = dbG.ID, Name = dbG.GroupName, GroupMembers = GetGroupMembers(dbGroupUsers.ToList()) });
+                var dbGroupUsers = context.GroupUsers.Where(gu => gu.GroupID == dbG.ID).ToList();
+                groups.Add(new GroupView { GroupID = dbG.ID, Name = dbG.GroupName, GroupMembers = GetGroupMembers(dbGroupUsers) });
             }
             return groups;
         }
