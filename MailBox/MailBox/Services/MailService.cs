@@ -157,7 +157,7 @@ namespace MailBox.Services
                     foreach (string email in newMail.BCCRecipientsAddresses)
                     {
                         usr = _context.Users.Where(x => x.Email == email).FirstOrDefault();
-                        if (usr == null || newMail.CCRecipientsAddresses.Contains(email))
+                        if (usr == null || (newMail.CCRecipientsAddresses != null && newMail.CCRecipientsAddresses.Contains(email)))
                             continue;
                         UserMail um = new UserMail
                         {
