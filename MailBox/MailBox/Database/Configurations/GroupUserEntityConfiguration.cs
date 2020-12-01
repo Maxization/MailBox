@@ -12,7 +12,8 @@ namespace MailBox.Database.Configurations
 
             builder.HasOne(c => c.Group)
                 .WithMany(c => c.GroupUsers)
-                .HasForeignKey(c => c.GroupID);
+                .HasForeignKey(c => c.GroupID)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasOne(c => c.User)
                 .WithMany(c => c.GroupUsers)
