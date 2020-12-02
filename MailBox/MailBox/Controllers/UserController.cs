@@ -20,9 +20,5 @@ namespace MailBox.Controllers
             return View("GlobalList");
         }
 
-        public IActionResult GlobalList()
-        {
-            return Json(_userService.GetGlobalContactList());
-        }
     }
 }

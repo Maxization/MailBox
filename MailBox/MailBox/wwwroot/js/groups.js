@@ -5,9 +5,10 @@
 
 function ChangeGroupName(Name, GroupID) {
     $.ajax({
-        url: '/Groups/ChangeGroupName',
-        data: { 'Name': Name, 'GroupID': GroupID },
-        type: "POST",
+        url: '/api/GroupsApi/ChangeGroupName',
+        type: "PUT",
+        data: JSON.stringify({ Name: Name, GroupID: GroupID }),
+        contentType: 'application/json',
         cache: true,
         error: function (xhr) {
             var errMess = "";
@@ -24,9 +25,10 @@ function ChangeGroupName(Name, GroupID) {
 
 function AddGroup(Name) {
     $.ajax({
-        url: '/Groups/AddGroup',
-        data: { 'Name': Name },
+        url: '/api/GroupsApi/AddGroup',
         type: "POST",
+        data: JSON.stringify({ Name: Name }),
+        contentType: 'application/json',
         cache: true,
         error: function (xhr) {
             document.getElementById("newGroupError").innerHTML = "";
@@ -42,9 +44,10 @@ function AddGroup(Name) {
 
 function DeleteGroup(groupID) {
     $.ajax({
-        url: '/Groups/DeleteGroup',
-        data: { 'groupID': groupID },
-        type: "POST",
+        url: '/api/GroupsApi/DeleteGroup',
+        type: "DELETE",
+        data: JSON.stringify({ groupID: groupID }),
+        contentType: 'application/json',
         cache: true,
         success: function () {
             setTimeout(() => location.reload(), 250);
@@ -54,9 +57,10 @@ function DeleteGroup(groupID) {
 
 function AddUserToGroup(GroupMemberAddress, GroupID) {
     $.ajax({
-        url: '/Groups/AddUserToGroup',
-        data: { 'GroupMemberAddress': GroupMemberAddress, 'GroupID': GroupID },
+        url: '/api/GroupsApi/AddUserToGroup',
         type: "POST",
+        data: JSON.stringify({ GroupMemberAddress: GroupMemberAddress, GroupID: GroupID }),
+        contentType: 'application/json',
         cache: true,
         error: function (xhr) {
             var errMess = "";
@@ -73,9 +77,10 @@ function AddUserToGroup(GroupMemberAddress, GroupID) {
 
 function DeleteUserFromGroup(GroupMemberAddress, GroupID) {
     $.ajax({
-        url: '/Groups/DeleteUserFromGroup',
-        data: { 'GroupMemberAddress': GroupMemberAddress, 'GroupID': GroupID },
-        type: "POST",
+        url: '/api/GroupsApi/DeleteUserFromGroup',
+        type: "DELETE",
+        data: JSON.stringify({ GroupMemberAddress: GroupMemberAddress, GroupID: GroupID }),
+        contentType: 'application/json',
         cache: true,
         success: function () {
             setTimeout(() => location.reload(), 250);

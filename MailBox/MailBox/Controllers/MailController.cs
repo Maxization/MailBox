@@ -42,37 +42,6 @@ namespace MailBox.Controllers
             return View();
         }
 
-        [HttpPost]
-        public IActionResult Create(NewMail mail)
-        {
-            int userID = int.Parse(User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
-            ErrorResponse errorResponse = new ErrorResponse();
-            try
-            {
-                _mailService.CreateMail(userID, mail);
-            }
-            catch (Exception ex)
-            {
-                errorResponse.Errors.Add(new ErrorModel { FieldName = ex.Message, Message = ex.InnerException.Message });
-                Response.StatusCode = 400;
-                return Json(errorResponse);
-            }
-            return View();
-        }
-
-        [HttpPut]
-        public IActionResult UpdateRead(MailReadUpdate mail)
-        {
-            int userID = int.Parse(User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
-            _mailService.UpdateMailRead(userID, mail);
-            return View();
-        }
-
-        public IActionResult GetMails()
-        {
-            int userID = int.Parse(User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
-            return Json(_mailService.GetUserMails(userID));
-        }
 
     }
 }

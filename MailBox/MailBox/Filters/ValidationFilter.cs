@@ -7,10 +7,11 @@ using System.Threading.Tasks;
 
 namespace MailBox.Filters
 {
-    public class ValidationFilter : IActionFilter
+    public class ValidationFilter : IAsyncActionFilter
     {
-        public void OnActionExecuting(ActionExecutingContext context)
+        public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
+            //before controller
             if (!context.ModelState.IsValid)
             {
                 var errorsInModelState = context.ModelState
@@ -27,14 +28,20 @@ namespace MailBox.Filters
                         {
                             FieldName = error.Key,
                             Message = subError
+
                         };
+
                         errorResponse.Errors.Add(errorModel);
                     }
                 }
 
                 context.Result = new BadRequestObjectResult(errorResponse);
+                return;
             }
+
+            await next();
+
+            //after controller
         }
-        public void OnActionExecuted(ActionExecutedContext context) { }
     }
 }

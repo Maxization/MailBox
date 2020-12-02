@@ -6,10 +6,17 @@ var MailFiltrFunc = NoMailFiltering;
 var responseMails;
 
 function ChangeReadStatus(MailID, Read) {
+    var dataToSend =
+    {
+        MailID: MailID,
+        Read: Read
+    };
+
     $.ajax({
-        url: '/Mail/UpdateRead',
-        data: { 'MailID': MailID, 'Read': Read },
+        url: 'api/mailapi/updateread',
         type: "PUT",
+        data: JSON.stringify(dataToSend),
+        contentType: 'application/json',
         cache: true,
         error: function (xhr) {
             var errMess = "";
@@ -18,10 +25,8 @@ function ChangeReadStatus(MailID, Read) {
             });
             alert(errMess);
         },
-        success: function () {
-            setTimeout(() => location.reload(), 250);
-        }
     });
+    $('input[name=' + MailID + ']').prop('checked', Read);
 }
 
 function DisplayMailsList() {
@@ -37,7 +42,7 @@ function DisplayMailsList() {
                     "</button>" +
                     "</div>" +
                     "<div class=\"col-10\">" +
-                    "<div class=\"row no-gutters collapse show bg-dark card-body\" style=\"padding: 28px 0 0 0\" id=\"mails" + mail.date + "\">" +
+                    "<div class=\"row no-gutters collapse bg-dark card-body\" style=\"padding: 28px 0 0 0\" id=\"mails" + mail.date + "\">" +
                     "</div>" +
                     "</div >" +
                     "</div >")
@@ -47,7 +52,7 @@ function DisplayMailsList() {
                 "<div class=\"row no-gutters\" style=\"border-bottom-style: solid; border-bottom-width: 1px; border-bottom-color: gray\">" +
                 "<div class=\"col-1 no-gutters\">" +
                 "<div class=\"form-check\">" +
-                "<input onchange=\"ChangeReadStatus(" + mail.id + ", " + (!mail.read) + ")\" class=\"form-check-input position-static\" type=\"checkbox\" id=\"blankCheckbox\" value=\"option1\" aria-label=\"...\" " + (mail.read ? "checked" : "") + " )>" +
+                "<input name=\"" + mail.id + "\" onchange=\"ChangeReadStatus(" + mail.id + ", " + (!mail.read) + ")\" class=\"form-check-input position-static\" type=\"checkbox\" id=\"blankCheckbox\" value=\"option1\" aria-label=\"...\" " + (mail.read ? "checked" : "") + " )>" +
                 "</div>" +
                 "</div>" +
                 "<div class=\"col-3\"><span>" + mail.sender.name + " " + mail.sender.surname + "</span></div>" +
@@ -60,7 +65,7 @@ function DisplayMailsList() {
 }
 
 function GetMailsOnLoad() {
-    $.getJSON("/mail/getmails", function (result) {
+    $.getJSON("api/mailapi/getmails", function (result) {
         $.each(result, function (i, field) {
             var user = { name: field.sender.name, surname: field.sender.surname, address: field.sender.address };
             var recipients = new Array();
@@ -72,16 +77,11 @@ function GetMailsOnLoad() {
             var mail = { id: field.mailID, read: field.read, sender: user, recipients: recipients, topic: field.topic, text: field.text, date: messDate.toISOString().split('T')[0] };
             mailsList.push(mail);
         });
+        DisplayMailsList();
     });
-    var tryNr = 0;
-    while (mailsList.length == 0 && tryNr < 20) {
-        setTimeout(DisplayMailsList, 500);
-        tryNr++;
-    }
 }
 
 $('document').ready(GetMailsOnLoad());
-//document.read += GetMailsOnLoad();
 
 // Set Filtering
 

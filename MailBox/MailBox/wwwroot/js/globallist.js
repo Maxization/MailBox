@@ -6,7 +6,7 @@ var FiltrFunc = NoFiltering;
 window.onload += GetUsersOnLoad();
 
 function GetUsersOnLoad() {
-    $.getJSON("user/globallist", function (result) {
+    $.getJSON("/api/userapi/globallist", function (result) {
         $.each(result, function (i, field) {
             //$("#container").append("<li>" + field.name + " " + field.surname + " " + field.address + "</li><br/>");
             var user = { name: field.name, surname: field.surname, address: field.address };

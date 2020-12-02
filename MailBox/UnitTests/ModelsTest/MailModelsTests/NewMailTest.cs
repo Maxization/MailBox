@@ -17,13 +17,11 @@ namespace UnitTests.ModelsTest.MailModelsTest
             List<string> BCCRecipientsAddresses = new List<string>();
             string topic = "testtocpic";
             string text = "testtext";
-            DateTime dateTime = new DateTime(2021, 1, 1);
             #endregion
             NewMail newMail = new NewMail
             {
                 BCCRecipientsAddresses = BCCRecipientsAddresses,
                 CCRecipientsAddresses = CCRecipientsAddresses,
-                Date = dateTime,
                 Text = text,
                 Topic = topic
             };
@@ -33,7 +31,6 @@ namespace UnitTests.ModelsTest.MailModelsTest
             Assert.Equal(newMail.BCCRecipientsAddresses, BCCRecipientsAddresses);
             Assert.Equal(newMail.Topic, topic);
             Assert.Equal(newMail.Text, text);
-            Assert.Equal(newMail.Date, dateTime);
             #endregion
         }
     }
