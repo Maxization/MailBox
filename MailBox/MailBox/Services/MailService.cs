@@ -81,7 +81,7 @@ namespace MailBox.Services
             var userMails = _context.UserMails
                 .Include(x => x.User)
                 .Where(x => x.MailID == mailID)
-                .AsQueryable();
+                .ToList();
 
             List<string> recipients = new List<string>();
             var user = _context.Users.Find(userID);
@@ -157,7 +157,7 @@ namespace MailBox.Services
                     foreach (string email in newMail.BCCRecipientsAddresses)
                     {
                         usr = _context.Users.Where(x => x.Email == email).FirstOrDefault();
-                        if (usr == null || newMail.CCRecipientsAddresses.Contains(email))
+                        if (usr == null || (newMail.CCRecipientsAddresses != null && newMail.CCRecipientsAddresses.Contains(email)))
                             continue;
                         UserMail um = new UserMail
                         {
