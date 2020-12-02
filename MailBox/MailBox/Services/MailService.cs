@@ -98,6 +98,7 @@ namespace MailBox.Services
 
         public void CreateMail(int userID, NewMail newMail)
         {
+            #region CheckIfEmailExist
             if (newMail.BCCRecipientsAddresses != null)
                 newMail.BCCRecipientsAddresses = newMail.BCCRecipientsAddresses.Distinct().ToList();
             if (newMail.CCRecipientsAddresses != null)
@@ -121,6 +122,7 @@ namespace MailBox.Services
                     if (!emails.Contains(email))
                         throw new Exception("CCRecipientsAddresses", new Exception("No such email in global contacts list."));
                 }
+            #endregion
 
             var transaction = _context.Database.BeginTransaction();
 
@@ -180,11 +182,11 @@ namespace MailBox.Services
 
         }
 
-        public void UpdateMailRead(int userID, MailReadUpdate mailReadUpdate)
+        public void UpdateMailRead(int userID, MailReadUpdate mailRead)
         {
-            Mail mail = _context.Mails.Find(mailReadUpdate.MailID);
-            UserMail userMail = _context.UserMails.Where(um => um.MailID == mailReadUpdate.MailID && um.UserID == userID).First();
-            userMail.Read = mailReadUpdate.Read;
+            Mail mail = _context.Mails.Find(mailRead.MailID);
+            UserMail userMail = _context.UserMails.Where(um => um.MailID == mailRead.MailID && um.UserID == userID).First();
+            userMail.Read = mailRead.Read;
             _context.SaveChanges();
         }
     }

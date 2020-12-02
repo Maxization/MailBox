@@ -6,7 +6,7 @@
 var groups = [];
 
 $(document).ready(function () {
-    $.getJSON("/Groups/GetUserGroupsListAsJson", function (result) {
+    $.getJSON("/api/GroupsApi/GetUserGroupsListAsJson", function (result) {
         $.each(result, function (i, g) {
             var GroupMembers = new Array();
             $.each(g.groupMembers, function (j, gm) {
@@ -71,9 +71,9 @@ $(document).ready(function () {
 });
 
 function GoToGroupManagement() {
-    setTimeout(() => window.location.replace("/groups/managegroups"), 250);
+    window.location.replace("/groups/managegroups");
 }
 
 function GoToNewMail() {
-    setTimeout(() => window.location.replace("/mail/create"), 250);
+    window.location.replace("/mail/create");
 }

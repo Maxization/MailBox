@@ -23,55 +23,10 @@ namespace MailBox.Controllers
 
         public IActionResult ManageGroups()
         {
-            ViewData["Groups"] = GetUserGroups();
+            int userID = int.Parse(User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
+            ViewData["Groups"] = groupService.GetUserGroupsList(userID);
             return View();
         }
 
-        public IActionResult GetUserGroupsListAsJson()
-        {
-            return Json(GetUserGroups());
-        }
-
-        private List<GroupView> GetUserGroups()
-        {
-            int userID = int.Parse(User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
-            return groupService.GetUserGroupsList(userID);
-        }
-
-        public void ChangeGroupName(GroupNameUpdate groupNameUpdate)
-        {
-            groupService.ChangeGroupName(groupNameUpdate);
-        }
-
-        public void AddGroup(NewGroup newGroup)
-        {
-            int userID = int.Parse(User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
-            groupService.AddGroup(newGroup, userID);
-        }
-
-        public void DeleteGroup(int groupID)
-        {
-            groupService.DeleteGroup(groupID);
-        }
-
-        public IActionResult AddUserToGroup(GroupMemberUpdate groupMemberUpdate)
-        {
-            ErrorResponse errorResponse = new ErrorResponse();
-            try
-            {
-                groupService.AddUserToGroup(groupMemberUpdate);
-            }
-            catch (Exception ex)
-            {
-                errorResponse.Errors.Add(new ErrorModel { FieldName = ex.Message, Message = ex.InnerException.Message });
-                Response.StatusCode = 400;
-            }
-            return Json(errorResponse);
-        }
-
-        public void DeleteUserFromGroup(GroupMemberUpdate groupMemberUpdate)
-        {
-            groupService.DeleteUserFromGroup(groupMemberUpdate);
-        }
     }
 }
