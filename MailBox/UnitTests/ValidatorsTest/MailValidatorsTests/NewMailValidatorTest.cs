@@ -20,7 +20,6 @@ namespace UnitTests
                 List<string> BCCRecipientsAddresses = new List<string>();
                 string topic = "testtopic";
                 string text = "testtext";
-                DateTime dateTime = new DateTime(2021, 1, 1);
             #endregion
             NewMail newMail = new NewMail
             {
@@ -28,7 +27,6 @@ namespace UnitTests
                 BCCRecipientsAddresses = BCCRecipientsAddresses,
                 Topic = topic,
                 Text = text,
-                Date = dateTime
             };
             var result = validator.TestValidate(newMail);
             #region Tests
@@ -46,15 +44,13 @@ namespace UnitTests
                 List<string> BCCRecipientsAddresses = new List<string>();
                 string topic = "testtopic";
                 string text = "testtext";
-                DateTime dateTime = new DateTime(2021, 1, 1);
             #endregion
             NewMail newMail = new NewMail
             {
                 CCRecipientsAddresses = CCRecipientsAddresses,
                 BCCRecipientsAddresses = BCCRecipientsAddresses,
                 Topic = topic,
-                Text = text,
-                Date = dateTime
+                Text = text
             };
             var result = validator.TestValidate(newMail);
             #region Tests
@@ -71,7 +67,6 @@ namespace UnitTests
                 List<string> BCCRecipientsAddresses = new List<string> { "test@address.com" };
                 string topic = "testtopic";
                 string text = "testtext";
-                DateTime dateTime = new DateTime(2021, 1, 1);
             #endregion
             NewMail newMail = new NewMail
             {
@@ -79,7 +74,6 @@ namespace UnitTests
                 BCCRecipientsAddresses = BCCRecipientsAddresses,
                 Topic = topic,
                 Text = text,
-                Date = dateTime
             };
             var result = validator.TestValidate(newMail);
             #region Tests
@@ -96,7 +90,6 @@ namespace UnitTests
                 List<string> BCCRecipientsAddresses = new List<string> { "test@address.com" };
                 string topic = "";
                 string text = "testtext";
-                DateTime dateTime = new DateTime(2021, 1, 1);
             #endregion
             NewMail newMail = new NewMail
             {
@@ -104,7 +97,6 @@ namespace UnitTests
                 BCCRecipientsAddresses = BCCRecipientsAddresses,
                 Topic = topic,
                 Text = text,
-                Date = dateTime
             };
             var result = validator.TestValidate(newMail);
             #region Tests
@@ -121,7 +113,6 @@ namespace UnitTests
                 List<string> BCCRecipientsAddresses = new List<string> { "test@address.com" };
                 string topic = "testtopic";
                 string text = "";
-                DateTime dateTime = new DateTime(2021, 1, 1);
             #endregion
             NewMail newMail = new NewMail
             {
@@ -129,7 +120,6 @@ namespace UnitTests
                 BCCRecipientsAddresses = BCCRecipientsAddresses,
                 Topic = topic,
                 Text = text,
-                Date = dateTime
             };
             var result = validator.TestValidate(newMail);
             #region Tests
@@ -151,7 +141,6 @@ namespace UnitTests
                 }
                 string topic = stringBuilder.ToString();
                 string text = "testtext";
-                DateTime dateTime = new DateTime(2021, 1, 1);
             #endregion
             NewMail newMail = new NewMail
             {
@@ -159,7 +148,6 @@ namespace UnitTests
                 BCCRecipientsAddresses = BCCRecipientsAddresses,
                 Topic = topic,
                 Text = text,
-                Date = dateTime
             };
             var result = validator.TestValidate(newMail);
             #region Tests
@@ -181,7 +169,6 @@ namespace UnitTests
                     stringBuilder.Append('x');
                 }
                 string text = stringBuilder.ToString();
-                DateTime dateTime = new DateTime(2021, 1, 1);
             #endregion
             NewMail newMail = new NewMail
             {
@@ -189,7 +176,6 @@ namespace UnitTests
                 BCCRecipientsAddresses = BCCRecipientsAddresses,
                 Topic = topic,
                 Text = text,
-                Date = dateTime
             };
             var result = validator.TestValidate(newMail);
             #region Tests
@@ -206,7 +192,6 @@ namespace UnitTests
                 List<string> BCCRecipientsAddresses = new List<string> { "test@address.com" };
                 string topic = "testtopic";
                 string text = "testtext";
-                DateTime dateTime = new DateTime(2021, 1, 1);
             #endregion
             NewMail newMail = new NewMail
             {
@@ -214,7 +199,6 @@ namespace UnitTests
                 BCCRecipientsAddresses = BCCRecipientsAddresses,
                 Topic = topic,
                 Text = text,
-                Date = dateTime
             };
             var result = validator.TestValidate(newMail);
             #region Tests
@@ -231,7 +215,6 @@ namespace UnitTests
                 List<string> BCCRecipientsAddresses = new List<string> { "test@address.com" , "test@addresscom" };
                 string topic = "testtopic";
                 string text = "testtext";
-                DateTime dateTime = new DateTime(2021, 1, 1);
             #endregion
             NewMail newMail = new NewMail
             {
@@ -239,7 +222,6 @@ namespace UnitTests
                 BCCRecipientsAddresses = BCCRecipientsAddresses,
                 Topic = topic,
                 Text = text,
-                Date = dateTime
             };
             var result = validator.TestValidate(newMail);
             #region Tests
