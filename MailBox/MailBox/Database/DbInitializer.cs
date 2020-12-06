@@ -18,7 +18,9 @@ namespace MailBox.Database
             var roles = new UserRole[]
             {
                 new UserRole{RoleName="User"},
-                new UserRole{RoleName="Admin"}
+                new UserRole{RoleName="Admin"},
+                new UserRole{RoleName="Banned"},
+                new UserRole{RoleName="New"},
             };
             foreach (UserRole r in roles)
             {

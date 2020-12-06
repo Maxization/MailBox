@@ -6,6 +6,11 @@ namespace MailBox.Services
 {
     public interface IUserService
     {
-        public List<UserGlobalView> GetGlobalContactList();
+        List<UserGlobalView> GetGlobalContactList();
+        List<UserAdminView> GetAdminViewList();
+
+        void SetUserRole(UserRoleUpdate userRoleUpdate);
+
+        void SetUserEnableStatus(UserEnableUpdate userEnableUpdate);
     }
 }

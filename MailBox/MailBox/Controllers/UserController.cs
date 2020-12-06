@@ -20,5 +20,10 @@ namespace MailBox.Controllers
             return View("GlobalList");
         }
 
+        public IActionResult AdminPanel()
+        {
+            return View();
+        }
+
     }
 }
