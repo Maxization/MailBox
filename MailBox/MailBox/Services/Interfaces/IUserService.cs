@@ -11,6 +11,6 @@ namespace MailBox.Services
 
         void SetUserRole(UserRoleUpdate userRoleUpdate);
 
-        void SetUserEnableStatus(UserEnableUpdate userEnableUpdate);
+        void DeleteUser(DeletedUser deletedUser);
     }
 }

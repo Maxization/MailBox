@@ -1,6 +1,8 @@
 ﻿using MailBox.Database;
 using MailBox.Models.UserModels;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MailBox.Services
 {
@@ -15,10 +17,11 @@ namespace MailBox.Services
 
         public List<UserAdminView> GetAdminViewList()
         {
-            var dbUsers = context.Users.AsQueryable();
+            var dbUsers = context.Users.Include(u => u.Role).AsQueryable();
             List<UserAdminView> users = new List<UserAdminView>();
             foreach (var dbUser in dbUsers)
             {
+                if(dbUser.Role != null)
                 users.Add(new UserAdminView
                 {
                     Name = dbUser.FirstName,
@@ -27,6 +30,17 @@ namespace MailBox.Services
                     RoleName = dbUser.Role.RoleName,
                     Enable = EnableStatusFromRole(dbUser.Role.RoleName)
                 });
+                else
+                {
+                    users.Add(new UserAdminView
+                    {
+                        Name = dbUser.FirstName,
+                        Surname = dbUser.LastName,
+                        Address = dbUser.Email,
+                        RoleName = "Banned",
+                        Enable = false
+                    });
+                }
             }
             return users;
         }
@@ -50,7 +64,7 @@ namespace MailBox.Services
             List<UserGlobalView> users = new List<UserGlobalView>();
             foreach (var dbUser in dbUsers)
             {
-                if (dbUser.Role.RoleName == "User" || dbUser.Role.RoleName == "Admin")
+                if (dbUser.Role == null || dbUser.Role.RoleName == "User" || dbUser.Role.RoleName == "Admin")
                 { users.Add(new UserGlobalView
                 {
                     Name = dbUser.FirstName,
@@ -62,24 +76,17 @@ namespace MailBox.Services
             return users;
         }
 
-        public void SetUserEnableStatus(UserEnableUpdate userEnableUpdate)
+        public void SetUserRole(UserRoleUpdate userRoleUpdate)
         {
-            User user = context.Users.Find(userEnableUpdate.Address);
-            if(userEnableUpdate.Enable)
-            {
-                user.Role = context.Roles.Find("User");
-            }
-            else
-            {
-                user.Role = context.Roles.Find("Banned");
-            }
+            var user = context.Users.First(u => u.Email == userRoleUpdate.Address);
+            user.Role = context.Roles.First(r => r.RoleName == userRoleUpdate.RoleName);
             context.SaveChanges();
         }
 
-        public void SetUserRole(UserRoleUpdate userRoleUpdate)
+        public void DeleteUser(DeletedUser deletedUser)
         {
-            User user = context.Users.Find(userRoleUpdate.Address);
-            user.Role = context.Roles.Find(userRoleUpdate.RoleName);
+            var user = context.Users.First(u => u.Email == deletedUser.Address);
+            context.Users.Remove(user);
             context.SaveChanges();
         }
     }

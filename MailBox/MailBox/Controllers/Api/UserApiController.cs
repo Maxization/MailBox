@@ -37,10 +37,11 @@ namespace MailBox.Controllers.Api
             return Ok();
         }
 
-        [HttpPut]
-        public IActionResult UpdateUserEnableStatus([FromBody] UserEnableUpdate userEnableUpdate)
+
+        [HttpDelete]
+        public IActionResult DeleteUser([FromBody] DeletedUser deletedUser)
         {
-            _userService.SetUserEnableStatus(userEnableUpdate);
+            _userService.DeleteUser(deletedUser);
             return Ok();
         }
     }

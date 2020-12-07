@@ -73,7 +73,7 @@ namespace MailBox
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("AssignToUser", policy => policy.RequireRole("User"));
+                options.AddPolicy("AssignToUser", policy => policy.RequireRole("User","Admin"));
                 options.AddPolicy("AssignToAdmin", policy => policy.RequireRole("Admin"));
             });
 
