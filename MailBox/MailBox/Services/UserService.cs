@@ -1,6 +1,7 @@
 ﻿using MailBox.Database;
 using MailBox.Models.UserModels;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -85,9 +86,28 @@ namespace MailBox.Services
 
         public void DeleteUser(DeletedUser deletedUser)
         {
-            var user = context.Users.First(u => u.Email == deletedUser.Address);
-            context.Users.Remove(user);
-            context.SaveChanges();
+            var transaction = context.Database.BeginTransaction();
+            try
+            {
+                var user = context.Users.First(u => u.Email == deletedUser.Address);
+                var groupUsers = context.GroupUsers.Where(gu => gu.UserID == user.ID).AsQueryable();
+                foreach (var groupUser in groupUsers)
+                {
+                    context.GroupUsers.Remove(groupUser);
+                }
+                var userMails = context.UserMails.Where(um => um.UserID == user.ID).AsQueryable();
+                foreach (var userMail in userMails)
+                {
+                    context.UserMails.Remove(userMail);
+                }
+                context.Users.Remove(user);
+                context.SaveChanges();
+                transaction.Commit();
+            }
+            catch (Exception)
+            {
+                transaction.Rollback();
+            }
         }
     }
 }

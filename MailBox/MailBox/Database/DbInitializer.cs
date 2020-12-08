@@ -22,6 +22,7 @@ namespace MailBox.Database
                 new UserRole{RoleName="Banned"},
                 new UserRole{RoleName="New"},
             };
+
             foreach (UserRole r in roles)
             {
                 context.Roles.Add(r);

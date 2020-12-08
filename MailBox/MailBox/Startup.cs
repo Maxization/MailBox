@@ -51,7 +51,7 @@ namespace MailBox
                                 string firstName = context.Principal.Identities.First().Claims.Where(x => x.Type == ClaimTypes.GivenName).First().Value;
                                 string lastName = context.Principal.Identities.First().Claims.Where(x => x.Type == ClaimTypes.Surname).First().Value;
                                 
-                                var role = db.Roles.Where(x => x.ID == 1).FirstOrDefault();
+                                var role = db.Roles.Where(x => x.RoleName == "New").FirstOrDefault();
                                 User usr = new User { FirstName = firstName, LastName = lastName, Email = email, Role = role };
                                 db.Users.Add(usr);
                                 db.SaveChanges();

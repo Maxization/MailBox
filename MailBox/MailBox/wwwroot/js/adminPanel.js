@@ -5,14 +5,11 @@ window.onload += GetAllUsersOnLoad();
 
 function GetAllUsersOnLoad() {
     $.getJSON("/api/userapi/adminviewlist", function (result) {
-
-        console.log(result);
         $.each(result, function (i, field) {
             //$("#container").append("<li>" + field.name + " " + field.surname + " " + field.address + "</li><br/>");
             var user = { name: field.name, surname: field.surname, address: field.address, role: field.roleName, enable: field.enable };
             usersList.push(user);
         });
-        console.log(usersList);
         ShowUsers(usersList);
     });
 }
@@ -86,9 +83,10 @@ function ShowBannedUser(item)
 
 function ShowActiveUser(item)
 {
+    console.log(item);
     $("#active_users").append("<tr><td>" + item.name + "</td><td>" + item.surname + "</td><td>" + item.address +
         "<td><button class=\"btn dropdown-toggle content-center btn-info \" type=\"button\" id=\"dropdownMenuButton\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">" +
-        + item.role +
+        item.role +
         "</button ><div class=\"dropdown-menu \" aria-labelledby=\"dropdownMenuButton\">" +
         "<button id=\"admin_role\" style=\"background-color: white\" onclick=\"SetUserRole( '" + item.address + "', 'User' )\" class=\"dropdown-item\" href=\"#\">User</button>" +
         "<button id=\"admin_role\" style=\"background-color: white\" onclick=\"SetUserRole( '" + item.address + "', 'Admin' )\" class=\"dropdown-item\" href=\"#\">Admin</button>" +
