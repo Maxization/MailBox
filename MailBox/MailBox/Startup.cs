@@ -18,6 +18,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using MailBox.Filters;
 using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Mvc;
+using MailBox.HostedServices;
 
 namespace MailBox
 {
@@ -84,8 +86,11 @@ namespace MailBox
             services.AddScoped<IMailService, MailService>();
             services.AddScoped<IUserService, UserService>();
 
+            services.AddHostedService<NotificationHostedService>();
+
             services.AddMvc(options => { options.Filters.Add<ValidationFilter>(); })
-                .AddFluentValidation(mvcConfiguration => mvcConfiguration.RegisterValidatorsFromAssemblyContaining<Startup>());
+                .AddFluentValidation(mvcConfiguration => mvcConfiguration.RegisterValidatorsFromAssemblyContaining<Startup>())
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
             services.AddControllersWithViews();
             services.AddRazorPages();
