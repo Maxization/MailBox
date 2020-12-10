@@ -7,10 +7,10 @@ namespace MailBox.Services.Interfaces
     public interface IGroupService
     {
         public List<GroupView> GetUserGroupsList(int userID);
-        public void ChangeGroupName(GroupNameUpdate gnu);
-        public void AddGroup(NewGroup ng, int ownerID);
-        public void DeleteGroup(int groupID);
-        public void AddUserToGroup(GroupMemberUpdate gmu);
-        public void DeleteUserFromGroup(GroupMemberUpdate gmu);
+        public void UpdateGroupName(GroupNameUpdate groupNameUpdate);
+        public void AddGroup(int ownerID, NewGroup newGroup);
+        public void RemoveGroup(int groupID);
+        public void AddUserToGroup(GroupMemberUpdate groupMemberUpdate);
+        public void RemoveUserFromGroup(GroupMemberUpdate groupMemberUpdate);
     }
 }

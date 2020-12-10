@@ -12,6 +12,7 @@ namespace MailBox.Controllers
 {
 
     [Authorize]
+    [Authorize(Policy = "AssignToUser")]
     public class MailController : Controller
     {
         private readonly IMailService _mailService;

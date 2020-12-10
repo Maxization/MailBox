@@ -28,7 +28,7 @@ namespace MailBox.Controllers
             ErrorResponse errorResponse = new ErrorResponse();
             try
             {
-                _mailService.CreateMail(userID, mail);
+                _mailService.AddMail(userID, mail);
             }
             catch (Exception ex)
             {

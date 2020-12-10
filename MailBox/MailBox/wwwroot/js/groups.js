@@ -44,10 +44,8 @@ function AddGroup(Name) {
 
 function DeleteGroup(groupID) {
     $.ajax({
-        url: '/api/GroupsApi/DeleteGroup',
+        url: '/api/GroupsApi/DeleteGroup/' + groupID,
         type: "DELETE",
-        data: JSON.stringify({ groupID: groupID }),
-        contentType: 'application/json',
         cache: true,
         success: function () {
             setTimeout(() => location.reload(), 250);

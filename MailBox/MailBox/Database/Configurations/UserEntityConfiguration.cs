@@ -25,14 +25,17 @@ namespace MailBox.Database.Configurations
                 .HasMaxLength(30);
 
             builder.HasMany(c => c.CreatedMails)
-                .WithOne(c => c.Sender);
+                .WithOne(c => c.Sender)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasMany(c => c.Groups)
-                .WithOne(c => c.Owner);
+                .WithOne(c => c.Owner)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasOne(c => c.Role)
                 .WithMany(c => c.Users)
                 .IsRequired();
+            
         }
     }
 }

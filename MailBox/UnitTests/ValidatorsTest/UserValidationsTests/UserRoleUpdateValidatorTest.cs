@@ -11,17 +11,17 @@ namespace UnitTests.ValidatorsTest.UserValidationsTests
     public class UserRoleUpdateValidatorTest
     {
         [Fact]
-        public void WhenUserEnableUpdateIsOk_ShouldNotHaveAnyError()
+        public void WhenUserRoleUpdateIsOk_ShouldNotHaveAnyError()
         {
             var validator = new UserRoleUpdateValidator();
             #region Init variables
                 string address = "test@address.com";
-                Role role = new Role { Name = "testname" };
+                string roleName = "User";
             #endregion
             UserRoleUpdate mailReadUpdate = new UserRoleUpdate
             {
                 Address = address,
-                Role = role
+                RoleName = roleName
             };
             var result = validator.TestValidate(mailReadUpdate);
             #region Tests
@@ -30,17 +30,17 @@ namespace UnitTests.ValidatorsTest.UserValidationsTests
         }
 
         [Fact]
-        public void WhenUserEnableUpdateAddressHaveNoAt_ShouldHaveError()
+        public void WhenUserRoleUpdateAddressHaveNoAt_ShouldHaveError()
         {
             var validator = new UserRoleUpdateValidator();
             #region Init variables
                 string address = "testaddress.com";
-                Role role = new Role { Name = "testname"};
+                string roleName = "User";
             #endregion
             UserRoleUpdate mailReadUpdate = new UserRoleUpdate
             {
                 Address = address,
-                Role = role
+                RoleName = roleName
             };
             var result = validator.TestValidate(mailReadUpdate);
             #region Tests
@@ -49,17 +49,17 @@ namespace UnitTests.ValidatorsTest.UserValidationsTests
         }
 
         [Fact]
-        public void WhenUserEnableUpdateAddressHaveNoDomain_ShouldHaveError()
+        public void WhenUserRoleUpdateAddressHaveNoDomain_ShouldHaveError()
         {
             var validator = new UserRoleUpdateValidator();
             #region Init variables
                 string address = "test@address";
-                Role role = new Role { Name = "testname" };
+                string roleName = "User";
             #endregion
             UserRoleUpdate mailReadUpdate = new UserRoleUpdate
             {
                 Address = address,
-                Role = role
+                RoleName = roleName
             };
             var result = validator.TestValidate(mailReadUpdate);
             #region Tests
@@ -68,21 +68,40 @@ namespace UnitTests.ValidatorsTest.UserValidationsTests
         }
 
         [Fact]
-        public void WhenUserEnableUpdateHaveNoRole_ShouldHaveError()
+        public void WhenUserRoleUpdateHaveNoRole_ShouldHaveError()
         {
             var validator = new UserRoleUpdateValidator();
             #region Init variables
                 string address = "test@address.com";
-                Role role = null;
+                string rolename = "";
             #endregion
             UserRoleUpdate mailReadUpdate = new UserRoleUpdate
             {
                 Address = address,
-                Role = role
+                RoleName = rolename
             };
             var result = validator.TestValidate(mailReadUpdate);
             #region Tests
-                result.ShouldHaveValidationErrorFor(x => x.Role);
+                result.ShouldHaveValidationErrorFor(x => x.RoleName);
+            #endregion
+        }
+
+        [Fact]
+        public void WhenUserRoleUpdateHaveWrongRole_ShouldHaveError()
+        {
+            var validator = new UserRoleUpdateValidator();
+            #region Init variables
+            string address = "test@address.com";
+            string rolename = "WrongRole";
+            #endregion
+            UserRoleUpdate mailReadUpdate = new UserRoleUpdate
+            {
+                Address = address,
+                RoleName = rolename
+            };
+            var result = validator.TestValidate(mailReadUpdate);
+            #region Tests
+            result.ShouldHaveValidationErrorFor(x => x.RoleName);
             #endregion
         }
     }
