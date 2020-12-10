@@ -15,14 +15,12 @@ namespace UnitTests.ModelsTest.UserModelsTests
                 string surname = "surname";
                 string address = "test@address.com";
                 string roleName = "testRoleName";
-                bool enable = true;
             #endregion
             UserAdminView userAdminView = new UserAdminView
             {
                 Name = name,
                 Surname = surname,
                 Address = address,
-                Enable = enable,
                 RoleName = roleName
             };
             #region Tests
@@ -31,7 +29,6 @@ namespace UnitTests.ModelsTest.UserModelsTests
                 Assert.Equal(userAdminView.Surname, surname);
                 Assert.Equal(userAdminView.Address, address);
                 Assert.Equal(userAdminView.RoleName, roleName);
-                Assert.Equal(userAdminView.Enable, enable);
             #endregion
         }
     }

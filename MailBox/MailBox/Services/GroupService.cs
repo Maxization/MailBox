@@ -6,26 +6,26 @@ using MailBox.Models.UserModels;
 using MailBox.Database;
 using MailBox.Services.Interfaces;
 using System;
+using Microsoft.EntityFrameworkCore;
 
 namespace MailBox.Services
 {
     public class GroupService : IGroupService
     {
-        private readonly MailBoxDBContext context;
+        private readonly MailBoxDBContext _context;
 
         public GroupService(MailBoxDBContext context)
         {
-            this.context = context;
+            this._context = context;
         }
 
         public List<GroupView> GetUserGroupsList(int userID)
         {
             var groups = new List<GroupView>();
-            var dbGroups = context.Groups.Where(g => g.Owner.ID == userID).ToList();
+            var dbGroups = _context.Groups.Include("GroupUsers.User").Where(g => g.Owner.ID == userID).ToList();
             foreach (var dbG in dbGroups)
             {
-                var dbGroupUsers = context.GroupUsers.Where(gu => gu.GroupID == dbG.ID).ToList();
-                groups.Add(new GroupView { GroupID = dbG.ID, Name = dbG.GroupName, GroupMembers = GetGroupMembers(dbGroupUsers) });
+                groups.Add(new GroupView { GroupID = dbG.ID, Name = dbG.GroupName, GroupMembers = GetGroupMembers(dbG.GroupUsers.ToList()) });
             }
             return groups;
         }
@@ -35,60 +35,63 @@ namespace MailBox.Services
             var groupMembers = new List<UserGlobalView>();
             foreach (var dbGU in dbGroupUsers)
             {
-                var gMember = context.Users.Find(dbGU.UserID);
+                var gMember = dbGU.User;
                 groupMembers.Add(new UserGlobalView { Name = gMember.FirstName, Surname = gMember.LastName, Address = gMember.Email });
             }
             return groupMembers;
         }
 
-        public void ChangeGroupName(GroupNameUpdate gnu)
+        public void UpdateGroupName(GroupNameUpdate groupNameUpdate)
         {
-            Group group = context.Groups.Find(gnu.GroupID);
-            group.GroupName = gnu.Name;
-            context.SaveChanges();
+            Group group = _context.Groups.Where(g => g.ID == groupNameUpdate.GroupID).FirstOrDefault();
+            group.GroupName = groupNameUpdate.Name;
+            _context.SaveChanges();
         }
 
-        public void AddGroup(NewGroup ng, int ownerID)
+        public void AddGroup(int ownerID, NewGroup newGroup)
         {
-            User owner = context.Users.Find(ownerID);
-            Group newGroup = new Group
+            User owner = _context.Users.Where(u => u.ID == ownerID).FirstOrDefault();
+            Group createdGroup = new Group
             {
                 Owner = owner,
-                GroupName = ng.Name
+                GroupName = newGroup.Name
             };
-            context.Groups.Add(newGroup);
-            context.SaveChanges();
+            _context.Groups.Add(createdGroup);
+            _context.SaveChanges();
         }
 
-        public void DeleteGroup(int groupID)
+        public void RemoveGroup(int groupID)
         {
-            Group group = context.Groups.Find(groupID);
-            context.Groups.Remove(group);
-            context.SaveChanges();
+            Group group = _context.Groups.Where(g => g.ID == groupID).FirstOrDefault();
+            _context.Groups.Remove(group);
+            _context.SaveChanges();
         }
 
-        public void AddUserToGroup(GroupMemberUpdate gmu)
+        public void AddUserToGroup(GroupMemberUpdate groupMemberUpdate)
         {
-            User user = context.Users.Where(u => u.Email == gmu.GroupMemberAddress).FirstOrDefault();
+            User user = _context.Users.Include(u => u.GroupUsers).Where(u => u.Email == groupMemberUpdate.GroupMemberAddress).FirstOrDefault();
             if (user == null)
-                throw new Exception("GroupMemberAddress", new Exception("No such user address in database."));
+            { 
+                throw new Exception("GroupMemberAddress", new Exception("No such user address in database.")); 
+            }
+            if (user.GroupUsers.Where(gu => gu.GroupID == groupMemberUpdate.GroupID).Any())
+            {
+                throw new Exception("GroupMemberAddress", new Exception("This user is already in that group."));
+            }
             GroupUser groupUser = new GroupUser
             {
                 UserID = user.ID,
-                GroupID = gmu.GroupID
+                GroupID = groupMemberUpdate.GroupID
             };
-            if (context.GroupUsers.Find(groupUser.GroupID, groupUser.UserID) != null)
-                throw new Exception("GroupMemberAddress", new Exception("This user is already in that group."));
-            context.GroupUsers.Add(groupUser);
-            context.SaveChanges();
+            _context.GroupUsers.Add(groupUser);
+            _context.SaveChanges();
         }
 
-        public void DeleteUserFromGroup(GroupMemberUpdate gmu)
+        public void RemoveUserFromGroup(GroupMemberUpdate groupMemberUpdate)
         {
-            User user = context.Users.Where(u => u.Email == gmu.GroupMemberAddress).AsQueryable().First();
-            GroupUser groupUser = context.GroupUsers.Find(gmu.GroupID, user.ID);
-            context.GroupUsers.Remove(groupUser);
-            context.SaveChanges();
+            GroupUser groupUser = _context.GroupUsers.Include(gu => gu.User).Where(gu => gu.GroupID == groupMemberUpdate.GroupID && gu.User.Email == groupMemberUpdate.GroupMemberAddress).First();
+            _context.GroupUsers.Remove(groupUser);
+            _context.SaveChanges();
         }
     }
 }

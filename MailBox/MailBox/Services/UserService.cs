@@ -9,99 +9,70 @@ namespace MailBox.Services
 {
     public class UserService : IUserService
     {
-        private readonly MailBoxDBContext context;
+        private readonly MailBoxDBContext _context;
 
         public UserService(MailBoxDBContext context)
         {
-            this.context = context;
+            this._context = context;
         }
 
         public List<UserAdminView> GetAdminViewList()
         {
-            var dbUsers = context.Users.Include(u => u.Role).AsQueryable();
+            var dbUsers = _context.Users.Include(u => u.Role).AsQueryable();
             List<UserAdminView> users = new List<UserAdminView>();
             foreach (var dbUser in dbUsers)
             {
-                if(dbUser.Role != null)
                 users.Add(new UserAdminView
                 {
                     Name = dbUser.FirstName,
                     Surname = dbUser.LastName,
                     Address = dbUser.Email,
-                    RoleName = dbUser.Role.RoleName,
-                    Enable = EnableStatusFromRole(dbUser.Role.RoleName)
+                    RoleName = dbUser.Role.RoleName
                 });
-                else
-                {
-                    users.Add(new UserAdminView
-                    {
-                        Name = dbUser.FirstName,
-                        Surname = dbUser.LastName,
-                        Address = dbUser.Email,
-                        RoleName = "Banned",
-                        Enable = false
-                    });
-                }
             }
             return users;
         }
 
-        private bool EnableStatusFromRole(string roleName)
-        {
-            bool enable = false;
-            switch(roleName)
-            {
-                case "New": enable = false; break;
-                case "Banned": enable = false; break;
-                case "Admin": enable = true; break;
-                case "User": enable = true; break;
-            }
-            return enable;
-        }
-
         public List<UserGlobalView> GetGlobalContactList()
         {
-            var dbUsers = context.Users.AsQueryable();
+            var dbUsers = _context.Users.Include(u => u.Role).Where(u => u.Role.RoleName == "User" || u.Role.RoleName == "Admin").AsQueryable();
             List<UserGlobalView> users = new List<UserGlobalView>();
             foreach (var dbUser in dbUsers)
             {
-                if (dbUser.Role == null || dbUser.Role.RoleName == "User" || dbUser.Role.RoleName == "Admin")
-                { users.Add(new UserGlobalView
+                users.Add(new UserGlobalView
                 {
                     Name = dbUser.FirstName,
                     Surname = dbUser.LastName,
                     Address = dbUser.Email
                 });
-                }
             }
             return users;
         }
 
-        public void SetUserRole(UserRoleUpdate userRoleUpdate)
+        public void UpdateUserRole(UserRoleUpdate userRoleUpdate)
         {
-            var user = context.Users.First(u => u.Email == userRoleUpdate.Address);
-            user.Role = context.Roles.First(r => r.RoleName == userRoleUpdate.RoleName);
-            context.SaveChanges();
+            var user = _context.Users.First(u => u.Email == userRoleUpdate.Address);
+            user.Role = _context.Roles.First(r => r.RoleName == userRoleUpdate.RoleName);
+            _context.SaveChanges();
         }
 
-        public void DeleteUser(DeletedUser deletedUser)
+        public void RemoveUser(DeletedUser deletedUser)
         {
-            var transaction = context.Database.BeginTransaction();
+            var transaction = _context.Database.BeginTransaction();
             try
             {
-                var user = context.Users.First(u => u.Email == deletedUser.Address);
-                var groupUsers = context.GroupUsers.Where(gu => gu.UserID == user.ID).AsQueryable();
-                foreach (var groupUser in groupUsers)
+                var user = _context.Users.Include(u => u.GroupUsers).Include(u => u.UserMails).First(u => u.Email == deletedUser.Address);
+                foreach (var groupUser in user.GroupUsers)
                 {
-                    context.GroupUsers.Remove(groupUser);
+                    _context.GroupUsers.Remove(groupUser);
                 }
-                var userMails = context.UserMails.Where(um => um.UserID == user.ID).AsQueryable();
-                foreach (var userMail in userMails)
+                foreach (var userMail in user.UserMails)
                 {
-                    context.UserMails.Remove(userMail);
+                    _context.UserMails.Remove(userMail);
                 }
-                context.Users.Remove(user);
-                context.SaveChanges();
+                _context.Users.Remove(user);
+                _context.SaveChanges();
+
                 transaction.Commit();
             }
             catch (Exception)

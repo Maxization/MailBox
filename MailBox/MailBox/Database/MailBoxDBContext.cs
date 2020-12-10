@@ -7,12 +7,13 @@ namespace MailBox.Database
     public class MailBoxDBContext : DbContext
     {
         public MailBoxDBContext(DbContextOptions<MailBoxDBContext> options) : base(options) { }
-        public DbSet<User> Users { get; set; }
-        public DbSet<Mail> Mails { get; set; }
-        public DbSet<Group> Groups { get; set; }
-        public DbSet<UserRole> Roles { get; set; }
-        public DbSet<UserMail> UserMails { get; set; }
-        public DbSet<GroupUser> GroupUsers { get; set; }
+        public MailBoxDBContext() : base() { }
+        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Mail> Mails { get; set; }
+        public virtual DbSet<Group> Groups { get; set; }
+        public virtual DbSet<UserRole> Roles { get; set; }
+        public virtual DbSet<UserMail> UserMails { get; set; }
+        public virtual DbSet<GroupUser> GroupUsers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

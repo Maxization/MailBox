@@ -33,7 +33,7 @@ namespace MailBox.Controllers.Api
         [HttpPut]
         public IActionResult UpdateUserRole([FromBody] UserRoleUpdate userRoleUpdate)
         {
-            _userService.SetUserRole(userRoleUpdate);
+            _userService.UpdateUserRole(userRoleUpdate);
             return Ok();
         }
 
@@ -41,7 +41,7 @@ namespace MailBox.Controllers.Api
         [HttpDelete]
         public IActionResult DeleteUser([FromBody] DeletedUser deletedUser)
         {
-            _userService.DeleteUser(deletedUser);
+            _userService.RemoveUser(deletedUser);
             return Ok();
         }
     }

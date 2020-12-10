@@ -9,8 +9,8 @@ namespace MailBox.Services
         List<UserGlobalView> GetGlobalContactList();
         List<UserAdminView> GetAdminViewList();
 
-        void SetUserRole(UserRoleUpdate userRoleUpdate);
+        void UpdateUserRole(UserRoleUpdate userRoleUpdate);
 
-        void DeleteUser(DeletedUser deletedUser);
+        void RemoveUser(DeletedUser deletedUser);
     }
 }
