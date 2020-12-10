@@ -16,7 +16,7 @@ namespace MailBox.Services
 
         public GroupService(MailBoxDBContext context)
         {
-            this._context = context;
+            _context = context;
         }
 
         public List<GroupView> GetUserGroupsList(int userID)

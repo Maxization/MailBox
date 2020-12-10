@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using MailBox.Contracts.Responses;
 using MailBox.Models.UserModels;
 using MailBox.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -33,6 +35,14 @@ namespace MailBox.Controllers.Api
         [HttpPut]
         public IActionResult UpdateUserRole([FromBody] UserRoleUpdate userRoleUpdate)
         {
+            ErrorResponse errorResponse = new ErrorResponse();
+            string userEmail = User.Claims.Where(x => x.Type == "emails").First().Value;
+            if (userEmail == userRoleUpdate.Address)
+            {
+                errorResponse.Errors.Add(new ErrorModel { FieldName = "User", Message = "You can't change your role" });
+                Response.StatusCode = 400;
+                return new JsonResult(errorResponse);
+            }
             _userService.UpdateUserRole(userRoleUpdate);
             return Ok();
         }
@@ -41,6 +51,14 @@ namespace MailBox.Controllers.Api
         [HttpDelete]
         public IActionResult DeleteUser([FromBody] DeletedUser deletedUser)
         {
+            ErrorResponse errorResponse = new ErrorResponse();
+            string userEmail = User.Claims.Where(x => x.Type == "emails").First().Value;
+            if(userEmail == deletedUser.Address)
+            {
+                errorResponse.Errors.Add(new ErrorModel { FieldName = "User", Message = "You can't remove yourself" });
+                Response.StatusCode = 400;
+                return new JsonResult(errorResponse);
+            }
             _userService.RemoveUser(deletedUser);
             return Ok();
         }

@@ -4,6 +4,7 @@ var usersList = new Array();
 window.onload += GetAllUsersOnLoad();
 
 function GetAllUsersOnLoad() {
+    usersList = new Array();
     $.getJSON("/api/userapi/adminviewlist", function (result) {
         $.each(result, function (i, field) {
             //$("#container").append("<li>" + field.name + " " + field.surname + " " + field.address + "</li><br/>");
@@ -29,7 +30,7 @@ function SetUserRole(address, roleName) {
             alert(errMess);
         },
         success: function () {
-            setTimeout(() => location.reload(), 250);
+            GetAllUsersOnLoad();
         }
     });
 }
@@ -41,8 +42,15 @@ function DeleteUser(address) {
         data: JSON.stringify({ Address: address }),
         contentType: 'application/json',
         cache: true,
+        error: function (xhr) {
+            var errMess = "";
+            xhr.responseJSON.errors.forEach(function (item, index) {
+                errMess += item.fieldName + ": " + item.message + "\n";
+            });
+            alert(errMess);
+        },
         success: function () {
-            setTimeout(() => location.reload(), 250);
+            GetAllUsersOnLoad();
         }
     });
 }
@@ -83,7 +91,6 @@ function ShowBannedUser(item)
 
 function ShowActiveUser(item)
 {
-    console.log(item);
     $("#active_users").append("<tr><td>" + item.name + "</td><td>" + item.surname + "</td><td>" + item.address +
         "<td><button class=\"btn dropdown-toggle content-center btn-info \" type=\"button\" id=\"dropdownMenuButton\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">" +
         item.role +
