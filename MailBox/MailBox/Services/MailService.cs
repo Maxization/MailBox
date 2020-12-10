@@ -84,7 +84,7 @@ namespace MailBox.Services
                 .ToList();
 
             List<string> recipients = new List<string>();
-            var user = _context.Users.Find(userID);
+            var user = _context.Users.Where(x => x.ID == userID).AsQueryable().ToList().First();
             recipients.Add(user.Email);
             foreach (UserMail um in userMails)
             {
@@ -96,7 +96,7 @@ namespace MailBox.Services
             return recipients;
         }
 
-        public void CreateMail(int userID, NewMail newMail)
+        public void AddMail(int userID, NewMail newMail)
         {
             #region CheckIfEmailExist
             if (newMail.BCCRecipientsAddresses != null)
@@ -184,7 +184,6 @@ namespace MailBox.Services
 
         public void UpdateMailRead(int userID, MailReadUpdate mailRead)
         {
-            Mail mail = _context.Mails.Find(mailRead.MailID);
             UserMail userMail = _context.UserMails.Where(um => um.MailID == mailRead.MailID && um.UserID == userID).First();
             userMail.Read = mailRead.Read;
             _context.SaveChanges();

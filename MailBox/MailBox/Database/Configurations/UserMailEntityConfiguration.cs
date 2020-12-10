@@ -19,7 +19,7 @@ namespace MailBox.Database.Configurations
             builder.HasOne(c => c.User)
                 .WithMany(c => c.UserMails)
                 .HasForeignKey(c => c.UserID)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasOne(c => c.Mail)
                 .WithMany(c => c.UserMails)
