@@ -44,9 +44,9 @@ namespace UnitTests.ServicesTest
             var user10Mais = service.GetUserMails(10);
             var user11Mais = service.GetUserMails(11);
 
-            Assert.Equal(0, user9Mais.Count);
+            Assert.Empty(user9Mais);
             Assert.Equal(5, user10Mais.Count);
-            Assert.Equal(1, user11Mais.Count);
+            Assert.Single(user11Mais);
             Assert.Equal("sender1@address.com", user10Mais[0].Sender.Address);
             Assert.Equal("sender3@address.com", user11Mais[0].Sender.Address);
         }
@@ -112,7 +112,7 @@ namespace UnitTests.ServicesTest
             var user11Mais = service.GetMail(11, 3);
 
             Assert.Equal(2, user10Mais.RecipientsAddresses.Count);
-            Assert.Equal(1, user11Mais.RecipientsAddresses.Count);
+            Assert.Single(user11Mais.RecipientsAddresses);
             Assert.Equal("sender11@address.com", user11Mais.RecipientsAddresses[0]);
             Assert.Equal("sender10@address.com", user10Mais.RecipientsAddresses[0]);
             Assert.Equal("sender11@address.com", user10Mais.RecipientsAddresses[1]);

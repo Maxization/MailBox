@@ -196,7 +196,7 @@ namespace UnitTests.ServicesTest
             var groupList11 = service.GetUserGroupsList(11);
 
             Assert.Equal(2, groupList10.Count);
-            Assert.Equal(1, groupList11.Count);
+            Assert.Single(groupList11);
             Assert.Equal(3, groupList10[0].GroupMembers.Count);
             Assert.Equal(3, groupList10[1].GroupMembers.Count);
             Assert.Equal(3, groupList11[0].GroupMembers.Count);
