@@ -12,6 +12,7 @@ using MailBox.Contracts.Responses;
 namespace MailBox.Controllers
 {
     [Authorize]
+    [Authorize(Policy = "AssignToUser")]
     public class GroupsController : Controller
     {
         private readonly IGroupService groupService;

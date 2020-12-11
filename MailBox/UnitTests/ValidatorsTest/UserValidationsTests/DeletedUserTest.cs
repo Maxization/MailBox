@@ -6,39 +6,35 @@ using MailBox.Models.UserModels;
 
 namespace UnitTests.ValidatorsTest.UserValidationsTests
 {
-    public class UserEnableUpdateValidatorTest
+    public class DeletedUserTest
     {
         [Fact]
-        public void WhenUserEnableUpdateIsOk_ShouldNotHaveAnyError()
+        public void WhenDeletedUserIsOk_ShouldNotHaveAnyError()
         {
-            var validator = new UserEnableUpdateValidator();
+            var validator = new DeletedUserValidator();
             #region Init variables
-                string address = "test@address.com";
-                bool enable = true;
+            string address = "test@address.com";
             #endregion
-            UserEnableUpdate mailReadUpdate = new UserEnableUpdate
+            DeletedUser mailReadUpdate = new DeletedUser
             {
-                Address = address,
-                Enable = enable
+                Address = address
             };
             var result = validator.TestValidate(mailReadUpdate);
             #region Tests
-                result.ShouldNotHaveAnyValidationErrors();
+            result.ShouldNotHaveAnyValidationErrors();
             #endregion
         }
 
         [Fact]
-        public void WhenUserEnableUpdateAddressHaveNoAt_ShouldHaveError()
+        public void WhenDeletedUserAddressHaveNoAt_ShouldHaveError()
         {
-            var validator = new UserEnableUpdateValidator();
+            var validator = new DeletedUserValidator();
             #region Init variables
                 string address = "testaddress.com";
-                bool enable = true;
             #endregion
-            UserEnableUpdate mailReadUpdate = new UserEnableUpdate
+            DeletedUser mailReadUpdate = new DeletedUser
             {
-                Address = address,
-                Enable = enable
+                Address = address
             };
             var result = validator.TestValidate(mailReadUpdate);
             #region Tests
@@ -47,17 +43,15 @@ namespace UnitTests.ValidatorsTest.UserValidationsTests
         }
 
         [Fact]
-        public void WhenUserEnableUpdateAddressHaveNoDomain_ShouldHaveError()
+        public void WhenDeletedUserAddressHaveNoDomain_ShouldHaveError()
         {
-            var validator = new UserEnableUpdateValidator();
+            var validator = new DeletedUserValidator();
             #region Init variables
                 string address = "test@address";
-                bool enable = true;
             #endregion
-            UserEnableUpdate mailReadUpdate = new UserEnableUpdate
+            DeletedUser mailReadUpdate = new DeletedUser
             {
-                Address = address,
-                Enable = enable
+                Address = address
             };
             var result = validator.TestValidate(mailReadUpdate);
             #region Tests

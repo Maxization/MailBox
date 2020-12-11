@@ -1,9 +1,8 @@
 
 namespace MailBox.Models.UserModels
 {
-    public class UserEnableUpdate
+    public class DeletedUser
     {
         public string Address { get; set; }
-        public bool Enable { get; set; }
     }
 }

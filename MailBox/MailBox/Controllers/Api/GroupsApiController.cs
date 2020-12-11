@@ -35,7 +35,7 @@ namespace MailBox.Controllers.Api
         [HttpPut]
         public IActionResult ChangeGroupName([FromBody] GroupNameUpdate groupNameUpdate)
         {
-            groupService.ChangeGroupName(groupNameUpdate);
+            groupService.UpdateGroupName(groupNameUpdate);
             return Ok();
         }
 
@@ -43,15 +43,14 @@ namespace MailBox.Controllers.Api
         public IActionResult AddGroup([FromBody] NewGroup newGroup)
         {
             int userID = int.Parse(User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
-            groupService.AddGroup(newGroup, userID);
+            groupService.AddGroup(userID, newGroup);
             return Ok();
         }
 
-        [HttpDelete]
-        public IActionResult DeleteGroup([FromBody] int groupID)
+        [HttpDelete("{groupID}")]
+        public IActionResult DeleteGroup(int groupID)
         {
-            groupService.DeleteGroup(groupID);
-
+            groupService.RemoveGroup(groupID);
             return Ok();
         }
 
@@ -74,7 +73,7 @@ namespace MailBox.Controllers.Api
         [HttpDelete]
         public IActionResult DeleteUserFromGroup([FromBody] GroupMemberUpdate groupMemberUpdate)
         {
-            groupService.DeleteUserFromGroup(groupMemberUpdate);
+            groupService.RemoveUserFromGroup(groupMemberUpdate);
             return Ok();
         }
     }
