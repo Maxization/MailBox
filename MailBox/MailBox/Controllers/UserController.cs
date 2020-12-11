@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace MailBox.Controllers
 {
-    [Authorize]
+    [Authorize(Policy = "AssignToUser")]
     public class UserController : Controller
     {
         private readonly IUserService _userService;
@@ -15,14 +15,17 @@ namespace MailBox.Controllers
             _userService = userService;
         }
 
+        [Authorize(Policy = "AssignToUser")]
         public IActionResult Index()
         {
             return View("GlobalList");
         }
 
-        public IActionResult GlobalList()
+        [Authorize(Policy = "AssignToAdmin")]
+        public IActionResult AdminPanel()
         {
-            return Json(_userService.GetGlobalContactList());
+            return View();
         }
+
     }
 }

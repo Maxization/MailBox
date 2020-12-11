@@ -4,24 +4,21 @@ using MailBox.Models.UserModels;
 
 namespace UnitTests.ModelsTest.UserModelsTests
 {
-    public class UserEnableUpdateTest
+    public class DeletedUserTest
     {
         [Fact]
         public void ConstructorTest()
         {
             #region Init variables
                 string address = "test@address.com";
-                bool enable = false;
             #endregion
-            UserEnableUpdate userEnableUpdate = new UserEnableUpdate
+            DeletedUser userEnableUpdate = new DeletedUser
             {
-                Address = address,
-                Enable = enable
+                Address = address
             };
             #region Tests
                 Assert.NotNull(userEnableUpdate);
                 Assert.Equal(userEnableUpdate.Address, address);
-                Assert.Equal(userEnableUpdate.Enable, enable);
             #endregion
         }
     }

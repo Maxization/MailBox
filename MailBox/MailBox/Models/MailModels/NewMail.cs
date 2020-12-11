@@ -10,6 +10,5 @@ namespace MailBox.Models.MailModels
         public List<string> BCCRecipientsAddresses { get; set; }
         public string Topic { get; set; }
         public string Text { get; set; }
-        public DateTime Date { get; set; }
     }
 }

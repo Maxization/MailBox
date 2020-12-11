@@ -81,10 +81,10 @@ namespace MailBox.Services
             var userMails = _context.UserMails
                 .Include(x => x.User)
                 .Where(x => x.MailID == mailID)
-                .AsQueryable();
+                .ToList();
 
             List<string> recipients = new List<string>();
-            var user = _context.Users.Find(userID);
+            var user = _context.Users.Where(x => x.ID == userID).AsQueryable().ToList().First();
             recipients.Add(user.Email);
             foreach (UserMail um in userMails)
             {
@@ -96,8 +96,9 @@ namespace MailBox.Services
             return recipients;
         }
 
-        public void CreateMail(int userID, NewMail newMail)
+        public void AddMail(int userID, NewMail newMail)
         {
+            #region CheckIfEmailExist
             if (newMail.BCCRecipientsAddresses != null)
                 newMail.BCCRecipientsAddresses = newMail.BCCRecipientsAddresses.Distinct().ToList();
             if (newMail.CCRecipientsAddresses != null)
@@ -106,9 +107,7 @@ namespace MailBox.Services
             var users = _context.Users.ToList();
             List<string> emails = new List<string>();
             foreach (User usr in users)
-            {
                 emails.Add(usr.Email);
-            }
 
             if (newMail.BCCRecipientsAddresses != null)
                 foreach (string email in newMail.BCCRecipientsAddresses)
@@ -123,6 +122,7 @@ namespace MailBox.Services
                     if (!emails.Contains(email))
                         throw new Exception("CCRecipientsAddresses", new Exception("No such email in global contacts list."));
                 }
+            #endregion
 
             var transaction = _context.Database.BeginTransaction();
 
@@ -159,7 +159,7 @@ namespace MailBox.Services
                     foreach (string email in newMail.BCCRecipientsAddresses)
                     {
                         usr = _context.Users.Where(x => x.Email == email).FirstOrDefault();
-                        if (usr == null || newMail.CCRecipientsAddresses.Contains(email))
+                        if (usr == null || (newMail.CCRecipientsAddresses != null && newMail.CCRecipientsAddresses.Contains(email)))
                             continue;
                         UserMail um = new UserMail
                         {
@@ -182,11 +182,10 @@ namespace MailBox.Services
 
         }
 
-        public void UpdateMailRead(int userID, MailReadUpdate mailReadUpdate)
+        public void UpdateMailRead(int userID, MailReadUpdate mailRead)
         {
-            Mail mail = _context.Mails.Find(mailReadUpdate.MailID);
-            UserMail userMail = _context.UserMails.Where(um => um.MailID == mailReadUpdate.MailID && um.UserID == userID).First();
-            userMail.Read = mailReadUpdate.Read;
+            UserMail userMail = _context.UserMails.Where(um => um.MailID == mailRead.MailID && um.UserID == userID).First();
+            userMail.Read = mailRead.Read;
             _context.SaveChanges();
         }
     }
