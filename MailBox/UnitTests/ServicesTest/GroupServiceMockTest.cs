@@ -73,7 +73,6 @@ namespace UnitTests.ServicesTest
             var users = GetSampeUsers().AsQueryable();
             var groupsUsers = GetSampleGroupUsers().AsQueryable();
 
-
             var mockUsersSet = new Mock<DbSet<User>>();
             mockUsersSet.As<IQueryable<User>>().Setup(m => m.Provider).Returns(users.Provider);
             mockUsersSet.As<IQueryable<User>>().Setup(m => m.Expression).Returns(users.Expression);
@@ -200,6 +199,7 @@ namespace UnitTests.ServicesTest
         private List<GroupUser> GetSampleGroupUsers()
         {
             List<GroupUser> groupUsers = new List<GroupUser>();
+
             foreach (GroupUser groupUser in GetSampleGroup0Users())
             {
                 groupUsers.Add(groupUser);

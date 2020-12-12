@@ -49,6 +49,7 @@ namespace MailBox.Controllers.Api
         {
             ErrorResponse errorResponse = new ErrorResponse();
             string userEmail = User.Claims.Where(x => x.Type == "emails").First().Value;
+
             if (userEmail == deletedUser.Address)
             {
                 errorResponse.Errors.Add(new ErrorModel { FieldName = "User", Message = "You can't remove yourself" });

@@ -1,4 +1,4 @@
-﻿
+
 using MailBox.Database;
 using MailBox.Models.UserModels;
 using MailBox.Services;
@@ -98,7 +98,6 @@ namespace UnitTests.ServicesTest
             mockContext.Verify(m => m.SaveChanges(), Times.Once());
         }
 
-
         private List<UserRole> GetSampleUserRoles()
         {
             List<UserRole> userRoles = new List<UserRole>();
@@ -128,8 +127,6 @@ namespace UnitTests.ServicesTest
                 });
             return userRoles;
         }
-
-
 
         private List<User> GetSampleUsers()
         {

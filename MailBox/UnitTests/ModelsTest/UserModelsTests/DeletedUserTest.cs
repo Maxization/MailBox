@@ -10,15 +10,15 @@ namespace UnitTests.ModelsTest.UserModelsTests
         public void ConstructorTest()
         {
             #region Init variables
-            string address = "test@address.com";
+                string address = "test@address.com";
             #endregion
             DeletedUser userEnableUpdate = new DeletedUser
             {
                 Address = address
             };
             #region Tests
-            Assert.NotNull(userEnableUpdate);
-            Assert.Equal(userEnableUpdate.Address, address);
+                Assert.NotNull(userEnableUpdate);
+                Assert.Equal(userEnableUpdate.Address, address);
             #endregion
         }
     }

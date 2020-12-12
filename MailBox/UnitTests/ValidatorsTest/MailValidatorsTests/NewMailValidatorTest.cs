@@ -227,6 +227,5 @@ namespace UnitTests
             result.ShouldHaveValidationErrorFor(x => x.BCCRecipientsAddresses);
             #endregion
         }
-
     }
 }
