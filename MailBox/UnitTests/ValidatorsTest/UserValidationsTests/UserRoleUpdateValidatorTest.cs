@@ -3,8 +3,6 @@ using Xunit;
 using FluentValidation.TestHelper;
 using MailBox.Validators.UserValidators;
 using MailBox.Models.UserModels;
-using System.Text;
-using MailBox.Models;
 
 namespace UnitTests.ValidatorsTest.UserValidationsTests
 {
@@ -82,11 +80,7 @@ namespace UnitTests.ValidatorsTest.UserValidationsTests
             };
             var result = validator.TestValidate(mailReadUpdate);
             #region Tests
-<<<<<<< HEAD
-                result.ShouldHaveValidationErrorFor(x => x.RoleName);
-=======
             result.ShouldHaveValidationErrorFor(x => x.RoleName);
->>>>>>> temporary
             #endregion
         }
 
@@ -104,6 +98,9 @@ namespace UnitTests.ValidatorsTest.UserValidationsTests
                 RoleName = rolename
             };
             var result = validator.TestValidate(mailReadUpdate);
+            #region Tests
+            result.ShouldHaveValidationErrorFor(x => x.RoleName);
+            #endregion
         }
     }
 }
