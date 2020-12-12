@@ -4,9 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using MailBox.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
-using MailBox.Models.MailModels;
-using System;
-using MailBox.Contracts.Responses;
 
 namespace MailBox.Controllers
 {
@@ -17,15 +14,14 @@ namespace MailBox.Controllers
     {
         private readonly IMailService _mailService;
 
-        public MailController(IMailService userService)
+        public MailController(IMailService mailService)
         {
-            _mailService = userService;
+            _mailService = mailService;
         }
 
-        public IActionResult Index()
+        public IActionResult Inbox()
         {
             int userID = int.Parse(User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
-            ViewData["Mails"] = _mailService.GetUserMails(userID);
             return View();
         }
 
@@ -42,7 +38,5 @@ namespace MailBox.Controllers
         {
             return View();
         }
-
-
     }
 }

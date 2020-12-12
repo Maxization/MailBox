@@ -13,7 +13,7 @@ function ChangeReadStatus(MailID, Read) {
     };
 
     $.ajax({
-        url: 'api/mailapi/updateread',
+        url: '/api/mailapi/updateread',
         type: "PUT",
         data: JSON.stringify(dataToSend),
         contentType: 'application/json',
@@ -65,7 +65,7 @@ function DisplayMailsList() {
 }
 
 function GetMailsOnLoad() {
-    $.getJSON("api/mailapi/getmails", function (result) {
+    $.getJSON("/api/mailapi/getmails", function (result) {
         $.each(result, function (i, field) {
             var user = { name: field.sender.name, surname: field.sender.surname, address: field.sender.address };
             var recipients = new Array();

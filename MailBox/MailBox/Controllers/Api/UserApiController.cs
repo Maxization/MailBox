@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿
 using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
 using MailBox.Contracts.Responses;
 using MailBox.Models.UserModels;
 using MailBox.Services;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MailBox.Controllers.Api
@@ -53,7 +49,7 @@ namespace MailBox.Controllers.Api
         {
             ErrorResponse errorResponse = new ErrorResponse();
             string userEmail = User.Claims.Where(x => x.Type == "emails").First().Value;
-            if(userEmail == deletedUser.Address)
+            if (userEmail == deletedUser.Address)
             {
                 errorResponse.Errors.Add(new ErrorModel { FieldName = "User", Message = "You can't remove yourself" });
                 Response.StatusCode = 400;

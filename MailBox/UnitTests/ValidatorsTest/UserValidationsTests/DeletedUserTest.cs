@@ -30,7 +30,7 @@ namespace UnitTests.ValidatorsTest.UserValidationsTests
         {
             var validator = new DeletedUserValidator();
             #region Init variables
-                string address = "testaddress.com";
+            string address = "testaddress.com";
             #endregion
             DeletedUser mailReadUpdate = new DeletedUser
             {
@@ -38,7 +38,7 @@ namespace UnitTests.ValidatorsTest.UserValidationsTests
             };
             var result = validator.TestValidate(mailReadUpdate);
             #region Tests
-                result.ShouldHaveValidationErrorFor(x => x.Address);
+            result.ShouldHaveValidationErrorFor(x => x.Address);
             #endregion
         }
 
@@ -47,7 +47,7 @@ namespace UnitTests.ValidatorsTest.UserValidationsTests
         {
             var validator = new DeletedUserValidator();
             #region Init variables
-                string address = "test@address";
+            string address = "test@address";
             #endregion
             DeletedUser mailReadUpdate = new DeletedUser
             {
@@ -55,7 +55,7 @@ namespace UnitTests.ValidatorsTest.UserValidationsTests
             };
             var result = validator.TestValidate(mailReadUpdate);
             #region Tests
-                result.ShouldHaveValidationErrorFor(x => x.Address);
+            result.ShouldHaveValidationErrorFor(x => x.Address);
             #endregion
         }
     }

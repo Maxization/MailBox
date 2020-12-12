@@ -12,9 +12,9 @@ namespace UnitTests.ModelsTest.GroupModelsTest
         public void ConstructorTest()
         {
             #region Init variables
-                int groupID = 0;
-                string name = "testname";
-                List<UserGlobalView> groupMembers = new List<UserGlobalView>();
+            int groupID = 0;
+            string name = "testname";
+            List<UserGlobalView> groupMembers = new List<UserGlobalView>();
             #endregion
             GroupView groupView = new GroupView
             {
@@ -23,10 +23,10 @@ namespace UnitTests.ModelsTest.GroupModelsTest
                 GroupMembers = groupMembers
             };
             #region Tests
-                Assert.NotNull(groupView);
-                Assert.Equal(groupView.GroupID, groupID);
-                Assert.Equal(groupView.Name, name);
-                Assert.Equal(groupView.GroupMembers, groupMembers);
+            Assert.NotNull(groupView);
+            Assert.Equal(groupView.GroupID, groupID);
+            Assert.Equal(groupView.Name, name);
+            Assert.Equal(groupView.GroupMembers, groupMembers);
             #endregion
         }
     }

@@ -13,8 +13,8 @@ namespace UnitTests
         {
             var validator = new GroupNameUpdateValidator();
             #region Init variables
-                int groupID = 0;
-                string name = "testname";
+            int groupID = 0;
+            string name = "testname";
             #endregion
             GroupNameUpdate groupNameUpdate = new GroupNameUpdate
             {
@@ -23,7 +23,7 @@ namespace UnitTests
             };
             var result = validator.TestValidate(groupNameUpdate);
             #region Tests
-                result.ShouldNotHaveAnyValidationErrors();
+            result.ShouldNotHaveAnyValidationErrors();
             #endregion
         }
 
@@ -32,8 +32,8 @@ namespace UnitTests
         {
             var validator = new GroupNameUpdateValidator();
             #region Init variables
-                int groupID = 0;
-                string name = "";
+            int groupID = 0;
+            string name = "";
             #endregion
             GroupNameUpdate groupNameUpdate = new GroupNameUpdate
             {
@@ -42,7 +42,7 @@ namespace UnitTests
             };
             var result = validator.TestValidate(groupNameUpdate);
             #region Tests
-                result.ShouldHaveValidationErrorFor(x => x.Name);
+            result.ShouldHaveValidationErrorFor(x => x.Name);
             #endregion
         }
     }

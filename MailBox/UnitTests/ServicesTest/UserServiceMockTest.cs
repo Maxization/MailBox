@@ -1,14 +1,11 @@
-﻿using Autofac.Extras.Moq;
+﻿
 using MailBox.Database;
 using MailBox.Models.UserModels;
 using MailBox.Services;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using Moq;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Xunit;
 
 namespace UnitTests.ServicesTest

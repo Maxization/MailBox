@@ -3,6 +3,96 @@
 
 // Write your JavaScript code.
 
+var groupsToManage = new Array();
+
+window.onload += ShowGroupsManagementInterfaceOnLoad();
+
+function ShowGroupsManagementInterfaceOnLoad() {
+    groupsToManage = new Array();
+    $.getJSON("/api/GroupsApi/GetUserGroupsListAsJson", function (result) {
+        $.each(result, function (i, g) {
+            var GroupMembers = new Array();
+            $.each(g.groupMembers, function (j, gm) {
+                var member = { Name: gm.name, Surname: gm.surname, Address: gm.address };
+                GroupMembers.push(member);
+            })
+            var Group = { GroupID: g.groupID, Name: g.name, GroupMembers: GroupMembers };
+            groupsToManage.push(Group);
+        });
+        ShowGroupsManagementInterface();
+    });
+}
+
+function ShowGroupsManagementInterface() {
+    $("#managementinterface").empty();
+    groupsToManage.forEach(function (g, i) {
+        var gmid = "gm-" + g.GroupID;
+        $("#managementinterface").append(
+            "<div class=\"container-group no-gutters\" style=\"max-height: 200px\">"
+            + "<div class=\"row no-gutters\">"
+            + "<div class=\"col-3\">"
+            + "<h5>"
+            + g.Name
+            + "</h5>"
+            + "</div>"
+            + "<div class=\"col-1\"></div>"
+            + "<div class=\"col-3\">"
+            + "<input id=\"NewGroupName-" + g.GroupID + "\" type=\"text\" class=\"form-control input-new_folder\" value=\"" + g.Name + "\" aria-label=\"Recipient's username\" aria-describedby=\"basic-addon2\">"
+            + "</div>"
+            + "<div class=\"col-2\">"
+            + "<button onclick=\"ChangeGroupName(document.getElementById('NewGroupName-" + g.GroupID + "').value, " + g.GroupID + ") \" class=\"add-button\">change name</button>"
+            + "</div>"
+            + "<div class=\"col-2\"></div>"
+            + "<div class=\"col-1\">"
+            + "<button onclick=\"DeleteGroup(" + g.GroupID + ") \" class=\"delete-button\">X</button>"
+            + "</div>"
+            + "</div>"
+            + "<hr />"
+            + "<div id=\"" + gmid + "\" class=\"container-contacts overflow-auto\" style=\"max-height: 100px\"></div>"
+            + "<div class=\"row no-gutters\">"
+            + "<div class=\"col-8 no-gutters\">"
+            + "<input id=\"GroupMemberAddress-" + g.GroupID + "\" type=\"text\" class=\"form-control input-new_folder\" placeholder=\" Type new member...\" aria-label=\"Recipient's username\" aria-describedby=\"basic-addon2\">"
+            + "</div>"
+            + "<div class=\"col-1 no-gutters\">"
+            + "<button onclick=\"AddUserToGroup(document.getElementById('GroupMemberAddress-" + g.GroupID + "').value, " + g.GroupID + ") \" class=\"add-button\">+</button>"
+            + "</div>"
+            + "</div>"
+            + "</div>"
+        );
+        var div = document.getElementById(gmid);
+        g.GroupMembers.forEach(function (gm, j) {
+            div.innerHTML += (
+                "<div class=\"container-group-elem\">"
+                + "<div class=\"row no-gutters\">"
+                + "<div class=\"col-11 no-gutters\">"
+                + "<div class=\"row no-gutters\">"
+                + "<div class=\"col-3\">"
+                + "<span class=\"span-data\">"
+                + gm.Name
+                + "</span>"
+                + "</div>"
+                + "<div class=\"col-3\">"
+                + "<span class=\"span-data\">"
+                + gm.Surname
+                + "</span >"
+                + "</div>"
+                + "<div class=\"col-6\">"
+                + "<span id=\"" + g.GroupID + "-" + gm.Address + "\" class=\"span-data\">"
+                + gm.Address
+                + "</span>"
+                + "</div>"
+                + "</div>"
+                + "</div>"
+                + "<div class=\"col-1 no-gutters\">"
+                + "<button onclick=\"DeleteUserFromGroup(document.getElementById('" + g.GroupID + "-" + gm.Address + "').textContent, " + g.GroupID + ")\" class=\"delete-button\">X</button>"
+                + "</div>"
+                + "</div>"
+                + "</div>"
+            );
+        });
+    });
+}
+
 function ChangeGroupName(Name, GroupID) {
     $.ajax({
         url: '/api/GroupsApi/ChangeGroupName',
@@ -18,7 +108,8 @@ function ChangeGroupName(Name, GroupID) {
             alert(errMess);
         },
         success: function () {
-            setTimeout(() => location.reload(), 250);
+            GetGroupsOnLoad();
+            ShowGroupsManagementInterfaceOnLoad();
         }
     });
 }
@@ -37,7 +128,10 @@ function AddGroup(Name) {
             });
         },
         success: function () {
-            setTimeout(() => location.reload(), 250);
+            GetGroupsOnLoad();
+            ShowGroupsManagementInterfaceOnLoad();
+            var input = document.getElementById("newGroupName");
+            input.value = "";
         }
     });
 }
@@ -48,7 +142,8 @@ function DeleteGroup(groupID) {
         type: "DELETE",
         cache: true,
         success: function () {
-            setTimeout(() => location.reload(), 250);
+            GetGroupsOnLoad();
+            ShowGroupsManagementInterfaceOnLoad();
         }
     });
 }
@@ -68,7 +163,8 @@ function AddUserToGroup(GroupMemberAddress, GroupID) {
             alert(errMess);
         },
         success: function () {
-            setTimeout(() => location.reload(), 250);
+            GetGroupsOnLoad();
+            ShowGroupsManagementInterfaceOnLoad();
         }
     });
 }
@@ -81,7 +177,8 @@ function DeleteUserFromGroup(GroupMemberAddress, GroupID) {
         contentType: 'application/json',
         cache: true,
         success: function () {
-            setTimeout(() => location.reload(), 250);
+            GetGroupsOnLoad();
+            ShowGroupsManagementInterfaceOnLoad();
         }
     });
 }

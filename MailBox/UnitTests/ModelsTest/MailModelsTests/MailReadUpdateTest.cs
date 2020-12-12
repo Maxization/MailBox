@@ -10,8 +10,8 @@ namespace UnitTests.ModelsTest.MailModelsTest
         public void ConstructorTest()
         {
             #region Init variables
-                int mailID = 0;
-                bool read = true;
+            int mailID = 0;
+            bool read = true;
             #endregion
             MailReadUpdate mailReadUpdate = new MailReadUpdate
             {
@@ -19,9 +19,9 @@ namespace UnitTests.ModelsTest.MailModelsTest
                 Read = read
             };
             #region Tests
-                Assert.NotNull(mailReadUpdate);
-                Assert.Equal(mailReadUpdate.MailID, mailID);
-                Assert.Equal(mailReadUpdate.Read, read);
+            Assert.NotNull(mailReadUpdate);
+            Assert.Equal(mailReadUpdate.MailID, mailID);
+            Assert.Equal(mailReadUpdate.Read, read);
             #endregion
         }
     }
