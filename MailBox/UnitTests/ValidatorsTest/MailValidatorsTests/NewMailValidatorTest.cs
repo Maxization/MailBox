@@ -39,17 +39,10 @@ namespace UnitTests
         {
             var validator = new NewMailValidator();
             #region Init variables
-<<<<<<< HEAD
-                List<string> CCRecipientsAddresses = new List<string> { "test@address.com" };
-                List<string> BCCRecipientsAddresses = new List<string>();
-                string topic = "testtopic";
-                string text = "testtext";
-=======
             List<string> CCRecipientsAddresses = new List<string> { "test@address.com" };
             List<string> BCCRecipientsAddresses = new List<string>();
             string topic = "testtopic";
             string text = "testtext";
->>>>>>> temporary
             #endregion
             NewMail newMail = new NewMail
             {
