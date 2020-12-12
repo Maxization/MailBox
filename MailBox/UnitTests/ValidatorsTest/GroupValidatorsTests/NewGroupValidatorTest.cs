@@ -13,7 +13,7 @@ namespace UnitTests
         {
             var validator = new NewGroupValidator();
             #region Init variables
-                string name = "testname";
+            string name = "testname";
             #endregion
             NewGroup newGroup = new NewGroup
             {
@@ -21,7 +21,7 @@ namespace UnitTests
             };
             var result = validator.TestValidate(newGroup);
             #region Tests
-                result.ShouldNotHaveAnyValidationErrors();
+            result.ShouldNotHaveAnyValidationErrors();
             #endregion
         }
 
@@ -30,7 +30,7 @@ namespace UnitTests
         {
             var validator = new NewGroupValidator();
             #region Init variables
-                string name = "";
+            string name = "";
             #endregion
             NewGroup newGroup = new NewGroup
             {
@@ -38,7 +38,7 @@ namespace UnitTests
             };
             var result = validator.TestValidate(newGroup);
             #region Tests
-                result.ShouldHaveValidationErrorFor(x => x.Name);
+            result.ShouldHaveValidationErrorFor(x => x.Name);
             #endregion
         }
     }

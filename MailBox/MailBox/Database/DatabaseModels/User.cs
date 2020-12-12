@@ -12,7 +12,7 @@ namespace MailBox.Database
         public UserRole Role { get; set; }
 
         public ICollection<Mail> CreatedMails { get; set; }
-        public ICollection<UserMail> UserMails  { get; set; }
+        public ICollection<UserMail> UserMails { get; set; }
         public ICollection<Group> Groups { get; set; }
         public ICollection<GroupUser> GroupUsers { get; set; }
 

@@ -71,8 +71,8 @@ namespace MailBox.Services
         {
             User user = _context.Users.Include(u => u.GroupUsers).Where(u => u.Email == groupMemberUpdate.GroupMemberAddress).FirstOrDefault();
             if (user == null)
-            { 
-                throw new Exception("GroupMemberAddress", new Exception("No such user address in database.")); 
+            {
+                throw new Exception("GroupMemberAddress", new Exception("No such user address in database."));
             }
             if (user.GroupUsers.Where(gu => gu.GroupID == groupMemberUpdate.GroupID).Any())
             {

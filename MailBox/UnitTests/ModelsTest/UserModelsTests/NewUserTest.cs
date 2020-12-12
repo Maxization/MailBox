@@ -10,9 +10,9 @@ namespace UnitTests.ModelsTest.UserModelsTests
         public void ConstructorTest()
         {
             #region Init variables
-                string name = "testname";
-                string surname = "surname";
-                string address = "test@address.com";
+            string name = "testname";
+            string surname = "surname";
+            string address = "test@address.com";
             #endregion
             NewUser newUser = new NewUser
             {
@@ -21,10 +21,10 @@ namespace UnitTests.ModelsTest.UserModelsTests
                 Address = address
             };
             #region Tests
-                Assert.NotNull(newUser);
-                Assert.Equal(newUser.Name, name);
-                Assert.Equal(newUser.Surname, surname);
-                Assert.Equal(newUser.Address, address);
+            Assert.NotNull(newUser);
+            Assert.Equal(newUser.Name, name);
+            Assert.Equal(newUser.Surname, surname);
+            Assert.Equal(newUser.Address, address);
             #endregion
         }
     }

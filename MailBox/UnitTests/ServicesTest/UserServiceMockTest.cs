@@ -1,14 +1,11 @@
-﻿using Autofac.Extras.Moq;
+
 using MailBox.Database;
 using MailBox.Models.UserModels;
 using MailBox.Services;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using Moq;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Xunit;
 
 namespace UnitTests.ServicesTest
@@ -101,7 +98,6 @@ namespace UnitTests.ServicesTest
             mockContext.Verify(m => m.SaveChanges(), Times.Once());
         }
 
-
         private List<UserRole> GetSampleUserRoles()
         {
             List<UserRole> userRoles = new List<UserRole>();
@@ -131,8 +127,6 @@ namespace UnitTests.ServicesTest
                 });
             return userRoles;
         }
-
-
 
         private List<User> GetSampleUsers()
         {

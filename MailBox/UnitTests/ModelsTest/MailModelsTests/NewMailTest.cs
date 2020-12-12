@@ -1,5 +1,4 @@
 ﻿
-using System;
 using Xunit;
 using System.Collections.Generic;
 using MailBox.Models.MailModels;
@@ -11,7 +10,6 @@ namespace UnitTests.ModelsTest.MailModelsTest
         [Fact]
         public void ConstructorTest()
         {
-            
             #region Init variables
             List<string> CCRecipientsAddresses = new List<string>();
             List<string> BCCRecipientsAddresses = new List<string>();

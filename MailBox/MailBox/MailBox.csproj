@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="wwwroot\js\adminPanel.js">
+    <Content Update="wwwroot\js\adminpanel.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="wwwroot\js\groups.js">

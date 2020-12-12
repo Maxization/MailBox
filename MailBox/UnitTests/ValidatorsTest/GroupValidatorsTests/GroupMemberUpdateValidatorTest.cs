@@ -13,8 +13,8 @@ namespace UnitTests
         {
             var validator = new GroupMemberUpdateValidator();
             #region Init variables
-                int groupID = 0;
-                string address = "wrogaddress.pl";
+            int groupID = 0;
+            string address = "wrogaddress.pl";
             #endregion
             GroupMemberUpdate groupMemberUpdate = new GroupMemberUpdate
             {
@@ -23,7 +23,7 @@ namespace UnitTests
             };
             var result = validator.TestValidate(groupMemberUpdate);
             #region Tests
-                result.ShouldHaveValidationErrorFor(x => x.GroupMemberAddress);
+            result.ShouldHaveValidationErrorFor(x => x.GroupMemberAddress);
             #endregion
         }
 
@@ -32,8 +32,8 @@ namespace UnitTests
         {
             var validator = new GroupMemberUpdateValidator();
             #region Init variables
-                int groupID = 0;
-                string address = "wroga@ddresspl";
+            int groupID = 0;
+            string address = "wroga@ddresspl";
             #endregion
             GroupMemberUpdate groupMemberUpdate = new GroupMemberUpdate
             {
@@ -42,7 +42,7 @@ namespace UnitTests
             };
             var result = validator.TestValidate(groupMemberUpdate);
             #region Tests
-                result.ShouldHaveValidationErrorFor(x => x.GroupMemberAddress);
+            result.ShouldHaveValidationErrorFor(x => x.GroupMemberAddress);
             #endregion
         }
 
@@ -51,8 +51,8 @@ namespace UnitTests
         {
             var validator = new GroupMemberUpdateValidator();
             #region Init variables
-                int groupID = 0;
-                string address = "test@address.pl";
+            int groupID = 0;
+            string address = "test@address.pl";
             #endregion
             GroupMemberUpdate groupMemberUpdate = new GroupMemberUpdate
             {
@@ -61,7 +61,7 @@ namespace UnitTests
             };
             var result = validator.TestValidate(groupMemberUpdate);
             #region Tests
-                result.ShouldNotHaveAnyValidationErrors();
+            result.ShouldNotHaveAnyValidationErrors();
             #endregion
         }
     }

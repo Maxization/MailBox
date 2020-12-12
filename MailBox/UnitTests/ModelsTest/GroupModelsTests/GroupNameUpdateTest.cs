@@ -10,8 +10,8 @@ namespace UnitTests.ModelsTest.GroupModelsTest
         public void ConstructorTest()
         {
             #region Init variables
-                int groupID = 0;
-                string name = "testname";
+            int groupID = 0;
+            string name = "testname";
             #endregion
             GroupNameUpdate groupUpdate = new GroupNameUpdate
             {
@@ -19,9 +19,9 @@ namespace UnitTests.ModelsTest.GroupModelsTest
                 GroupID = groupID
             };
             #region Tests
-                Assert.NotNull(groupUpdate);
-                Assert.Equal(groupUpdate.GroupID, groupID);
-                Assert.Equal(groupUpdate.Name, name);
+            Assert.NotNull(groupUpdate);
+            Assert.Equal(groupUpdate.GroupID, groupID);
+            Assert.Equal(groupUpdate.Name, name);
             #endregion
         }
     }
