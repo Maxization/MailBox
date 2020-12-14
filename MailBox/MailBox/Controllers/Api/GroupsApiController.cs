@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿
+using System;
 using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
 using MailBox.Contracts.Responses;
 using MailBox.Models.GroupModels;
 using MailBox.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MailBox.Controllers.Api

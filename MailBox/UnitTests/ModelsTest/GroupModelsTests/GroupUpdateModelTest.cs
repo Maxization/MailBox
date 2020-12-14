@@ -9,10 +9,10 @@ namespace UnitTests.ModelsTest.GroupModelsTest
         [Fact]
         public void ConstructorTest()
         {
-            
+
             #region Init variables
-                int groupID = 0;
-                string groupMemberAddress = "test@address.com";
+            int groupID = 0;
+            string groupMemberAddress = "test@address.com";
             #endregion
             GroupMemberUpdate groupUpdate = new GroupMemberUpdate
             {
@@ -20,9 +20,9 @@ namespace UnitTests.ModelsTest.GroupModelsTest
                 GroupMemberAddress = groupMemberAddress
             };
             #region Tests
-                Assert.NotNull(groupUpdate);
-                Assert.Equal(groupUpdate.GroupID, groupID);
-                Assert.Equal(groupUpdate.GroupMemberAddress, groupMemberAddress);
+            Assert.NotNull(groupUpdate);
+            Assert.Equal(groupUpdate.GroupID, groupID);
+            Assert.Equal(groupUpdate.GroupMemberAddress, groupMemberAddress);
             #endregion
         }
     }

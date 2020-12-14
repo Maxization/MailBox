@@ -179,7 +179,6 @@ namespace MailBox.Services
             {
                 transaction.Rollback();
             }
-
         }
 
         public void UpdateMailRead(int userID, MailReadUpdate mailRead)

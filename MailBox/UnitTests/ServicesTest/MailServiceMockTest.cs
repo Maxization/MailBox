@@ -1,15 +1,12 @@
-﻿using Autofac.Extras.Moq;
+﻿
 using MailBox.Database;
 using MailBox.Models.MailModels;
-using MailBox.Models.UserModels;
 using MailBox.Services;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Xunit;
 
 namespace UnitTests.ServicesTest
@@ -75,8 +72,8 @@ namespace UnitTests.ServicesTest
 
             var service = new MailService(mockContext.Object);
 
-            var user10Mais = service.GetMail(10,3);
-            var user11Mais = service.GetMail(11,3);
+            var user10Mais = service.GetMail(10, 3);
+            var user11Mais = service.GetMail(11, 3);
 
             Assert.Equal("sender3@address.com", user10Mais.Sender.Address);
             Assert.Equal("sender3@address.com", user11Mais.Sender.Address);
@@ -158,7 +155,8 @@ namespace UnitTests.ServicesTest
         private List<UserMail> GetSampleUserMails()
         {
             List<UserMail> mails = new List<UserMail>();
-            mails.Add(new UserMail { 
+            mails.Add(new UserMail
+            {
                 Mail = new Mail
                 {
                     ID = 0,

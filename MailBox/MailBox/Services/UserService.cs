@@ -1,4 +1,5 @@
-﻿using MailBox.Database;
+﻿
+using MailBox.Database;
 using MailBox.Models.UserModels;
 using Microsoft.EntityFrameworkCore;
 using System;

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using MailBox.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -6,19 +7,18 @@ using System.Security.Claims;
 using MailBox.Models.MailModels;
 using System;
 using MailBox.Contracts.Responses;
-using MailBox.Filters;
 
 namespace MailBox.Controllers
 {
     [Route("api/[controller]/[action]")]
-    [Authorize]
+    [Authorize(Policy = "AssignToUser")]
     public class MailApiController : ControllerBase
     {
         private readonly IMailService _mailService;
 
-        public MailApiController(IMailService userService)
+        public MailApiController(IMailService mailService)
         {
-            _mailService = userService;
+            _mailService = mailService;
         }
 
         [HttpPost]
