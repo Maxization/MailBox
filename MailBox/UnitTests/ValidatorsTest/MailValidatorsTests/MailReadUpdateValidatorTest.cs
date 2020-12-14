@@ -13,8 +13,8 @@ namespace UnitTests.ValidatorsTest.MailValidatorsTests
         {
             var validator = new MailReadUpdateValidator();
             #region Init variables
-                int mailID = 0;
-                bool read = true;
+            int mailID = 0;
+            bool read = true;
             #endregion
             MailReadUpdate mailReadUpdate = new MailReadUpdate
             {
@@ -23,7 +23,7 @@ namespace UnitTests.ValidatorsTest.MailValidatorsTests
             };
             var result = validator.TestValidate(mailReadUpdate);
             #region Tests
-                result.ShouldNotHaveAnyValidationErrors();
+            result.ShouldNotHaveAnyValidationErrors();
             #endregion
         }
     }

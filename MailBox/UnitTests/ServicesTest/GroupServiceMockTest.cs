@@ -1,16 +1,11 @@
-﻿using Autofac.Extras.Moq;
+﻿
 using MailBox.Database;
 using MailBox.Models.GroupModels;
-using MailBox.Models.MailModels;
-using MailBox.Models.UserModels;
 using MailBox.Services;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using Moq;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Xunit;
 
 namespace UnitTests.ServicesTest
@@ -71,13 +66,12 @@ namespace UnitTests.ServicesTest
             UserID = 9,
             User = new User { ID = 9, FirstName = "SenderName9", LastName = "SenderSurname9", Email = "sender9@address.com" }
         };
-        
+
         [Fact]
         public void AddUserToGroup_ValidCall()
         {
             var users = GetSampeUsers().AsQueryable();
             var groupsUsers = GetSampleGroupUsers().AsQueryable();
-            
 
             var mockUsersSet = new Mock<DbSet<User>>();
             mockUsersSet.As<IQueryable<User>>().Setup(m => m.Provider).Returns(users.Provider);
@@ -153,7 +147,7 @@ namespace UnitTests.ServicesTest
         public void AddGroup_ValidCall()
         {
             var users = GetSampeUsers().AsQueryable();
-            
+
             var mockGroupsSet = new Mock<DbSet<Group>>();
 
             var mockUsersSet = new Mock<DbSet<User>>();
@@ -205,7 +199,8 @@ namespace UnitTests.ServicesTest
         private List<GroupUser> GetSampleGroupUsers()
         {
             List<GroupUser> groupUsers = new List<GroupUser>();
-            foreach(GroupUser groupUser in GetSampleGroup0Users())
+
+            foreach (GroupUser groupUser in GetSampleGroup0Users())
             {
                 groupUsers.Add(groupUser);
             }
@@ -277,7 +272,7 @@ namespace UnitTests.ServicesTest
         private List<User> GetSampeUsers()
         {
             List<User> users = new List<User>();
-            users.Add(new User { ID = 0, FirstName = "SenderName1", LastName = "SenderSurname1", Email = "sender1@address.com", GroupUsers = new List<GroupUser>{ group0user1 } });
+            users.Add(new User { ID = 0, FirstName = "SenderName1", LastName = "SenderSurname1", Email = "sender1@address.com", GroupUsers = new List<GroupUser> { group0user1 } });
             users.Add(new User { ID = 10, FirstName = "SenderName10", LastName = "SenderSurname10", Email = "sender10@address.com", GroupUsers = new List<GroupUser>() });
             users.Add(new User { ID = 1, FirstName = "SenderName2", LastName = "SenderSurname2", Email = "sender2@address.com", GroupUsers = new List<GroupUser> { group0user1 } });
             users.Add(new User { ID = 2, FirstName = "SenderName0", LastName = "SenderSurname0", Email = "sender0@address.com", GroupUsers = new List<GroupUser> { group0user2, group1user2, group2user2 } });

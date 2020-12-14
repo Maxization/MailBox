@@ -1,9 +1,8 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using SendGrid;
@@ -24,7 +23,7 @@ namespace MailBox.HostedServices
             _configuration = configuration;
             timeout = new TimeSpan(24, 0, 0);
         }
-        
+
         protected async override Task ExecuteAsync(CancellationToken stoppingToken)
         {
             while (!stoppingToken.IsCancellationRequested)
@@ -45,8 +44,8 @@ namespace MailBox.HostedServices
                         scope.ServiceProvider
                             .GetRequiredService<IUserService>();
                     var data = userService.GetUsersAndNumberOfUnreadMails();
-                    
-                    foreach(var un in data)
+
+                    foreach (var un in data)
                     {
                         tos.Add(new EmailAddress(un.Email, un.Name));
                     }

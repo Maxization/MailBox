@@ -14,9 +14,9 @@ namespace UnitTests.ValidatorsTest.UserValidationsTests
         {
             var validator = new NewUserValidator();
             #region Init variables
-                string name = "testname";
-                string surname = "testsurname";
-                string address = "test@address.com";
+            string name = "testname";
+            string surname = "testsurname";
+            string address = "test@address.com";
             #endregion
             NewUser mailReadUpdate = new NewUser
             {
@@ -26,7 +26,7 @@ namespace UnitTests.ValidatorsTest.UserValidationsTests
             };
             var result = validator.TestValidate(mailReadUpdate);
             #region Tests
-                result.ShouldNotHaveAnyValidationErrors();
+            result.ShouldNotHaveAnyValidationErrors();
             #endregion
         }
 
@@ -35,9 +35,9 @@ namespace UnitTests.ValidatorsTest.UserValidationsTests
         {
             var validator = new NewUserValidator();
             #region Init variables
-                string name = "";
-                string surname = "testsurname";
-                string address = "test@address.com";
+            string name = "";
+            string surname = "testsurname";
+            string address = "test@address.com";
             #endregion
             NewUser mailReadUpdate = new NewUser
             {
@@ -47,7 +47,7 @@ namespace UnitTests.ValidatorsTest.UserValidationsTests
             };
             var result = validator.TestValidate(mailReadUpdate);
             #region Tests
-                result.ShouldHaveValidationErrorFor(x => x.Name);
+            result.ShouldHaveValidationErrorFor(x => x.Name);
             #endregion
         }
 
@@ -56,9 +56,9 @@ namespace UnitTests.ValidatorsTest.UserValidationsTests
         {
             var validator = new NewUserValidator();
             #region Init variables
-                string name = "testname";
-                string surname = "";
-                string address = "test@address.com";
+            string name = "testname";
+            string surname = "";
+            string address = "test@address.com";
             #endregion
             NewUser mailReadUpdate = new NewUser
             {
@@ -68,7 +68,7 @@ namespace UnitTests.ValidatorsTest.UserValidationsTests
             };
             var result = validator.TestValidate(mailReadUpdate);
             #region Tests
-                result.ShouldHaveValidationErrorFor(x => x.Surname);
+            result.ShouldHaveValidationErrorFor(x => x.Surname);
             #endregion
         }
 
@@ -77,9 +77,9 @@ namespace UnitTests.ValidatorsTest.UserValidationsTests
         {
             var validator = new NewUserValidator();
             #region Init variables
-                string name = "testname";
-                string surname = "testsurname";
-                string address = "";
+            string name = "testname";
+            string surname = "testsurname";
+            string address = "";
             #endregion
             NewUser mailReadUpdate = new NewUser
             {
@@ -89,7 +89,7 @@ namespace UnitTests.ValidatorsTest.UserValidationsTests
             };
             var result = validator.TestValidate(mailReadUpdate);
             #region Tests
-                result.ShouldHaveValidationErrorFor(x => x.Address);
+            result.ShouldHaveValidationErrorFor(x => x.Address);
             #endregion
         }
 
@@ -98,9 +98,9 @@ namespace UnitTests.ValidatorsTest.UserValidationsTests
         {
             var validator = new NewUserValidator();
             #region Init variables
-                string name = "testname";
-                string surname = "testsurname";
-                string address = "testaddress.com";
+            string name = "testname";
+            string surname = "testsurname";
+            string address = "testaddress.com";
             #endregion
             NewUser mailReadUpdate = new NewUser
             {
@@ -110,7 +110,7 @@ namespace UnitTests.ValidatorsTest.UserValidationsTests
             };
             var result = validator.TestValidate(mailReadUpdate);
             #region Tests
-                result.ShouldHaveValidationErrorFor(x => x.Address);
+            result.ShouldHaveValidationErrorFor(x => x.Address);
             #endregion
         }
 
@@ -119,9 +119,9 @@ namespace UnitTests.ValidatorsTest.UserValidationsTests
         {
             var validator = new NewUserValidator();
             #region Init variables
-                string name = "testname";
-                string surname = "testsurname";
-                string address = "test@address";
+            string name = "testname";
+            string surname = "testsurname";
+            string address = "test@address";
             #endregion
             NewUser mailReadUpdate = new NewUser
             {
@@ -131,7 +131,7 @@ namespace UnitTests.ValidatorsTest.UserValidationsTests
             };
             var result = validator.TestValidate(mailReadUpdate);
             #region Tests
-                result.ShouldHaveValidationErrorFor(x => x.Address);
+            result.ShouldHaveValidationErrorFor(x => x.Address);
             #endregion
         }
 
@@ -140,14 +140,14 @@ namespace UnitTests.ValidatorsTest.UserValidationsTests
         {
             var validator = new NewUserValidator();
             #region Init variables
-                StringBuilder stringBuilder = new StringBuilder('x');
-                for(int i=0;i<validator.nameMaxLength + 1;i++)
-                {
-                    stringBuilder.Append('x');
-                }
-                string name = stringBuilder.ToString();
-                string surname = "testsurname";
-                string address = "test@address.com";
+            StringBuilder stringBuilder = new StringBuilder('x');
+            for (int i = 0; i < validator.nameMaxLength + 1; i++)
+            {
+                stringBuilder.Append('x');
+            }
+            string name = stringBuilder.ToString();
+            string surname = "testsurname";
+            string address = "test@address.com";
             #endregion
             NewUser mailReadUpdate = new NewUser
             {
@@ -157,7 +157,7 @@ namespace UnitTests.ValidatorsTest.UserValidationsTests
             };
             var result = validator.TestValidate(mailReadUpdate);
             #region Tests
-                result.ShouldHaveValidationErrorFor(x => x.Name);
+            result.ShouldHaveValidationErrorFor(x => x.Name);
             #endregion
         }
 
@@ -166,14 +166,14 @@ namespace UnitTests.ValidatorsTest.UserValidationsTests
         {
             var validator = new NewUserValidator();
             #region Init variables  
-                string name = "testname";
-                StringBuilder stringBuilder = new StringBuilder('x');
-                for (int i = 0; i < validator.surnameMaxLength + 1; i++)
-                {
-                    stringBuilder.Append('x');
-                }
-                string surname = stringBuilder.ToString();
-                string address = "test@address.com";
+            string name = "testname";
+            StringBuilder stringBuilder = new StringBuilder('x');
+            for (int i = 0; i < validator.surnameMaxLength + 1; i++)
+            {
+                stringBuilder.Append('x');
+            }
+            string surname = stringBuilder.ToString();
+            string address = "test@address.com";
             #endregion
             NewUser mailReadUpdate = new NewUser
             {
@@ -183,7 +183,7 @@ namespace UnitTests.ValidatorsTest.UserValidationsTests
             };
             var result = validator.TestValidate(mailReadUpdate);
             #region Tests
-                result.ShouldHaveValidationErrorFor(x => x.Surname);
+            result.ShouldHaveValidationErrorFor(x => x.Surname);
             #endregion
         }
     }

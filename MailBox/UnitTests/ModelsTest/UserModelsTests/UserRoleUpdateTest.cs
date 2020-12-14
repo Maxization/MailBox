@@ -1,7 +1,6 @@
 ﻿
 using Xunit;
 using MailBox.Models.UserModels;
-using MailBox.Models;
 
 namespace UnitTests.ModelsTest.UserModelsTests
 {
@@ -10,10 +9,9 @@ namespace UnitTests.ModelsTest.UserModelsTests
         [Fact]
         public void ConstructorTest()
         {
-
             #region Init variables
-                string address = "test@address.com";
-                string roleName = "testname" ;
+            string address = "test@address.com";
+            string roleName = "testname";
             #endregion
             UserRoleUpdate userRoleUpdate = new UserRoleUpdate
             {
@@ -21,9 +19,9 @@ namespace UnitTests.ModelsTest.UserModelsTests
                 RoleName = roleName
             };
             #region Tests
-                Assert.NotNull(userRoleUpdate);
-                Assert.Equal(userRoleUpdate.Address, address);
-                Assert.Equal(userRoleUpdate.RoleName, roleName);
+            Assert.NotNull(userRoleUpdate);
+            Assert.Equal(userRoleUpdate.Address, address);
+            Assert.Equal(userRoleUpdate.RoleName, roleName);
             #endregion
         }
     }

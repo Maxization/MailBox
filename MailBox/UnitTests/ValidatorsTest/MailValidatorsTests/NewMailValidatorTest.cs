@@ -1,5 +1,4 @@
 ﻿
-using System;
 using Xunit;
 using MailBox.Models.MailModels;
 using System.Collections.Generic;
@@ -16,10 +15,10 @@ namespace UnitTests
         {
             var validator = new NewMailValidator();
             #region Init variables
-                List<string> CCRecipientsAddresses = new List<string>();
-                List<string> BCCRecipientsAddresses = new List<string>();
-                string topic = "testtopic";
-                string text = "testtext";
+            List<string> CCRecipientsAddresses = new List<string>();
+            List<string> BCCRecipientsAddresses = new List<string>();
+            string topic = "testtopic";
+            string text = "testtext";
             #endregion
             NewMail newMail = new NewMail
             {
@@ -30,8 +29,8 @@ namespace UnitTests
             };
             var result = validator.TestValidate(newMail);
             #region Tests
-                result.ShouldHaveValidationErrorFor(x => x.CCRecipientsAddresses);
-                result.ShouldHaveValidationErrorFor(x => x.BCCRecipientsAddresses);
+            result.ShouldHaveValidationErrorFor(x => x.CCRecipientsAddresses);
+            result.ShouldHaveValidationErrorFor(x => x.BCCRecipientsAddresses);
             #endregion
         }
 
@@ -40,10 +39,10 @@ namespace UnitTests
         {
             var validator = new NewMailValidator();
             #region Init variables
-                List<string> CCRecipientsAddresses = new List<string> { "test@address.com" };
-                List<string> BCCRecipientsAddresses = new List<string>();
-                string topic = "testtopic";
-                string text = "testtext";
+            List<string> CCRecipientsAddresses = new List<string> { "test@address.com" };
+            List<string> BCCRecipientsAddresses = new List<string>();
+            string topic = "testtopic";
+            string text = "testtext";
             #endregion
             NewMail newMail = new NewMail
             {
@@ -54,7 +53,7 @@ namespace UnitTests
             };
             var result = validator.TestValidate(newMail);
             #region Tests
-                result.ShouldNotHaveAnyValidationErrors();
+            result.ShouldNotHaveAnyValidationErrors();
             #endregion
         }
 
@@ -63,10 +62,10 @@ namespace UnitTests
         {
             var validator = new NewMailValidator();
             #region Init variables
-                List<string> CCRecipientsAddresses = new List<string>();
-                List<string> BCCRecipientsAddresses = new List<string> { "test@address.com" };
-                string topic = "testtopic";
-                string text = "testtext";
+            List<string> CCRecipientsAddresses = new List<string>();
+            List<string> BCCRecipientsAddresses = new List<string> { "test@address.com" };
+            string topic = "testtopic";
+            string text = "testtext";
             #endregion
             NewMail newMail = new NewMail
             {
@@ -77,19 +76,19 @@ namespace UnitTests
             };
             var result = validator.TestValidate(newMail);
             #region Tests
-                result.ShouldNotHaveAnyValidationErrors();
+            result.ShouldNotHaveAnyValidationErrors();
             #endregion
         }
 
-        [Fact] 
+        [Fact]
         public void WhenNewMailHaveNoTopic_ShouldHaveError()
         {
             var validator = new NewMailValidator();
             #region Init variables
-                List<string> CCRecipientsAddresses = new List<string> { "test@address.com" };
-                List<string> BCCRecipientsAddresses = new List<string> { "test@address.com" };
-                string topic = "";
-                string text = "testtext";
+            List<string> CCRecipientsAddresses = new List<string> { "test@address.com" };
+            List<string> BCCRecipientsAddresses = new List<string> { "test@address.com" };
+            string topic = "";
+            string text = "testtext";
             #endregion
             NewMail newMail = new NewMail
             {
@@ -100,7 +99,7 @@ namespace UnitTests
             };
             var result = validator.TestValidate(newMail);
             #region Tests
-                result.ShouldHaveValidationErrorFor(x => x.Topic);
+            result.ShouldHaveValidationErrorFor(x => x.Topic);
             #endregion
         }
 
@@ -109,10 +108,10 @@ namespace UnitTests
         {
             var validator = new NewMailValidator();
             #region Init variables
-                List<string> CCRecipientsAddresses = new List<string> { "test@address.com" };
-                List<string> BCCRecipientsAddresses = new List<string> { "test@address.com" };
-                string topic = "testtopic";
-                string text = "";
+            List<string> CCRecipientsAddresses = new List<string> { "test@address.com" };
+            List<string> BCCRecipientsAddresses = new List<string> { "test@address.com" };
+            string topic = "testtopic";
+            string text = "";
             #endregion
             NewMail newMail = new NewMail
             {
@@ -123,7 +122,7 @@ namespace UnitTests
             };
             var result = validator.TestValidate(newMail);
             #region Tests
-                result.ShouldHaveValidationErrorFor(x => x.Text);
+            result.ShouldHaveValidationErrorFor(x => x.Text);
             #endregion
         }
 
@@ -132,15 +131,15 @@ namespace UnitTests
         {
             var validator = new NewMailValidator();
             #region Init variables
-                List<string> CCRecipientsAddresses = new List<string> { "test@address.com" };
-                List<string> BCCRecipientsAddresses = new List<string> { "test@address.com" };
-                StringBuilder stringBuilder = new StringBuilder();
-                for (int i = 0; i < validator.topicMaxLength + 1; i++)
-                {
-                    stringBuilder.Append('x');
-                }
-                string topic = stringBuilder.ToString();
-                string text = "testtext";
+            List<string> CCRecipientsAddresses = new List<string> { "test@address.com" };
+            List<string> BCCRecipientsAddresses = new List<string> { "test@address.com" };
+            StringBuilder stringBuilder = new StringBuilder();
+            for (int i = 0; i < validator.topicMaxLength + 1; i++)
+            {
+                stringBuilder.Append('x');
+            }
+            string topic = stringBuilder.ToString();
+            string text = "testtext";
             #endregion
             NewMail newMail = new NewMail
             {
@@ -151,7 +150,7 @@ namespace UnitTests
             };
             var result = validator.TestValidate(newMail);
             #region Tests
-                result.ShouldHaveValidationErrorFor(x => x.Topic);
+            result.ShouldHaveValidationErrorFor(x => x.Topic);
             #endregion          
         }
 
@@ -160,15 +159,15 @@ namespace UnitTests
         {
             var validator = new NewMailValidator();
             #region Init variables
-                List<string> CCRecipientsAddresses = new List<string> { "test@address.com" };
-                List<string> BCCRecipientsAddresses = new List<string> { "test@address.com" };
-                string topic = "testtopic";
-                StringBuilder stringBuilder = new StringBuilder();
-                for (int i = 0; i < validator.textMaxLength + 1; i++)
-                {
-                    stringBuilder.Append('x');
-                }
-                string text = stringBuilder.ToString();
+            List<string> CCRecipientsAddresses = new List<string> { "test@address.com" };
+            List<string> BCCRecipientsAddresses = new List<string> { "test@address.com" };
+            string topic = "testtopic";
+            StringBuilder stringBuilder = new StringBuilder();
+            for (int i = 0; i < validator.textMaxLength + 1; i++)
+            {
+                stringBuilder.Append('x');
+            }
+            string text = stringBuilder.ToString();
             #endregion
             NewMail newMail = new NewMail
             {
@@ -179,7 +178,7 @@ namespace UnitTests
             };
             var result = validator.TestValidate(newMail);
             #region Tests
-                result.ShouldHaveValidationErrorFor(x => x.Text);
+            result.ShouldHaveValidationErrorFor(x => x.Text);
             #endregion          
         }
 
@@ -188,10 +187,10 @@ namespace UnitTests
         {
             var validator = new NewMailValidator();
             #region Init variables
-                List<string> CCRecipientsAddresses = new List<string>() { "testaddress.com", "test1@address.com", "test2@address.com" };
-                List<string> BCCRecipientsAddresses = new List<string> { "test@address.com" };
-                string topic = "testtopic";
-                string text = "testtext";
+            List<string> CCRecipientsAddresses = new List<string>() { "testaddress.com", "test1@address.com", "test2@address.com" };
+            List<string> BCCRecipientsAddresses = new List<string> { "test@address.com" };
+            string topic = "testtopic";
+            string text = "testtext";
             #endregion
             NewMail newMail = new NewMail
             {
@@ -202,7 +201,7 @@ namespace UnitTests
             };
             var result = validator.TestValidate(newMail);
             #region Tests
-                result.ShouldHaveValidationErrorFor(x => x.CCRecipientsAddresses);
+            result.ShouldHaveValidationErrorFor(x => x.CCRecipientsAddresses);
             #endregion
         }
 
@@ -211,10 +210,10 @@ namespace UnitTests
         {
             var validator = new NewMailValidator();
             #region Init variables
-                List<string> CCRecipientsAddresses = new List<string>() { "test@address.com", "test1@address.com", "test2@address.com" };
-                List<string> BCCRecipientsAddresses = new List<string> { "test@address.com" , "test@addresscom" };
-                string topic = "testtopic";
-                string text = "testtext";
+            List<string> CCRecipientsAddresses = new List<string>() { "test@address.com", "test1@address.com", "test2@address.com" };
+            List<string> BCCRecipientsAddresses = new List<string> { "test@address.com", "test@addresscom" };
+            string topic = "testtopic";
+            string text = "testtext";
             #endregion
             NewMail newMail = new NewMail
             {
@@ -225,9 +224,8 @@ namespace UnitTests
             };
             var result = validator.TestValidate(newMail);
             #region Tests
-                result.ShouldHaveValidationErrorFor(x => x.BCCRecipientsAddresses);
+            result.ShouldHaveValidationErrorFor(x => x.BCCRecipientsAddresses);
             #endregion
         }
-
     }
 }

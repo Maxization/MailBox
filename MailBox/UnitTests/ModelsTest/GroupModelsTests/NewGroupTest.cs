@@ -10,15 +10,15 @@ namespace UnitTests.ModelsTest.GroupModelsTest
         public void ConstructorTest()
         {
             #region Init variables
-                string name = "testname";
+            string name = "testname";
             #endregion
             NewGroup newGroup = new NewGroup
             {
                 Name = name
             };
             #region Tests
-                Assert.NotNull(newGroup);
-                Assert.Equal(newGroup.Name, name);
+            Assert.NotNull(newGroup);
+            Assert.Equal(newGroup.Name, name);
             #endregion
         }
     }
