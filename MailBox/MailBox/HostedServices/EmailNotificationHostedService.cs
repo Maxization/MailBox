@@ -13,12 +13,12 @@ using MailBox.Services;
 
 namespace MailBox.HostedServices
 {
-    public class NotificationHostedService : BackgroundService
+    public class EmailNotificationHostedService : BackgroundService
     {
         private readonly IConfiguration _configuration;
         public readonly IServiceProvider _serviceProvider;
         private TimeSpan timeout;
-        public NotificationHostedService(IConfiguration configuration, IServiceProvider serviceProvider)
+        public EmailNotificationHostedService(IConfiguration configuration, IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
             _configuration = configuration;
@@ -44,7 +44,7 @@ namespace MailBox.HostedServices
                     var userService =
                         scope.ServiceProvider
                             .GetRequiredService<IUserService>();
-                    var data = userService.GetUsersAndNumberOfUnreadMails();
+                    var data = userService.GetUsersEmailWithUnreadMails();
                     
                     foreach(var un in data)
                     {

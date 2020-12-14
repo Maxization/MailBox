@@ -6,7 +6,8 @@ namespace MailBox.Services
 {
     public interface IUserService
     {
-        public List<UserNotification> GetUsersAndNumberOfUnreadMails();
+        public List<UserEmailNotification> GetUsersEmailWithUnreadMails();
+        public List<UserSMSNotification> GetUsersNumberWithUnreadMails();
         public List<UserGlobalView> GetGlobalContactList();
         public List<UserAdminView> GetAdminViewList();
         void UpdateUserRole(UserRoleUpdate userRoleUpdate);

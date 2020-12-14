@@ -19,6 +19,7 @@ using System.Threading.Tasks;
 using MailBox.Filters;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.ApplicationInsights;
 using MailBox.HostedServices;
 
 namespace MailBox
@@ -52,9 +53,11 @@ namespace MailBox
                             {
                                 string firstName = context.Principal.Identities.First().Claims.Where(x => x.Type == ClaimTypes.GivenName).First().Value;
                                 string lastName = context.Principal.Identities.First().Claims.Where(x => x.Type == ClaimTypes.Surname).First().Value;
-                                
+                                string number = context.Principal.Identities.First().Claims.Where(x => x.Type == "extension_PhoneNumber").First().Value;
+
+
                                 var role = db.Roles.Where(x => x.RoleName == "New").FirstOrDefault();
-                                User usr = new User { FirstName = firstName, LastName = lastName, Email = email, Role = role };
+                                User usr = new User { FirstName = firstName, LastName = lastName, Email = email, Role = role, PhoneNumber = number };
                                 db.Users.Add(usr);
                                 db.SaveChanges();
 
@@ -86,7 +89,8 @@ namespace MailBox
             services.AddScoped<IMailService, MailService>();
             services.AddScoped<IUserService, UserService>();
 
-            services.AddHostedService<NotificationHostedService>();
+            //services.AddHostedService<EmailNotificationHostedService>();
+            //services.AddHostedService<SMSNotificationHostedService>();
 
             services.AddMvc(options => { options.Filters.Add<ValidationFilter>(); })
                 .AddFluentValidation(mvcConfiguration => mvcConfiguration.RegisterValidatorsFromAssemblyContaining<Startup>())
@@ -94,6 +98,8 @@ namespace MailBox
 
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
