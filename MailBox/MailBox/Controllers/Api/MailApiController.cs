@@ -21,6 +21,11 @@ namespace MailBox.Controllers
             _mailService = mailService;
         }
 
+        /// <summary>
+        /// Create new mail
+        /// </summary>
+        /// <param name="mail"></param>
+        /// <returns>Error list if any</returns>
         [HttpPost]
         public IActionResult Create([FromBody] NewMail mail)
         {
@@ -39,6 +44,10 @@ namespace MailBox.Controllers
             return new JsonResult(errorResponse);
         }
 
+        /// <summary>
+        /// Gets mails of logged user
+        /// </summary>
+        /// <returns>List of mails in JSON</returns>
         [HttpGet]
         public IActionResult GetMails()
         {
@@ -46,6 +55,11 @@ namespace MailBox.Controllers
             return new JsonResult(_mailService.GetUserMails(userID));
         }
 
+        /// <summary>
+        /// Update mail "Read" status (read/unread)
+        /// </summary>
+        /// <param name="mail"></param>
+        /// <returns>OK</returns>
         [HttpPut]
         public IActionResult UpdateRead([FromBody] MailReadUpdate mail)
         {
