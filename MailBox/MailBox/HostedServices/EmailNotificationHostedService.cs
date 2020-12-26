@@ -12,12 +12,12 @@ using MailBox.Services;
 
 namespace MailBox.HostedServices
 {
-    public class NotificationHostedService : BackgroundService
+    public class EmailNotificationHostedService : BackgroundService
     {
         private readonly IConfiguration _configuration;
         public readonly IServiceProvider _serviceProvider;
         private TimeSpan timeout;
-        public NotificationHostedService(IConfiguration configuration, IServiceProvider serviceProvider)
+        public EmailNotificationHostedService(IConfiguration configuration, IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
             _configuration = configuration;
@@ -43,9 +43,9 @@ namespace MailBox.HostedServices
                     var userService =
                         scope.ServiceProvider
                             .GetRequiredService<IUserService>();
-                    var data = userService.GetUsersAndNumberOfUnreadMails();
-
-                    foreach (var un in data)
+                    var data = userService.GetUsersEmailWithUnreadMails();
+                    
+                    foreach(var un in data)
                     {
                         tos.Add(new EmailAddress(un.Email, un.Name));
                     }
@@ -55,7 +55,7 @@ namespace MailBox.HostedServices
                 var htmlContent = "<strong>Na stronie MailBox masz nieprzeczytanie wiadomości. Zaloguj sie i sprawdź!</strong>";
                 var displayRecipients = false;
                 var msg = MailHelper.CreateSingleEmailToMultipleRecipients(from, tos, subject, "", htmlContent, displayRecipients);
-                //var response = await client.SendEmailAsync(msg);
+                var response = await client.SendEmailAsync(msg);
 
                 await Task.Delay(timeout, stoppingToken);
             }

@@ -11,7 +11,7 @@ using MailBox.Contracts.Responses;
 namespace MailBox.Controllers
 {
     [Route("api/[controller]/[action]")]
-    [Authorize]
+    [Authorize(Policy = "AssignToUser")]
     public class MailApiController : ControllerBase
     {
         private readonly IMailService _mailService;
