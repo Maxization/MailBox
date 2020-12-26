@@ -18,6 +18,10 @@ using System.Threading.Tasks;
 using MailBox.Filters;
 using Microsoft.AspNetCore.Mvc;
 using MailBox.HostedServices;
+using Microsoft.OpenApi.Models;
+using System.Reflection;
+using System;
+using System.IO;
 
 namespace MailBox
 {
@@ -94,7 +98,19 @@ namespace MailBox
             services.AddRazorPages();
             services.AddApplicationInsightsTelemetry();
 
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Version = "v1",
+                    Title = "MailBox API",
+                    Description = "Documentation for MailBoxAPI",
+                });
 
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+            });   
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -118,6 +134,17 @@ namespace MailBox
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseSwagger(c =>
+            {
+                c.RouteTemplate = "api/swagger/{documentname}/swagger.json";
+            });
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("swagger/v1/swagger.json", "My API V1");
+                c.RoutePrefix = "api";
+            });
 
             app.UseEndpoints(endpoints =>
             {

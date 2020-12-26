@@ -22,6 +22,7 @@ namespace MailBox.Controllers.Api
             _telemetryClient = telemetryClient;
         }
 
+        [HttpGet]
         public IActionResult GlobalList()
         {
             _telemetryClient.TrackEvent("Get");
@@ -29,6 +30,7 @@ namespace MailBox.Controllers.Api
         }
 
         [Authorize(Policy = "AssignToAdmin")]
+        [HttpGet]
         public IActionResult AdminViewList()
         {
             _telemetryClient.TrackEvent("Get");

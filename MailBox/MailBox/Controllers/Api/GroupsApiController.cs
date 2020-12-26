@@ -21,6 +21,10 @@ namespace MailBox.Controllers.Api
             this.groupService = groupService;
         }
 
+        /// <summary>
+        /// Gets Groups that belongs to user
+        /// </summary>
+        /// <returns>Groups in JSON format</returns>
         [HttpGet]
         public IActionResult GetUserGroupsListAsJson()
         {
@@ -30,6 +34,11 @@ namespace MailBox.Controllers.Api
             return new JsonResult(userGroups);
         }
 
+        /// <summary>
+        /// Change group name
+        /// </summary>
+        /// <param name="groupNameUpdate"></param>
+        /// <returns>OK</returns>
         [HttpPut]
         public IActionResult ChangeGroupName([FromBody] GroupNameUpdate groupNameUpdate)
         {
@@ -37,6 +46,11 @@ namespace MailBox.Controllers.Api
             return Ok();
         }
 
+        /// <summary>
+        /// Add group 
+        /// </summary>
+        /// <param name="newGroup"></param>
+        /// <returns></returns>
         [HttpPost]
         public IActionResult AddGroup([FromBody] NewGroup newGroup)
         {
