@@ -21,6 +21,10 @@ namespace MailBox.Controllers.Api
             this.groupService = groupService;
         }
 
+        /// <summary>
+        /// Gets Groups that belongs to user
+        /// </summary>
+        /// <returns>Groups in JSON format</returns>
         [HttpGet]
         public IActionResult GetUserGroupsListAsJson()
         {
@@ -30,6 +34,11 @@ namespace MailBox.Controllers.Api
             return new JsonResult(userGroups);
         }
 
+        /// <summary>
+        /// Change group name
+        /// </summary>
+        /// <param name="groupNameUpdate"></param>
+        /// <returns>OK</returns>
         [HttpPut]
         public IActionResult ChangeGroupName([FromBody] GroupNameUpdate groupNameUpdate)
         {
@@ -37,6 +46,11 @@ namespace MailBox.Controllers.Api
             return Ok();
         }
 
+        /// <summary>
+        /// Add user group 
+        /// </summary>
+        /// <param name="newGroup"></param>
+        /// <returns>Ok</returns>
         [HttpPost]
         public IActionResult AddGroup([FromBody] NewGroup newGroup)
         {
@@ -45,6 +59,11 @@ namespace MailBox.Controllers.Api
             return Ok();
         }
 
+        /// <summary>
+        /// Remove group of given id
+        /// </summary>
+        /// <param name="groupID"></param>
+        /// <returns>OK</returns>
         [HttpDelete("{groupID}")]
         public IActionResult DeleteGroup(int groupID)
         {
@@ -52,6 +71,11 @@ namespace MailBox.Controllers.Api
             return Ok();
         }
 
+        /// <summary>
+        /// Add new user to group
+        /// </summary>
+        /// <param name="groupMemberUpdate"></param>
+        /// <returns>Error list in JSON if any</returns>
         [HttpPost]
         public IActionResult AddUserToGroup([FromBody] GroupMemberUpdate groupMemberUpdate)
         {
@@ -68,6 +92,11 @@ namespace MailBox.Controllers.Api
             return new JsonResult(errorResponse);
         }
 
+        /// <summary>
+        /// Delete user from group
+        /// </summary>
+        /// <param name="groupMemberUpdate"></param>
+        /// <returns>Ok</returns>
         [HttpDelete]
         public IActionResult DeleteUserFromGroup([FromBody] GroupMemberUpdate groupMemberUpdate)
         {
