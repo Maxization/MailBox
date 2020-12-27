@@ -7,6 +7,13 @@ using System.Security.Claims;
 using MailBox.Models.MailModels;
 using System;
 using MailBox.Contracts.Responses;
+using System.Net.Http;
+using System.Threading.Tasks;
+using System.Net.Http.Headers;
+using System.Collections.Generic;
+using MailBox.Models.NotificationModel;
+using System.Text;
+using Newtonsoft.Json;
 
 namespace MailBox.Controllers
 {
@@ -22,13 +29,13 @@ namespace MailBox.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] NewMail mail)
+        public async Task<IActionResult> Create([FromBody] NewMail mail)
         {
             int userID = int.Parse(User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
             ErrorResponse errorResponse = new ErrorResponse();
             try
             {
-                _mailService.AddMail(userID, mail);
+                _mailService.AddMail(userID, mail);    
             }
             catch (Exception ex)
             {

@@ -1,18 +1,24 @@
 ﻿
 using MailBox.Database;
 using MailBox.Models.MailModels;
+using MailBox.Models.NotificationModel;
 using MailBox.Models.UserModels;
 using MailBox.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace MailBox.Services
 {
     public class MailService : IMailService
     {
         private readonly MailBoxDBContext _context;
+
 
         public MailService(MailBoxDBContext context)
         {
@@ -98,6 +104,7 @@ namespace MailBox.Services
 
         public void AddMail(int userID, NewMail newMail)
         {
+
             #region CheckIfEmailExist
             if (newMail.BCCRecipientsAddresses != null)
                 newMail.BCCRecipientsAddresses = newMail.BCCRecipientsAddresses.Distinct().ToList();
@@ -139,6 +146,8 @@ namespace MailBox.Services
                 _context.Mails.Add(mail);
                 _context.SaveChanges();
 
+
+
                 if (newMail.CCRecipientsAddresses != null)
                     foreach (string email in newMail.CCRecipientsAddresses)
                     {
@@ -174,10 +183,36 @@ namespace MailBox.Services
                 _context.SaveChanges();
 
                 transaction.Commit();
+
+                HashSet<string> recipients = new HashSet<string>();
+                newMail.BCCRecipientsAddresses.ForEach((string email) => recipients.Add(email));
+                newMail.CCRecipientsAddresses.ForEach((string email) => recipients.Add(email));
+                Task SendNotification = Task.Run(() => SendNotificationToRecipients(recipients.ToList()));
+                SendNotification.Wait();
             }
             catch (Exception)
             {
                 transaction.Rollback();
+            }
+        }
+
+        private async void SendNotificationToRecipients(List<string> recipients)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Add("x-api-key", "78b06e67-bda7-48e5-a032-12132f76eca1");
+                Notification notification = new Notification
+                {
+                    Content = "test",
+                    RecipientsList = recipients.ToArray(),
+                    WithAttachments = false
+                };
+                string json = await Task.Run(() => JsonConvert.SerializeObject(notification));
+                HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                var response = await client.PostAsync("https://mini-notification-service.azurewebsites.net/notifications", content);
+
+                var responseString = await response.Content.ReadAsStringAsync();
             }
         }
 
