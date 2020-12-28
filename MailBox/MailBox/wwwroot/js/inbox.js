@@ -48,7 +48,7 @@ function DisplayMailsList() {
                     "</div >")
             }
             $("#mails" + mail.date).append(
-                "<a href=\"/mail/details/" + mail.id + "\" class=\"col-12 no-gutters btn btn-secondary active\" style = \"margin-bottom: 1px; text-decoration: none\" role = \"button\" aria-pressed=\"true\" >" +
+                "<a href=\"/mail/details/" + mail.id + "\" onclick=\"ChangeReadStatus(" + mail.id + ", " + true + ")\" class=\"col-12 no-gutters btn btn-secondary active\" style = \"margin-bottom: 1px; text-decoration: none\" role = \"button\" aria-pressed=\"true\" >" +
                 "<div class=\"row no-gutters\" style=\"border-bottom-style: solid; border-bottom-width: 1px; border-bottom-color: gray\">" +
                 "<div class=\"col-1 no-gutters\">" +
                 "<div class=\"form-check\">" +
