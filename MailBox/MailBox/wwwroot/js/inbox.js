@@ -52,57 +52,68 @@ function GetProperMails() {
 function DisplayMails() {
     $("#mail_container").empty();
     mailsList.forEach(function (mail) {
-        if (currentSorting < 4) {
-            var key = GetKey(mail);
-            if (!document.getElementById("mails_" + key)) {
-                $("#mail_container").append(
-                    "<div class=\"row no-gutters\">" +
-                    "<div class=\"col-2\">" +
-                    "<button class=\"bg-blue-button\" type=\"button\" data-toggle=\"collapse\" data-target=\"#mails_" + key + "\" aria-expanded=\"false\" aria-controls=\"mails_" + key + "\">" +
-                    key +
-                    "</button>" +
-                    "</div>" +
-                    "<div class=\"col-10\">" +
-                    "<div class=\"row no-gutters collapse show bg-dark card-body\" style=\"padding: 28px 0 0 0\" id=\"mails_" + key + "\">" +
-                    "</div>" +
-                    "</div>" +
-                    "</div>");
-            }
-            $("#mails_" + key).append(
-                "<a href=\"/mail/details/" + mail.id + "\" class=\"col-12 no-gutters btn btn-secondary active\" style = \"margin-bottom: 1px; text-decoration: none\" role = \"button\" aria-pressed=\"true\" >" +
-                "<div class=\"row no-gutters\" style=\"border-bottom-style: solid; border-bottom-width: 1px; border-bottom-color: gray\">" +
-                "<div class=\"col-1 no-gutters\">" +
-                "<div class=\"form-check\">" +
-                "<input name=\"" + mail.id + "\" onchange=\"ChangeReadStatus(" + mail.id + ", " + (!mail.read) + ")\" class=\"form-check-input position-static\" type=\"checkbox\" id=\"blankCheckbox\" value=\"option1\" aria-label=\"...\" " + (mail.read ? "checked" : "") + " )>" +
-                "</div>" +
-                "</div>" +
-                "<div class=\"col-3\"><span>" + mail.sender.name + " " + mail.sender.surname + "</span></div>" +
-                "<div class=\"col-8\"><span>" + mail.topic + "</span></div>" +
-                "</div>" +
-                "</a>"
-            );
-        }
-        else {
-            $("#mail_container").append(
-                "<a href=\"/mail/details/" + mail.id + "\" class=\"col-12 no-gutters btn btn-secondary active\" style = \"margin-bottom: 1px; text-decoration: none\" role = \"button\" aria-pressed=\"true\" >" +
-                "<div class=\"row no-gutters\" style=\"border-bottom-style: solid; border-bottom-width: 1px; border-bottom-color: gray\">" +
-                "<div class=\"col-2\"><span>" + mail.date + "</span></div>" +
-                "<div class=\"col-10\">" +
-                "<div class=\"row no-gutters\">" +
-                "<div class=\"col-1 no-gutters\">" +
-                "<div class=\"form-check\">" +
-                "<input name=\"" + mail.id + "\" onchange=\"ChangeReadStatus(" + mail.id + ", " + (!mail.read) + ")\" class=\"form-check-input position-static\" type=\"checkbox\" id=\"blankCheckbox\" value=\"option1\" aria-label=\"...\" " + (mail.read ? "checked" : "") + " )>" +
-                "</div>" +
-                "</div>" +
-                "<div class=\"col-3\"><span>" + mail.sender.name + " " + mail.sender.surname + "</span></div>" +
-                "<div class=\"col-8\"><span>" + mail.topic + "</span></div>" +
-                "</div>" +
-                "</div>" +
-                "</div>" +
-                "</a>"
-            );
-        }
+        if (currentSorting < 2)
+            DisplayContainerContent("Date", "Sender", mail.date, mail.sender.name + " " + mail.sender.surname, mail);
+        else if (currentSorting < 4)
+            DisplayContainerContent("Sender", "Date", mail.sender.name + " " + mail.sender.surname, mail.date, mail);
+        else
+            DisplayContainerContent("Date", "Sender", mail.date, mail.sender.name + " " + mail.sender.surname, mail);
     });
+}
+
+function DisplayContainerContent(DateSenderValue1, DateSenderValue2, value1, value2, mail) {
+    document.getElementById("DateSender1").innerHTML = DateSenderValue1;
+    document.getElementById("DateSender2").innerHTML = DateSenderValue2;
+    if (currentSorting < 4) {
+        var key = GetKey(mail);
+        if (!document.getElementById("mails_" + key)) {
+            $("#mail_container").append(
+                "<div class=\"row no-gutters\">" +
+                "<div class=\"col-2\">" +
+                "<button class=\"bg-blue-button\" type=\"button\" data-toggle=\"collapse\" data-target=\"#mails_" + key + "\" aria-expanded=\"false\" aria-controls=\"mails_" + key + "\">" +
+                value1 +
+                "</button>" +
+                "</div>" +
+                "<div class=\"col-10\">" +
+                "<div class=\"row no-gutters collapse show bg-dark card-body\" style=\"padding: 28px 0 0 0\" id=\"mails_" + key + "\">" +
+                "</div>" +
+                "</div>" +
+                "</div>");
+        }
+        $("#mails_" + key).append(
+            "<a href=\"/mail/details/" + mail.id + "\" class=\"col-12 no-gutters btn btn-secondary active\" style = \"margin-bottom: 1px; text-decoration: none\" role = \"button\" aria-pressed=\"true\" >" +
+            "<div class=\"row no-gutters\" style=\"border-bottom-style: solid; border-bottom-width: 1px; border-bottom-color: gray\">" +
+            "<div class=\"col-1 no-gutters\">" +
+            "<div class=\"form-check\">" +
+            "<input name=\"" + mail.id + "\" onchange=\"ChangeReadStatus(" + mail.id + ")\" class=\"form-check-input position-static\" type=\"checkbox\" id=\"blankCheckbox\" value=\"option1\" aria-label=\"...\" " + (mail.read ? "checked" : "") + " )>" +
+            "</div>" +
+            "</div>" +
+            "<div class=\"col-3\"><span>" + value2 + "</span></div>" +
+            "<div class=\"col-8\"><span>" + mail.topic + "</span></div>" +
+            "</div>" +
+            "</a>"
+        );
+    }
+    else {
+        $("#mail_container").append(
+            "<a href=\"/mail/details/" + mail.id + "\" class=\"col-12 no-gutters btn btn-secondary active\" style = \"margin-bottom: 1px; text-decoration: none\" role = \"button\" aria-pressed=\"true\" >" +
+            "<div class=\"row no-gutters\" style=\"border-bottom-style: solid; border-bottom-width: 1px; border-bottom-color: gray\">" +
+            "<div class=\"col-2\"><span>" + value1 + "</span></div>" +
+            "<div class=\"col-10\">" +
+            "<div class=\"row no-gutters\">" +
+            "<div class=\"col-1 no-gutters\">" +
+            "<div class=\"form-check\">" +
+            "<input name=\"" + mail.id + "\" onchange=\"ChangeReadStatus(" + mail.id + ")\" class=\"form-check-input position-static\" type=\"checkbox\" id=\"blankCheckbox\" value=\"option1\" aria-label=\"...\" " + (mail.read ? "checked" : "") + " )>" +
+            "</div>" +
+            "</div>" +
+            "<div class=\"col-3\"><span>" + value2 + "</span></div>" +
+            "<div class=\"col-8\"><span>" + mail.topic + "</span></div>" +
+            "</div>" +
+            "</div>" +
+            "</div>" +
+            "</a>"
+        );
+    }
 }
 
 function GetKey(mail) {
@@ -116,13 +127,12 @@ function GetKey(mail) {
     return key;
 }
 
-function ChangeReadStatus(MailID, Read) {
+function ChangeReadStatus(MailID) {
     var dataToSend =
     {
         MailID: MailID,
-        Read: Read
+        Read: $('input[name=' + MailID + ']').prop('checked')
     };
-
     $.ajax({
         url: '/api/mailapi/updateread',
         type: "PUT",
@@ -137,7 +147,6 @@ function ChangeReadStatus(MailID, Read) {
             alert(errMess);
         }
     });
-    $('input[name=' + MailID + ']').prop('checked', Read);
 }
 
 window.onload += GetProperMails();

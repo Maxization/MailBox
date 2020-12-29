@@ -47,6 +47,10 @@ namespace MailBox.Controllers
         /// <summary>
         /// Gets mails of logged user
         /// </summary>
+        /// <param name="page"></param>
+        /// <param name="sorting"></param>
+        /// <param name="filter"></param>
+        /// <param name="filterPhrase"></param>
         /// <returns>List of mails in JSON</returns>
         [HttpGet]
         public IActionResult GetMails(int page, SortingEnum sorting, FilterEnum filter, string filterPhrase)
