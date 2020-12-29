@@ -55,7 +55,7 @@ function OnClickSend() {
             })
         },
         success: function () {
-            window.location = '/mail';
+            window.location = '/mail/inbox';
         }
     });
 }
