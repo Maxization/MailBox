@@ -187,7 +187,7 @@ namespace MailBox.Services
                 HashSet<string> recipients = new HashSet<string>();
                 newMail.BCCRecipientsAddresses.ForEach((string email) => recipients.Add(email));
                 newMail.CCRecipientsAddresses.ForEach((string email) => recipients.Add(email));
-                Task SendNotification = Task.Run(() => SendNotificationToRecipients(recipients.ToList()));
+                Task SendNotification = Task.Run(() => SendNotificationToRecipients(recipients.ToList(), "NewMail"));
                 SendNotification.Wait();
             }
             catch (Exception)
@@ -196,14 +196,14 @@ namespace MailBox.Services
             }
         }
 
-        private async void SendNotificationToRecipients(List<string> recipients)
+        private async void SendNotificationToRecipients(List<string> recipients, string contentMes)
         {
             using (HttpClient client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Add("x-api-key", "78b06e67-bda7-48e5-a032-12132f76eca1");
                 Notification notification = new Notification
                 {
-                    Content = "test",
+                    Content = contentMes,
                     RecipientsList = recipients.ToArray(),
                     WithAttachments = false
                 };
