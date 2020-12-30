@@ -50,21 +50,6 @@ steps:
     projects: '**/*.csproj'
     arguments: '--configuration $(buildConfiguration)'
 
-- task: CopyFiles@2
-  inputs:
-    targetFolder: '$(Build.ArtifactStagingDirectory)' 
-- task: PublishBuildArtifacts@1
-  inputs:
-    pathToPublish: $(Build.ArtifactStagingDirectory)
-    artifactName: MyBuildOutputs
-
-- script: dotnet test MailBox --logger trx --collect "Code coverage"
-- task: PublishTestResults@2
-  inputs:
-    testRunner: VSTest
-    testResultsFiles: '**/*.trx'
-
-
 - task: PowerShell@2
   displayName: Set the name of the build (i.e. the Build.BuildNumber)
   inputs:
@@ -74,9 +59,6 @@ steps:
       Write-Host "Setting the name of the build to '$buildName'."
       Write-Host "##vso[build.updatebuildnumber]$buildName"
 
-# ...
-# do this after you've built your app, near the end of your pipeline in most cases
-# for example, you do this before you deploy to an Azure web app on Windows
 - task: DotNetCoreCLI@2
   inputs:
     command: publish
