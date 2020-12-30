@@ -18,11 +18,12 @@ namespace MailBox.Services
     public class MailService : IMailService
     {
         private readonly MailBoxDBContext _context;
+        private readonly INotificationService _notificationService;
 
-
-        public MailService(MailBoxDBContext context)
+        public MailService(MailBoxDBContext context, INotificationService notificationService)
         {
             _context = context;
+            _notificationService = notificationService;
         }
 
         public PagingMailInboxView GetUserMails(int userID, int page, SortingEnum sorting, FilterEnum filter, string filterPhrase)
@@ -228,8 +229,7 @@ namespace MailBox.Services
                 HashSet<string> recipients = new HashSet<string>();
                 newMail.BCCRecipientsAddresses.ForEach((string email) => recipients.Add(email));
                 newMail.CCRecipientsAddresses.ForEach((string email) => recipients.Add(email));
-                Task SendNotification = Task.Run(() => SendNotificationToRecipients(recipients.ToList(), "NewMail"));
-                SendNotification.Wait();
+                _notificationService.SendNotification(recipients.ToList(), "NewMail", false);
             }
             catch (Exception)
             {
@@ -237,25 +237,6 @@ namespace MailBox.Services
             }
         }
 
-        private async void SendNotificationToRecipients(List<string> recipients, string contentMes)
-        {
-            using (HttpClient client = new HttpClient())
-            {
-                client.DefaultRequestHeaders.Add("x-api-key", "78b06e67-bda7-48e5-a032-12132f76eca1");
-                Notification notification = new Notification
-                {
-                    Content = contentMes,
-                    RecipientsList = recipients.ToArray(),
-                    WithAttachments = false
-                };
-                string json = await Task.Run(() => JsonConvert.SerializeObject(notification));
-                HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
-
-                var response = await client.PostAsync("https://mini-notification-service.azurewebsites.net/notifications", content);
-
-                var responseString = await response.Content.ReadAsStringAsync();
-            }
-        }
 
         public void UpdateMailRead(int userID, MailReadUpdate mailRead)
         {
