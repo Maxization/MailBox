@@ -1,10 +1,15 @@
 ﻿
 using MailBox.Database;
+using MailBox.Models.NotificationModel;
 using MailBox.Models.UserModels;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace MailBox.Services
 {
@@ -86,11 +91,41 @@ namespace MailBox.Services
             return result;
         }
 
+        private async void SendNotificationToUser(string userEmail, string contentMes)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Add("x-api-key", "78b06e67-bda7-48e5-a032-12132f76eca1");
+                Notification notification = new Notification
+                {
+                    Content = contentMes,
+                    RecipientsList = new List<string>{ userEmail }.ToArray(),
+                    WithAttachments = false
+                };
+                string json = await Task.Run(() => JsonConvert.SerializeObject(notification));
+                HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                var response = await client.PostAsync("https://mini-notification-service.azurewebsites.net/notifications", content);
+
+                var responseString = await response.Content.ReadAsStringAsync();
+            }
+        }
+
         public void UpdateUserRole(UserRoleUpdate userRoleUpdate)
         {
             var user = _context.Users.First(u => u.Email == userRoleUpdate.Address);
             user.Role = _context.Roles.First(r => r.RoleName == userRoleUpdate.RoleName);
             _context.SaveChanges();
+            if(userRoleUpdate.RoleName == "User" || userRoleUpdate.RoleName == "Admin")
+            {
+                Task SendNotification = Task.Run(() => SendNotificationToUser(userRoleUpdate.Address, "ActivatedAccount"));
+                SendNotification.Wait();
+            }
+            else if (userRoleUpdate.RoleName == "Banned")
+            {
+                Task SendNotification = Task.Run(() => SendNotificationToUser(userRoleUpdate.Address, "BannedAccount"));
+                SendNotification.Wait();
+            }
         }
 
         public void RemoveUser(DeletedUser deletedUser)
