@@ -1,22 +1,29 @@
 ﻿
 using MailBox.Database;
 using MailBox.Models.MailModels;
+using MailBox.Models.NotificationModel;
 using MailBox.Models.UserModels;
 using MailBox.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace MailBox.Services
 {
     public class MailService : IMailService
     {
         private readonly MailBoxDBContext _context;
+        private readonly INotificationService _notificationService;
 
-        public MailService(MailBoxDBContext context)
+        public MailService(MailBoxDBContext context, INotificationService notificationService)
         {
             _context = context;
+            _notificationService = notificationService;
         }
 
         public PagingMailInboxView GetUserMails(int userID, int page, SortingEnum sorting, FilterEnum filter, string filterPhrase)
@@ -139,6 +146,7 @@ namespace MailBox.Services
 
         public void AddMail(int userID, NewMail newMail)
         {
+
             #region CheckIfEmailExist
             if (newMail.BCCRecipientsAddresses != null)
                 newMail.BCCRecipientsAddresses = newMail.BCCRecipientsAddresses.Distinct().ToList();
@@ -180,6 +188,8 @@ namespace MailBox.Services
                 _context.Mails.Add(mail);
                 _context.SaveChanges();
 
+
+
                 if (newMail.CCRecipientsAddresses != null)
                     foreach (string email in newMail.CCRecipientsAddresses)
                     {
@@ -215,12 +225,18 @@ namespace MailBox.Services
                 _context.SaveChanges();
 
                 transaction.Commit();
+
+                HashSet<string> recipients = new HashSet<string>();
+                recipients.UnionWith(newMail.BCCRecipientsAddresses);
+                recipients.UnionWith(newMail.CCRecipientsAddresses);
+                _notificationService.SendNotification(recipients.ToList(), "NewMail", false);
             }
             catch (Exception)
             {
                 transaction.Rollback();
             }
         }
+
 
         public void UpdateMailRead(int userID, MailReadUpdate mailRead)
         {

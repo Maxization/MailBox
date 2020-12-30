@@ -86,6 +86,7 @@ namespace MailBox
             services.AddScoped<IGroupService, GroupService>();
             services.AddScoped<IMailService, MailService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<INotificationService, NotificationService>();
 
             //services.AddHostedService<EmailNotificationHostedService>();
             //services.AddHostedService<SMSNotificationHostedService>();

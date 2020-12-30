@@ -32,11 +32,14 @@ namespace UnitTests.ServicesTest
             mockUsersSet.As<IQueryable<User>>().Setup(m => m.ElementType).Returns(users.AsQueryable().ElementType);
             mockUsersSet.As<IQueryable<User>>().Setup(m => m.GetEnumerator()).Returns(users.GetEnumerator());
 
+            var mockNotificationService = new Mock<NotificationService>();
+
             var mockContext = new Mock<MailBoxDBContext>();
             mockContext.Setup(c => c.UserMails).Returns(mockMailsSet.Object);
             mockContext.Setup(c => c.Users).Returns(mockUsersSet.Object);
 
-            var service = new MailService(mockContext.Object);
+
+            var service = new MailService(mockContext.Object, mockNotificationService.Object);
 
             var user9Mais = service.GetUserMails(9, 1, SortingEnum.ByDateFromNewest, FilterEnum.NoFilter, null);
             var user10Mais = service.GetUserMails(10, 1, SortingEnum.BySenderAZ, FilterEnum.FilterTopic, "testtopic");
@@ -67,11 +70,13 @@ namespace UnitTests.ServicesTest
             mockUsersSet.As<IQueryable<User>>().Setup(m => m.ElementType).Returns(users.AsQueryable().ElementType);
             mockUsersSet.As<IQueryable<User>>().Setup(m => m.GetEnumerator()).Returns(users.GetEnumerator());
 
+            var mockNotificationService = new Mock<NotificationService>();
+
             var mockContext = new Mock<MailBoxDBContext>();
             mockContext.Setup(c => c.UserMails).Returns(mockMailsSet.Object);
             mockContext.Setup(c => c.Users).Returns(mockUsersSet.Object);
 
-            var service = new MailService(mockContext.Object);
+            var service = new MailService(mockContext.Object, mockNotificationService.Object);
 
             var user10Mais = service.GetMail(10, 3);
             var user11Mais = service.GetMail(11, 3);
@@ -104,7 +109,9 @@ namespace UnitTests.ServicesTest
             mockContext.Setup(c => c.UserMails).Returns(mockMailsSet.Object);
             mockContext.Setup(c => c.Users).Returns(mockUsersSet.Object);
 
-            var service = new MailService(mockContext.Object);
+            var mockNotificationService = new Mock<NotificationService>();
+
+            var service = new MailService(mockContext.Object, mockNotificationService.Object);
 
             var user10Mais = service.GetMail(10, 3);
             var user11Mais = service.GetMail(11, 3);
@@ -127,10 +134,13 @@ namespace UnitTests.ServicesTest
             mockUserMailsSet.As<IQueryable<UserMail>>().Setup(m => m.ElementType).Returns(userMails.ElementType);
             mockUserMailsSet.As<IQueryable<UserMail>>().Setup(m => m.GetEnumerator()).Returns(userMails.GetEnumerator());
 
+            var mockNotificationService = new Mock<NotificationService>();
+
             var mockContext = new Mock<MailBoxDBContext>();
             mockContext.Setup(c => c.UserMails).Returns(mockUserMailsSet.Object);
 
-            var service = new MailService(mockContext.Object);
+            var service = new MailService(mockContext.Object, mockNotificationService.Object);
+
 
             MailReadUpdate mailReadUpdate = new MailReadUpdate { MailID = 3, Read = true };
 
