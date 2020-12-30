@@ -1,11 +1,11 @@
 ﻿
+using System;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using MailBox.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using MailBox.Models.MailModels;
-using System;
 using MailBox.Contracts.Responses;
 
 namespace MailBox.Controllers
@@ -47,12 +47,16 @@ namespace MailBox.Controllers
         /// <summary>
         /// Gets mails of logged user
         /// </summary>
+        /// <param name="page"></param>
+        /// <param name="sorting"></param>
+        /// <param name="filter"></param>
+        /// <param name="filterPhrase"></param>
         /// <returns>List of mails in JSON</returns>
         [HttpGet]
-        public IActionResult GetMails()
+        public IActionResult GetMails(int page, SortingEnum sorting, FilterEnum filter, string filterPhrase)
         {
             int userID = int.Parse(User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
-            return new JsonResult(_mailService.GetUserMails(userID));
+            return new JsonResult(_mailService.GetUserMails(userID, page, sorting, filter, filterPhrase));
         }
 
         /// <summary>

@@ -19,14 +19,57 @@ namespace MailBox.Services
             _context = context;
         }
 
-        public List<MailInboxView> GetUserMails(int userID)
+        public PagingMailInboxView GetUserMails(int userID, int page, SortingEnum sorting, FilterEnum filter, string filterPhrase)
         {
+            filterPhrase = (filterPhrase == null ? "" : filterPhrase);
+
+            bool firstPage = (page == 1);
+
             var userMails = _context.UserMails
                 .Include(x => x.Mail)
                 .ThenInclude(x => x.Sender)
                 .Where(x => x.UserID == userID).AsQueryable();
 
-            List<MailInboxView> result = new List<MailInboxView>();
+            switch (filter)
+            {
+                case FilterEnum.FilterTopic:
+                    userMails = userMails.Where(x => x.Mail.Topic.StartsWith(filterPhrase)).AsQueryable();
+                    break;
+                case FilterEnum.FilterSenderName:
+                    userMails = userMails.Where(x => x.Mail.Sender.FirstName.StartsWith(filterPhrase)).AsQueryable();
+                    break;
+                case FilterEnum.FilterSenderSurname:
+                    userMails = userMails.Where(x => x.Mail.Sender.LastName.StartsWith(filterPhrase)).AsQueryable();
+                    break;
+            }
+
+            switch (sorting)
+            {
+                case SortingEnum.ByDateFromNewest:
+                    userMails = userMails.OrderByDescending(x => x.Mail.Date);
+                    break;
+                case SortingEnum.ByDateFromOldest:
+                    userMails = userMails.OrderBy(x => x.Mail.Date);
+                    break;
+                case SortingEnum.BySenderAZ:
+                    userMails = userMails.OrderBy(x => x.Mail.Sender.FirstName).ThenBy(x => x.Mail.Sender.LastName).ThenByDescending(x => x.Mail.Date);
+                    break;
+                case SortingEnum.BySenderZA:
+                    userMails = userMails.OrderByDescending(x => x.Mail.Sender.FirstName).ThenByDescending(x => x.Mail.Sender.LastName).ThenByDescending(x => x.Mail.Date);
+                    break;
+                case SortingEnum.ByTopicAZ:
+                    userMails = userMails.OrderBy(x => x.Mail.Topic).ThenByDescending(x => x.Mail.Date);
+                    break;
+                case SortingEnum.ByTopicZA:
+                    userMails = userMails.OrderByDescending(x => x.Mail.Topic).ThenByDescending(x => x.Mail.Date);
+                    break;
+            }
+
+            bool lastPage = (userMails.Count() <= 5 * page);
+
+            userMails = userMails.Skip((page - 1) * 5).Take(5);
+
+            List<MailInboxView> mails = new List<MailInboxView>();
             foreach (var um in userMails)
             {
                 MailInboxView miv = new MailInboxView
@@ -39,18 +82,16 @@ namespace MailBox.Services
                         Surname = um.Mail.Sender.LastName,
                         Address = um.Mail.Sender.Email
                     },
-                    RecipientsAddresses = GetMailRecipients(userID, um.Mail.ID),
                     Topic = um.Mail.Topic,
-                    Text = um.Mail.Text,
                     Date = um.Mail.Date,
                 };
-                result.Add(miv);
+                mails.Add(miv);
             }
 
-            return result;
+            return new PagingMailInboxView { Mails = mails, FirstPage = firstPage, LastPage = lastPage };
         }
 
-        public MailInboxView GetMail(int userID, int mailID)
+        public MailDetailsView GetMail(int userID, int mailID)
         {
             var mail = _context.UserMails
                 .Include(x => x.Mail)
@@ -59,7 +100,7 @@ namespace MailBox.Services
                 .FirstOrDefault();
             if (mail == null)
                 return null;
-            return new MailInboxView
+            return new MailDetailsView
             {
                 MailID = mail.Mail.ID,
                 Read = mail.Read,

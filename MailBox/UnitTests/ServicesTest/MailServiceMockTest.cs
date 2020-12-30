@@ -2,6 +2,7 @@
 using MailBox.Database;
 using MailBox.Models.MailModels;
 using MailBox.Services;
+using MailBox.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using System;
@@ -17,7 +18,7 @@ namespace UnitTests.ServicesTest
         public void GetUserMails_ValidCall()
         {
             var mails = GetSampleUserMails().AsQueryable();
-            var users = GetSampeUsers();
+            var users = GetSamlpeUsers();
 
             var mockMailsSet = new Mock<DbSet<UserMail>>();
             mockMailsSet.As<IQueryable<UserMail>>().Setup(m => m.Provider).Returns(mails.Provider);
@@ -37,22 +38,22 @@ namespace UnitTests.ServicesTest
 
             var service = new MailService(mockContext.Object);
 
-            var user9Mais = service.GetUserMails(9);
-            var user10Mais = service.GetUserMails(10);
-            var user11Mais = service.GetUserMails(11);
+            var user9Mais = service.GetUserMails(9, 1, SortingEnum.ByDateFromNewest, FilterEnum.NoFilter, null);
+            var user10Mais = service.GetUserMails(10, 1, SortingEnum.BySenderAZ, FilterEnum.FilterTopic, "testtopic");
+            var user11Mais = service.GetUserMails(11, 1, SortingEnum.ByTopicZA, FilterEnum.FilterSenderName, "");
 
-            Assert.Empty(user9Mais);
-            Assert.Equal(5, user10Mais.Count);
-            Assert.Single(user11Mais);
-            Assert.Equal("sender1@address.com", user10Mais[0].Sender.Address);
-            Assert.Equal("sender3@address.com", user11Mais[0].Sender.Address);
+            Assert.Empty(user9Mais.Mails);
+            Assert.Equal(5, user10Mais.Mails.Count);
+            Assert.Single(user11Mais.Mails);
+            Assert.Equal("SenderName2", user10Mais.Mails[2].Sender.Name);
+            Assert.Equal("sender3@address.com", user11Mais.Mails[0].Sender.Address);
         }
 
         [Fact]
         public void GetMail_ValidCall()
         {
             var mails = GetSampleUserMails().AsQueryable();
-            var users = GetSampeUsers();
+            var users = GetSamlpeUsers();
 
             var mockMailsSet = new Mock<DbSet<UserMail>>();
             mockMailsSet.As<IQueryable<UserMail>>().Setup(m => m.Provider).Returns(mails.Provider);
@@ -85,7 +86,7 @@ namespace UnitTests.ServicesTest
         public void BCCandCCTest_ValidCall()
         {
             var mails = GetSampleUserMails().AsQueryable();
-            var users = GetSampeUsers();
+            var users = GetSamlpeUsers();
 
             var mockMailsSet = new Mock<DbSet<UserMail>>();
             mockMailsSet.As<IQueryable<UserMail>>().Setup(m => m.Provider).Returns(mails.Provider);
@@ -138,7 +139,7 @@ namespace UnitTests.ServicesTest
             mockContext.Verify(m => m.SaveChanges(), Times.Once());
         }
 
-        private List<User> GetSampeUsers()
+        private List<User> GetSamlpeUsers()
         {
             List<User> users = new List<User>();
             users.Add(new User { ID = 0, FirstName = "SenderName1", LastName = "SenderSurname1", Email = "sender1@address.com" });

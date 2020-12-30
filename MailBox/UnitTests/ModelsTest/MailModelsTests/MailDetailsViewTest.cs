@@ -2,11 +2,12 @@
 using System;
 using Xunit;
 using MailBox.Models.MailModels;
+using System.Collections.Generic;
 using MailBox.Models.UserModels;
 
 namespace UnitTests.ModelsTest.MailModelsTest
 {
-    public class MailInboxViewTest
+    public class MailDetailsViewTest
     {
         [Fact]
         public void ConstructorTest()
@@ -23,14 +24,18 @@ namespace UnitTests.ModelsTest.MailModelsTest
                 Surname = surname,
                 Address = address
             };
+            List<string> recipientsAddresses = new List<string>();
             string topic = "testtopic";
+            string text = "testtext";
             DateTime dateTime = new DateTime(2021, 1, 1);
             #endregion
-            MailInboxView inboxMail = new MailInboxView
+            MailDetailsView inboxMail = new MailDetailsView
             {
                 MailID = mailID,
                 Sender = sender,
+                RecipientsAddresses = recipientsAddresses,
                 Date = dateTime,
+                Text = text,
                 Topic = topic,
                 Read = read
             };
@@ -39,7 +44,9 @@ namespace UnitTests.ModelsTest.MailModelsTest
             Assert.Equal(inboxMail.MailID, mailID);
             Assert.Equal(inboxMail.Read, read);
             Assert.Equal(inboxMail.Sender, sender);
+            Assert.Equal(inboxMail.RecipientsAddresses, recipientsAddresses);
             Assert.Equal(inboxMail.Topic, topic);
+            Assert.Equal(inboxMail.Text, text);
             Assert.Equal(inboxMail.Date, dateTime);
             #endregion
         }

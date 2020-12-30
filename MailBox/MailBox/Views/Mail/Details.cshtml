@@ -1,4 +1,4 @@
-﻿@model MailBox.Models.MailModels.MailInboxView
+﻿@model MailBox.Models.MailModels.MailDetailsView
 
 @{
     ViewData["Title"] = "View";
@@ -47,7 +47,7 @@
                         </dd>
                         <dd class="col-1" style="border-left: 1px solid white"></dd>
                         <dd class="col-8 bg-white overflow-auto" style="color: black; padding: 5px; height: 300px; overflow-wrap: break-word">
-                            @Html.DisplayFor(model => model.Text)          
+                            @Html.DisplayFor(model => model.Text)
                         </dd>
                     </dl>
                     <hr />
