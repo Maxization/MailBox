@@ -17,7 +17,13 @@ variables:
   versionNumber: '$(version.MajorMinor).$(version.Revision).0'
 
 steps:
-
+- task: UseDotNet@2
+  displayName: 'Use .Net Core sdk 5.x.x'
+  inputs:
+    packageType: sdk
+    version: 5.x.x
+    installationPath: $(Agent.ToolsDirectory)/dotnet
+    includePreviewVersions: true
 - task: Assembly-Info-NetCore@2
   inputs:
     Path: '$(Build.SourcesDirectory)'
