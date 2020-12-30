@@ -1,0 +1,100 @@
+@model MailBox.Models.MailModels.NewMail
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<head>
+    <link href="~/css/main.css" rel="stylesheet" />
+    <link href="~/css/inbox.css" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="~/js/data.js"></script>
+    <script src="~/js/newmail.js"></script>
+</head>
+<body class="bg-black">
+    <div class="container-fluid text-white">
+        <div class="row">
+            <div id="foldersactions" class="col-2 no-float bg-dark-transparent">
+            </div>
+            <div class="col-8 no-float bg-dark-transparent text-white" id="mail_div">
+                <div class="container bg-dark2">
+                    <div class="form-row">
+                        <div class="col-12">
+                            <button type="button" class="btn btn-secondary float-left" onclick="window.location='@Url.Action("inbox", "mail")'">&#8592</button>
+                        </div>
+                    </div>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+
+                    <div>
+                        <div class="form-row">
+                            <div class="col-2">
+                                <label class="col-form-label">To (CC):</label>
+                            </div>
+                            <div class="col-6">
+                                <input name="CC" asp-for="CCRecipientsAddresses" class="form-control" style="margin: 0" />
+                                <span id="CCError" class="text-danger"></span>
+                            </div>
+                            <div class="col-3">
+                                <button id="GCLCC" type="button" class="btn btn-info dropdown-toggle" style="width: 100%" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Global Contact List
+                                </button>
+                                <div id="globalListCC" class="dropdown-menu overflow-auto" style="width: 100%; height: 200px" aria-labelledby="Global Contact List">
+                                    <input oninput="OnFilter('CC', this.value)" class="btn btn-light dropdown-item" style="width: 90%; height: 22px" id="FilterCC" placeholder=" Type email..." />
+                                </div>
+                            </div>
+                            <div class="col-1"></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-2">
+                                <label class="col-form-label">To (BCC):</label>
+                            </div>
+                            <div class="col-6">
+                                <input name="BCC" asp-for="BCCRecipientsAddresses" class="form-control" style="margin: 0" />
+                                <span id="BCCError" class="text-danger"></span>
+                            </div>
+                            <div class="col-3">
+                                <button type="button" class="btn btn-info dropdown-toggle" style="width: 100%" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Global Contact List
+                                </button>
+                                <div id="globalListBCC" class="dropdown-menu overflow-auto" style="width: 100%; height: 200px" aria-labelledby="Global Contact List">
+                                    <input oninput="OnFilter('BCC', this.value)" class="btn btn-light dropdown-item" style="width: 90%; height: 22px" id="FilterBCC" placeholder=" Type email..." />
+                                </div>
+                            </div>
+                            <div class="col-1"></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-2">
+                                <label class="col-form-label">Topic:</label>
+                            </div>
+                            <div class="col-10">
+                                <input name="Topic" asp-for="Topic" class="form-control" style="margin: 0" />
+                                <span id="TopicError" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-12">
+                                <textarea name="Text" asp-for="Text" class="form-control overflow-auto" rows="15" placeholder="Click here..."></textarea>
+                                <span id="TextError" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-12">
+                                <button  class="btn btn-secondary float-left">attach files</button>
+                                <button onclick="OnClickSend()" type="submit" class="btn btn-success float-right">Send</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-2 no-float bg-dark-transparent">
+                <div class="container-title">
+                    <h4>Groups</h4>
+                    <hr />
+                </div>
+                <div id="groupspanel" class="container-groups overflow-auto">
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

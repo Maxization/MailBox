@@ -1,0 +1,57 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+<head>
+    <link href="~/css/main.css" rel="stylesheet" />
+    <link href="~/css/inbox.css" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="~/js/data.js"></script>
+    <script src="~/js/groups.js"></script>
+</head>
+<body>
+    <div class="container-fluid text-white">
+        <div class="row">
+            <div id="foldersactions" class="col-2 no-float bg-dark-transparent">
+            </div>
+            <div class="col-8 no-float bg-dark-transparent">
+                <div class="col-12 no-float bg-dark-transparent container-fluid text-white">
+                    <div class="row no-gutters container-title">
+                        <div class="col-12">
+                            <h4>Groups</h4>
+                            <hr />
+                        </div>
+                    </div>
+                    <div id="managementinterface" class="container-groups overflow-auto">
+                    </div>
+                    <div class="row no-gutters container-title">
+                        <div class="col-12">
+                            <hr />
+                            <div class="row">
+                                <div class="col-10 no-gutters">
+                                    <input id="newGroupName" type="text" class="form-control input-new_folder" placeholder=" Type group name..." aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                </div>
+                                <div class="col-2 no-gutters">
+                                    <button onclick="AddGroup(document.getElementById('newGroupName').value)" class="add-button">+</button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 no-gutters">
+                                    <label id="newGroupError" class="text-danger" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-2 no-float bg-dark-transparent">
+                <div class="container-title">
+                    <h4>Groups</h4>
+                    <hr />
+                </div>
+                <div id="groupspanel" class="container-groups overflow-auto">
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

@@ -1,0 +1,89 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+<head>
+    <link href="~/css/main.css" rel="stylesheet" />
+    <link href="~/css/inbox.css" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="~/js/data.js"></script>
+    <script src="~/js/inbox.js"></script>
+</head>
+<body class="bg-black">
+    <div class="container-fluid text-white">
+        <div class="row">
+            <div id="foldersactions" class="col-2 no-float bg-dark-transparent">
+            </div>
+            <div class="col-8 no-float bg-dark-transparent" id="main_div">
+                <div class="container bg-dark2 table-inbox" id="inbox_table" border="1">
+                    <div class="row no-gutters">
+                        <div class="col-2 no-gutters">
+                            <div class="dropdown fill-parent">
+                                <button class="btn btn-secondary dropdown-toggle bg-black content-center" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Sorting
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <button id="sort_mails_by_date_from_old" style="background-color: white" onclick="SetSortingMailsByDateFromOld()" class="dropdown-item" href="#">Sort by date: from oldest</button>
+                                    <button id="sort_mails_by_date_from_new" style="background-color: gray" onclick="SetSortingMailsByDateFromNew()" class="dropdown-item" href="#">Sort by date: from newest</button>
+                                    <button id="sort_mails_by_sender_az" style="background-color: white" onclick="SetSortingMailsBySenderAZ()" class="dropdown-item" href="#">Sort by sender: A-Z</button>
+                                    <button id="sort_mails_by_sender_za" style="background-color: white" onclick="SetSortingMailsBySenderZA()" class="dropdown-item" href="#">Sort by sender: Z-A</button>
+                                    <button id="sort_mails_by_topic_az" style="background-color: white" onclick="SetSortingMailsByTopicAZ()" class="dropdown-item" href="#">Sort by topic: A-Z</button>
+                                    <button id="sort_mails_by_topic_za" style="background-color: white" onclick="SetSortingMailsByTopicZA()" class="dropdown-item" href="#">Sort by topic: Z-A</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4 no-gutters" style="display: inline-block">
+                            <div class="row">
+                                <div class="col-3">
+                                    <div class="dropdown fill-parent">
+                                        <button class="btn btn-secondary dropdown-toggle bg-black content-center" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Filtering
+                                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <button id="no_mail_filtering" style="background-color: gray" onclick="SetNoMailFiltering()" class="dropdown-item" href="#">No filtering</button>
+                                            <button id="filtering_mail_topic" style="background-color: white" onclick="SetMailTopicFiltering()" class="dropdown-item" href="#">Filter by topic</button>
+                                            <button id="filtering_mail_sender_name" style="background-color: white" onclick="SetMailSenderNameFiltering()" class="dropdown-item" href="#">Filter by sender name</button>
+                                            <button id="filtering_mail_sender_surname" style="background-color: white" onclick="SetMailSenderSurnameFiltering()" class="dropdown-item" href="#">Filter by sender surname</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-5">
+                                    <input id="mail_filter" oninput="ChangeCurrentFilterPhrase()" placeholder=" Mail filter..." value="" style="height: 100%; width: 100%" />
+                                </div>
+                                <div class="col-4"></div>
+                            </div>
+                        </div>
+                        <div class="col-4 no-gutters"></div>
+                        <div class="col-1 no-gutters">
+                            <button id="prev_page" type="button" class="btn btn-secondary float-right" onclick="ChangePage(-1)">&#8592</button>
+                        </div>
+                        <div class="col-1 no-gutters">
+                            <button id="next_page" type="button" class="btn btn-secondary float-left" onclick="ChangePage(1)">&#8594</button>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row no-gutters text-center">
+                        <div id="DateSender1" class="col-2 no-gutters"><span>Date</span></div>
+                        <div class="col-10 no-gutters">
+                            <div class="row no-gutters">
+                                <div class="col-1 no-gutters"><span>Read</span></div>
+                                <div id="DateSender2" class="col-3 no-gutters"><span>Sender</span></div>
+                                <div class="col-8 no-gutters"><span>Topic</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div id="mail_container" class="mail-list"></div>
+                </div>
+            </div>
+            <div class="col-2 no-float bg-dark-transparent">
+                <div class="container-title">
+                    <h4>Groups</h4>
+                    <hr />
+                </div>
+                <div id="groupspanel" class="container-groups overflow-auto">
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

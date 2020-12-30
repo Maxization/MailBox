@@ -1,0 +1,31 @@
+﻿
+.max-width {
+    max-width: 100px;
+}
+
+.table-inbox {
+    border-radius: 10px;
+    padding: 5px;
+}
+
+.mail-list {
+    overflow: auto;
+    height: 350px !important;
+}
+
+span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+    max-width: 100%;
+    padding: 2px;
+}
+
+input {
+    width: 14px;
+    height: 14px;
+    margin-left: 10px;
+    vertical-align: middle;
+    position: center;
+}
