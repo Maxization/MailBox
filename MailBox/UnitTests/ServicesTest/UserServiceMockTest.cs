@@ -2,6 +2,7 @@
 using MailBox.Database;
 using MailBox.Models.UserModels;
 using MailBox.Services;
+using MailBox.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using System.Collections.Generic;
@@ -23,10 +24,12 @@ namespace UnitTests.ServicesTest
             mockUsersSet.As<IQueryable<User>>().Setup(m => m.ElementType).Returns(users.ElementType);
             mockUsersSet.As<IQueryable<User>>().Setup(m => m.GetEnumerator()).Returns(users.GetEnumerator());
 
+            var mockNotificationService = new Mock<NotificationService>();
+
             var mockContext = new Mock<MailBoxDBContext>();
             mockContext.Setup(c => c.Users).Returns(mockUsersSet.Object);
 
-            var service = new UserService(mockContext.Object);
+            var service = new UserService(mockContext.Object, mockNotificationService.Object);
 
             var globalList = service.GetGlobalContactList();
 
@@ -48,10 +51,12 @@ namespace UnitTests.ServicesTest
             mockUsersSet.As<IQueryable<User>>().Setup(m => m.ElementType).Returns(users.ElementType);
             mockUsersSet.As<IQueryable<User>>().Setup(m => m.GetEnumerator()).Returns(users.GetEnumerator());
 
+            var mockNotificationService = new Mock<NotificationService>();
+
             var mockContext = new Mock<MailBoxDBContext>();
             mockContext.Setup(c => c.Users).Returns(mockUsersSet.Object);
 
-            var service = new UserService(mockContext.Object);
+            var service = new UserService(mockContext.Object, mockNotificationService.Object);
 
             var adminViewList = service.GetAdminViewList();
 
@@ -87,7 +92,9 @@ namespace UnitTests.ServicesTest
             mockContext.Setup(c => c.Users).Returns(mockUserSet.Object);
             mockContext.Setup(c => c.Roles).Returns(mockRolesSet.Object);
 
-            var service = new UserService(mockContext.Object);
+            var mockNotificationService = new Mock<NotificationService>();
+
+            var service = new UserService(mockContext.Object, mockNotificationService.Object);
             UserRoleUpdate userRoleUpdate = new UserRoleUpdate
             {
                 Address = "test4@address.com",

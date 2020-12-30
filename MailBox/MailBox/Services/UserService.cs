@@ -1,20 +1,29 @@
 ﻿
 using MailBox.Database;
+using MailBox.Models.NotificationModel;
 using MailBox.Models.UserModels;
+using MailBox.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace MailBox.Services
 {
     public class UserService : IUserService
     {
         private readonly MailBoxDBContext _context;
+        private readonly INotificationService _notificationService;
 
-        public UserService(MailBoxDBContext context)
+        public UserService(MailBoxDBContext context, INotificationService notificationService)
         {
             _context = context;
+            _notificationService = notificationService;
         }
 
         public List<UserAdminView> GetAdminViewList()
@@ -86,11 +95,21 @@ namespace MailBox.Services
             return result;
         }
 
+        
+
         public void UpdateUserRole(UserRoleUpdate userRoleUpdate)
         {
             var user = _context.Users.First(u => u.Email == userRoleUpdate.Address);
             user.Role = _context.Roles.First(r => r.RoleName == userRoleUpdate.RoleName);
             _context.SaveChanges();
+            if(userRoleUpdate.RoleName == "User" || userRoleUpdate.RoleName == "Admin")
+            {
+                _notificationService.SendNotification(new List<string>{ userRoleUpdate.Address}, "ActivatedAccount",false);
+            }
+            else if (userRoleUpdate.RoleName == "Banned")
+            {
+                _notificationService.SendNotification(new List<string> { userRoleUpdate.Address }, "BannedAccount", false);
+            }
         }
 
         public void RemoveUser(DeletedUser deletedUser)
