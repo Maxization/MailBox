@@ -227,8 +227,8 @@ namespace MailBox.Services
                 transaction.Commit();
 
                 HashSet<string> recipients = new HashSet<string>();
-                newMail.BCCRecipientsAddresses.ForEach((string email) => recipients.Add(email));
-                newMail.CCRecipientsAddresses.ForEach((string email) => recipients.Add(email));
+                recipients.UnionWith(newMail.BCCRecipientsAddresses);
+                recipients.UnionWith(newMail.CCRecipientsAddresses);
                 _notificationService.SendNotification(recipients.ToList(), "NewMail", false);
             }
             catch (Exception)

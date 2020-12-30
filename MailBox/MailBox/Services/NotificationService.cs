@@ -14,6 +14,10 @@ namespace MailBox.Services
     public class NotificationService : INotificationService
     {
         private readonly IConfiguration _configuration;
+        public NotificationService()
+        {
+        }
+
         public NotificationService(IConfiguration configuration)
         {
             _configuration = configuration;
