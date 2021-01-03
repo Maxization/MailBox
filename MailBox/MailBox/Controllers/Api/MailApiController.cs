@@ -7,13 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using MailBox.Models.MailModels;
 using MailBox.Contracts.Responses;
-using System.Net.Http;
 using System.Threading.Tasks;
-using System.Net.Http.Headers;
-using System.Collections.Generic;
-using MailBox.Models.NotificationModel;
-using System.Text;
-using Newtonsoft.Json;
 
 namespace MailBox.Controllers
 {
@@ -40,7 +34,7 @@ namespace MailBox.Controllers
             ErrorResponse errorResponse = new ErrorResponse();
             try
             {
-                _mailService.AddMail(userID, mail);    
+                await _mailService.AddMail(userID, mail);
             }
             catch (Exception ex)
             {

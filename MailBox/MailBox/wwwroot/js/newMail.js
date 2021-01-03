@@ -1,3 +1,15 @@
+
+function OnChangeFiles() {
+    var attachedFiles = document.getElementById('files').files;
+    var newText = "Attached " + attachedFiles.length + " files: ";
+    for (var i = 0; i < attachedFiles.length; i++) {
+        newText += attachedFiles.item(i).name;
+        if (i != attachedFiles.length - 1)
+            newText += ", ";
+    }
+    $("#filesLabel").tooltip().attr('data-original-title', newText);
+}
+
 function OnClickBCC(id) {
     var inp = $('input[name=BCC]');
     var email = inp.val() + document.getElementById(id).innerHTML + "; ";
@@ -18,7 +30,8 @@ function OnClickSend() {
         Topic: $('input[name=Topic]').val(),
         Text: $('textarea[name=Text]').val(),
         CCRecipientsAddresses: CC,
-        BCCRecipientsAddresses: BCC
+        BCCRecipientsAddresses: BCC,
+        Files: $('files').files
     };
     $.ajax({
         url: '/api/mailapi/create',
@@ -80,4 +93,12 @@ $(document).ready(function () {
         if (event.keyCode == 13)
             event.preventDefault();
     });
+    $("body").tooltip({ selector: '[data-toggle=tooltip]' });
+    if (!window.File || !window.FileReader || !window.FileList || !window.Blob) {
+        alert('You cannot attach files in yout browser - please install the newest version');
+        return;
+    }
+    input = document.getElementById('files');
+    if (!input.files)
+        alert('You cannot attach files in yout browser - please install the newest version');
 });
