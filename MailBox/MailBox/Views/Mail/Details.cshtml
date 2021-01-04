@@ -60,7 +60,7 @@
                             <div id="divAttachments" class="dropdown-menu overflow-auto" style="width: 100%; height: 50px" aria-labelledby="Attachments">
                                 @foreach (var a in Model.Attachments)
                                 {
-                                    <button class="btn btn-light dropdown-item" id=@a.id>@a.filename</button>
+                                    <a class="btn btn-light dropdown-item" id=@a.id href="/api/mailapi/downloadattachment?filename=@a.filename&id=@a.id">@a.filename</a>
                                 }
                             </div>
                         </div>

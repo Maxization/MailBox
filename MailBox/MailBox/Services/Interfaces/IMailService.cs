@@ -9,8 +9,9 @@ namespace MailBox.Services.Interfaces
     public interface IMailService
     {
         PagingMailInboxView GetUserMails(int userID, int page, SortingEnum sorting, FilterEnum filter, string filterPhrase);
+        void UpdateMailRead(int userID, MailReadUpdate mail);
         MailDetailsView GetMail(int userID, int mailID);
         Task AddMail(int userID, NewMail mail);
-        void UpdateMailRead(int userID, MailReadUpdate mail);
+        Task<byte[]> DownloadAttachment(string filename);
     }
 }

@@ -3,13 +3,16 @@ using MailBox.Database;
 using MailBox.Models.MailModels;
 using MailBox.Models.UserModels;
 using MailBox.Services.Interfaces;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
+using System.IO;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Http;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
 using Azure.Storage.Blobs;
 
 namespace MailBox.Services
@@ -97,6 +100,13 @@ namespace MailBox.Services
             }
 
             return new PagingMailInboxView { Mails = mails, FirstPage = firstPage, LastPage = lastPage };
+        }
+
+        public void UpdateMailRead(int userID, MailReadUpdate mailRead)
+        {
+            UserMail userMail = _context.UserMails.Where(um => um.MailID == mailRead.MailID && um.UserID == userID).First();
+            userMail.Read = mailRead.Read;
+            _context.SaveChanges();
         }
 
         public MailDetailsView GetMail(int userID, int mailID)
@@ -285,11 +295,24 @@ namespace MailBox.Services
             await _notificationService.SendNotification(recipients.ToList(), "NewMail", ifAttachments);
         }
 
-        public void UpdateMailRead(int userID, MailReadUpdate mailRead)
+        public async Task<byte[]> DownloadAttachment(string filename)
         {
-            UserMail userMail = _context.UserMails.Where(um => um.MailID == mailRead.MailID && um.UserID == userID).First();
-            userMail.Read = mailRead.Read;
-            _context.SaveChanges();
+            string storageConnection = _configuration.GetConnectionString("AzureBlob");
+            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(storageConnection);
+            CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+            var section = _configuration.GetSection("AzureBlob");
+            string containerName = section.GetValue<string>("ContainerName");
+            CloudBlobContainer blobContainer = blobClient.GetContainerReference(containerName);
+            CloudBlockBlob blockBlob = blobContainer.GetBlockBlobReference(filename);
+
+            MemoryStream stream = new MemoryStream();
+            await blockBlob.DownloadToStreamAsync(stream);
+
+            var byteArray = new byte[stream.Length];
+            stream.Position = 0;
+            stream.Read(byteArray, 0, (int)stream.Length);
+
+            return byteArray;
         }
     }
 }

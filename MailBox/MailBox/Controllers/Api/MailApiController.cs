@@ -25,6 +25,34 @@ namespace MailBox.Controllers
         }
 
         /// <summary>
+        /// Gets mails of logged user
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="sorting"></param>
+        /// <param name="filter"></param>
+        /// <param name="filterPhrase"></param>
+        /// <returns>List of mails in JSON</returns>
+        [HttpGet]
+        public IActionResult GetMails(int page, SortingEnum sorting, FilterEnum filter, string filterPhrase)
+        {
+            int userID = int.Parse(User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
+            return new JsonResult(_mailService.GetUserMails(userID, page, sorting, filter, filterPhrase));
+        }
+
+        /// <summary>
+        /// Update mail "Read" status (read/unread)
+        /// </summary>
+        /// <param name="mail"></param>
+        /// <returns>OK</returns>
+        [HttpPut]
+        public IActionResult UpdateRead([FromBody] MailReadUpdate mail)
+        {
+            int userID = int.Parse(User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
+            _mailService.UpdateMailRead(userID, mail);
+            return Ok();
+        }
+
+        /// <summary>
         /// Create new mail
         /// </summary>
         /// <param name="topic"></param>
@@ -63,29 +91,14 @@ namespace MailBox.Controllers
         /// <summary>
         /// Gets mails of logged user
         /// </summary>
-        /// <param name="page"></param>
-        /// <param name="sorting"></param>
-        /// <param name="filter"></param>
-        /// <param name="filterPhrase"></param>
+        /// <param name="filename"></param>
+        /// <param name="id"></param>
         /// <returns>List of mails in JSON</returns>
         [HttpGet]
-        public IActionResult GetMails(int page, SortingEnum sorting, FilterEnum filter, string filterPhrase)
+        public async Task<IActionResult> DownloadAttachment(string filename, Guid id)
         {
-            int userID = int.Parse(User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
-            return new JsonResult(_mailService.GetUserMails(userID, page, sorting, filter, filterPhrase));
-        }
-
-        /// <summary>
-        /// Update mail "Read" status (read/unread)
-        /// </summary>
-        /// <param name="mail"></param>
-        /// <returns>OK</returns>
-        [HttpPut]
-        public IActionResult UpdateRead([FromBody] MailReadUpdate mail)
-        {
-            int userID = int.Parse(User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
-            _mailService.UpdateMailRead(userID, mail);
-            return Ok();
+            byte[] array = await _mailService.DownloadAttachment(id.ToString() + filename);
+            return File(array, "application/" + filename.Substring(filename.IndexOf('.') + 1), filename);
         }
     }
 }
