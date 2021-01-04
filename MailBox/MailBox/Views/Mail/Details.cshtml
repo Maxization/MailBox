@@ -54,7 +54,15 @@
                     <div class="row no-gutters">
                         <div class="col-9"></div>
                         <div class="col-3">
-                            <button type="submit" class="btn add-button float-right">download all attachments</button>
+                            <button id="buttonAttachments" type="button" class="btn btn-info dropdown-toggle" style="width: 100%" data-toggle="dropdown" aria-haspopup="false" aria-expanded="true">
+                                Attachments
+                            </button>
+                            <div id="divAttachments" class="dropdown-menu overflow-auto" style="width: 100%; height: 50px" aria-labelledby="Attachments">
+                                @foreach (var a in Model.Attachments)
+                                {
+                                    <button class="btn btn-light dropdown-item" id=@a.id>@a.filename</button>
+                                }
+                            </div>
                         </div>
                     </div>
                 </div>

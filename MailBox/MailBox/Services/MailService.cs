@@ -16,7 +16,7 @@ namespace MailBox.Services
 {
     public class MailService : IMailService
     {
-        private IConfiguration _configuration;
+        private readonly IConfiguration _configuration;
         private readonly MailBoxDBContext _context;
         private readonly INotificationService _notificationService;
 
@@ -122,6 +122,7 @@ namespace MailBox.Services
                 Topic = mail.Mail.Topic,
                 Text = mail.Mail.Text,
                 Date = mail.Mail.Date,
+                Attachments = GetMailAttachments(mailID)
             };
         }
 
@@ -145,9 +146,21 @@ namespace MailBox.Services
             return recipients;
         }
 
+        private List<(string, Guid)> GetMailAttachments(int mailID)
+        {
+            var attachmentsDB = _context.Attachments
+                .Where(x => x.MailID == mailID)
+                .ToList();
+
+            List<(string filename, Guid id)> attachments = new List<(string filename, Guid id)>();
+            foreach (var attachment in attachmentsDB)
+                attachments.Add((attachment.Filename, attachment.ID));
+
+            return attachments;
+        }
+
         public async Task AddMail(int userID, NewMail newMail)
         {
-
             if (newMail.BCCRecipientsAddresses != null)
                 newMail.BCCRecipientsAddresses = newMail.BCCRecipientsAddresses.Distinct().ToList();
             if (newMail.CCRecipientsAddresses != null)
@@ -159,17 +172,13 @@ namespace MailBox.Services
             try
             {
                 int mailID = AddNewMailToDB(userID, newMail.Topic, newMail.Text);
-                _context.SaveChanges();
 
-                AddMailRecipientsToDB(newMail.CCRecipientsAddresses, RecipientType.CC, mailID);
+                AddMailRecipientsToDB(newMail.CCRecipientsAddresses, RecipientType.CC, mailID);    
                 AddMailRecipientsToDB(newMail.BCCRecipientsAddresses, RecipientType.BCC, mailID);
-                _context.SaveChanges();
 
                 if (IfAttachments(newMail.Files))
-                {
-                    StoreMailAttachmentsOnAzureBlob(mailID, newMail.Files);
-                    _context.SaveChanges();
-                }
+                    await StoreMailAttachmentsOnAzureBlob(mailID, newMail.Files);
+
                 transaction.Commit();
 
                 await NotifyRecipients(newMail.BCCRecipientsAddresses, newMail.CCRecipientsAddresses, IfAttachments(newMail.Files));
@@ -212,6 +221,7 @@ namespace MailBox.Services
                 Sender = usr,
             };
             _context.Mails.Add(mail);
+            _context.SaveChanges();
             return mail.ID;
         }
 
@@ -232,19 +242,23 @@ namespace MailBox.Services
                     };
                     _context.UserMails.Add(um);
                 }
+            _context.SaveChanges();
         }
 
         private bool IfAttachments(List<IFormFile> files)
         {
-            return (files != null && files.Count != 0);
+            return !(files == null || files.Count == 0);
         }
-        private void StoreMailAttachmentsOnAzureBlob(int mailID, List<IFormFile> files)
+
+        private async Task StoreMailAttachmentsOnAzureBlob(int mailID, List<IFormFile> files)
         {
             string connectionString = _configuration.GetConnectionString("AzureBlob");
             BlobServiceClient blobServiceClient = new BlobServiceClient(connectionString);
-            var section = _configuration.GetSection("Azure");
+            var section = _configuration.GetSection("AzureBlob");
             string containerName = section.GetValue<string>("ContainerName");
             BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(containerName);
+
+            List<Task> uploadTasks = new List<Task>();
 
             foreach (var file in files)
             {
@@ -252,13 +266,15 @@ namespace MailBox.Services
                 {
                     ID = Guid.NewGuid(),
                     MailID = mailID,
+                    Filename = file.FileName.Trim().Replace(' ', '-')
                 };
-                string fileName = "attachment" + attachment.ID.ToString();
-                BlobClient blobClient = containerClient.GetBlobClient(fileName);
-                blobClient.Upload(file.OpenReadStream());
-                attachment.Filename = fileName;
                 _context.Attachments.Add(attachment);
+                string fileName = attachment.ID.ToString() + attachment.Filename;
+                BlobClient blobClient = containerClient.GetBlobClient(fileName);
+                uploadTasks.Add(blobClient.UploadAsync(file.OpenReadStream()));
             }
+            await Task.WhenAll(uploadTasks);
+            _context.SaveChanges();
         }
 
         private async Task NotifyRecipients(List<string> BCCRecipientsAddresses, List<string> CCRecipientsAddresses, bool ifAttachments)

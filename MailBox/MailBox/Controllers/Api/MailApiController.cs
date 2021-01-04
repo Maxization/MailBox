@@ -1,13 +1,15 @@
 ﻿
 using System;
 using System.Linq;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using MailBox.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
+using MailBox.Services.Interfaces;
 using MailBox.Models.MailModels;
 using MailBox.Contracts.Responses;
-using System.Threading.Tasks;
 
 namespace MailBox.Controllers
 {
@@ -25,13 +27,26 @@ namespace MailBox.Controllers
         /// <summary>
         /// Create new mail
         /// </summary>
-        /// <param name="mail"></param>
+        /// <param name="topic"></param>
+        /// <param name="text"></param>
+        /// <param name="ccRecipientsAddresses"></param>
+        /// <param name="bccRecipientsAddresses"></param>
+        /// <param name="files"></param>
         /// <returns>Error list if any</returns>
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] NewMail mail)
+        public async Task<IActionResult> Create(string topic, string text, List<string> ccRecipientsAddresses, List<string> bccRecipientsAddresses, List<IFormFile> files)
         {
+            NewMail mail = new NewMail
+            {
+                Topic = topic,
+                Text = text,
+                CCRecipientsAddresses = ccRecipientsAddresses,
+                BCCRecipientsAddresses = bccRecipientsAddresses,
+                Files = files
+            };
             int userID = int.Parse(User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
             ErrorResponse errorResponse = new ErrorResponse();
+
             try
             {
                 await _mailService.AddMail(userID, mail);
