@@ -64,10 +64,12 @@ steps:
   inputs:
     script: 'dotnet tool install --global dotnet-ef'
 
-- task: CmdLine@2
-  displayName: Build EFCore Migrations
+- task: efcore-migration-script-generator-task@0
   inputs:
-    script: 'dotnet ef migrations script –-project $(Build.SourcesDirectory)\MailBox\MailBox\MailBox.csproj -o $(build.artifactstagingdirectory)\migrations\scripts.sql –i'
+    installdependencies: true # required for net 3.1+
+    projectpath: '$(Build.SourcesDirectory)/MailBox/MailBox/Mailbox.csproj' # path to project that has your DbContext
+    databasecontexts: 'MailBoxDBContext'
+    targetfolder: '$(build.artifactstagingdirectory)/migrations'
 
 - task: PublishBuildArtifacts@1
   inputs:
