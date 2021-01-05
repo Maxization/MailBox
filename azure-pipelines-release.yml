@@ -1,0 +1,103 @@
+# ASP.NET Core
+
+# Build and test ASP.NET Core projects targeting .NET Core.
+# Add steps that run tests, create a NuGet package, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+
+trigger:
+- Release
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  buildConfiguration: 'Release'
+  version.MajorMinor: '3.0' # Manually adjust the version number as needed for semantic versioning. Revision is auto-incremented.
+  version.Revision: $[counter(variables['version.MajorMinor'], 0)]
+  versionNumber: '$(version.MajorMinor).$(version.Revision).0'
+
+steps:
+- task: UseDotNet@2
+  displayName: 'Use .Net Core sdk 5.x'
+  inputs:
+    packageType: sdk
+    version: 3.x
+    installationPath: $(Agent.ToolsDirectory)/dotnet
+    includePreviewVersions: true
+- task: Assembly-Info-NetCore@2
+  inputs:
+    Path: '$(Build.SourcesDirectory)'
+    FileNames: '**/*.csproj'
+    InsertAttributes: true
+    FileEncoding: 'auto'
+    WriteBOM: false
+    VersionNumber: '$(versionNumber)'
+    FileVersionNumber: '$(versionNumber)'
+    LogLevel: 'verbose'
+    FailOnWarning: false
+    DisableTelemetry: false
+
+- task: NuGetCommand@2
+  inputs:
+    command: 'restore'
+    restoreSolution: '**/*.sln'
+    feedsToUse: 'select'
+
+- task: DotNetCoreCLI@2
+  displayName: Build
+  inputs:
+    command: build
+    projects: '**/*.csproj'
+    arguments: '--configuration $(buildConfiguration)'
+
+- task: PowerShell@2
+  displayName: Set the name of the build (i.e. the Build.BuildNumber)
+  inputs:
+    targetType: 'inline'
+    script: |
+      [string] $buildName = "$(versionNumber)_$(Build.SourceBranchName)"
+      Write-Host "Setting the name of the build to '$buildName'."
+      Write-Host "##vso[build.updatebuildnumber]$buildName"
+
+- task: CmdLine@2
+  displayName: Build EFCore Migrations
+  inputs:
+    script: 'dotnet tool install --global dotnet-ef'
+
+- task: efcore-migration-script-generator-task@0
+  inputs:
+    installdependencies: true # required for net 3.1+
+    projectpath: '$(Build.SourcesDirectory)/MailBox/MailBox/Mailbox.csproj' # path to project that has your DbContext
+    databasecontexts: 'MailBoxDBContext'
+    targetfolder: '$(build.artifactstagingdirectory)/migrations'
+
+- task: PublishPipelineArtifact@1
+  displayName: 'Publish migrations'
+  inputs:
+    targetPath: '$(build.artifactstagingdirectory)/migrations'
+    artifact: 'migrations'
+
+- task: SqlAzureDacpacDeployment@1
+  inputs:
+    azureSubscription: 'AzureSubscription'
+    AuthenticationType: 'server'
+    ServerName: 'mailboxdb.database.windows.net'
+    DatabaseName: 'MailBoxDB'
+    SqlUsername: 'maxization'
+    SqlPassword: 'Qwerty123'
+    deployType: 'SqlTask'
+    SqlFile: $(System.ArtifactsDirectory)/migrations/MailBoxDBContext.sql
+    IpDetectionMethod: 'AutoDetect'
+- task: DotNetCoreCLI@2
+  inputs:
+    command: publish
+    publishWebProjects: True
+    arguments: '--configuration $(BuildConfiguration) --output $(System.DefaultWorkingDirectory)'
+    zipAfterPublish: True
+
+- task: AzureWebApp@1
+  inputs:
+    azureSubscription: 'AzureSubscription'
+    appType: 'webApp'
+    appName: 'MailBoxNet'
+    package: $(System.DefaultWorkingDirectory)/**/*.zip
