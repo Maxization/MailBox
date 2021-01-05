@@ -59,6 +59,7 @@ namespace UnitTests.ServicesTest
         {
             var mails = GetSampleUserMails().AsQueryable();
             var users = GetSamlpeUsers();
+            var attachment = new List<Attachment>();
 
             var mockMailsSet = new Mock<DbSet<UserMail>>();
             mockMailsSet.As<IQueryable<UserMail>>().Setup(m => m.Provider).Returns(mails.Provider);
@@ -72,12 +73,18 @@ namespace UnitTests.ServicesTest
             mockUsersSet.As<IQueryable<User>>().Setup(m => m.ElementType).Returns(users.AsQueryable().ElementType);
             mockUsersSet.As<IQueryable<User>>().Setup(m => m.GetEnumerator()).Returns(users.GetEnumerator());
 
+            var mockAttachmentsSet = new Mock<DbSet<Attachment>>();
+            mockAttachmentsSet.As<IQueryable<Attachment>>().Setup(m => m.Provider).Returns(attachment.AsQueryable().Provider);
+            mockAttachmentsSet.As<IQueryable<Attachment>>().Setup(m => m.Expression).Returns(attachment.AsQueryable().Expression);
+            mockAttachmentsSet.As<IQueryable<Attachment>>().Setup(m => m.ElementType).Returns(attachment.AsQueryable().ElementType);
+            mockAttachmentsSet.As<IQueryable<Attachment>>().Setup(m => m.GetEnumerator()).Returns(attachment.GetEnumerator());
+
             var mockNotificationService = new Mock<NotificationService>();
 
             var mockContext = new Mock<MailBoxDBContext>();
             mockContext.Setup(c => c.UserMails).Returns(mockMailsSet.Object);
             mockContext.Setup(c => c.Users).Returns(mockUsersSet.Object);
-
+            mockContext.Setup(c => c.Attachments).Returns(mockAttachmentsSet.Object);
             var mockConfiguration = new Mock<IConfiguration>();
 
             var service = new MailService(mockConfiguration.Object, mockContext.Object, mockNotificationService.Object);
@@ -96,6 +103,7 @@ namespace UnitTests.ServicesTest
         {
             var mails = GetSampleUserMails().AsQueryable();
             var users = GetSamlpeUsers();
+            var attachment = new List<Attachment>();
 
             var mockMailsSet = new Mock<DbSet<UserMail>>();
             mockMailsSet.As<IQueryable<UserMail>>().Setup(m => m.Provider).Returns(mails.Provider);
@@ -109,9 +117,16 @@ namespace UnitTests.ServicesTest
             mockUsersSet.As<IQueryable<User>>().Setup(m => m.ElementType).Returns(users.AsQueryable().ElementType);
             mockUsersSet.As<IQueryable<User>>().Setup(m => m.GetEnumerator()).Returns(users.GetEnumerator());
 
+            var mockAttachmentsSet = new Mock<DbSet<Attachment>>();
+            mockAttachmentsSet.As<IQueryable<Attachment>>().Setup(m => m.Provider).Returns(attachment.AsQueryable().Provider);
+            mockAttachmentsSet.As<IQueryable<Attachment>>().Setup(m => m.Expression).Returns(attachment.AsQueryable().Expression);
+            mockAttachmentsSet.As<IQueryable<Attachment>>().Setup(m => m.ElementType).Returns(attachment.AsQueryable().ElementType);
+            mockAttachmentsSet.As<IQueryable<Attachment>>().Setup(m => m.GetEnumerator()).Returns(attachment.GetEnumerator());
+
             var mockContext = new Mock<MailBoxDBContext>();
             mockContext.Setup(c => c.UserMails).Returns(mockMailsSet.Object);
             mockContext.Setup(c => c.Users).Returns(mockUsersSet.Object);
+            mockContext.Setup(c => c.Attachments).Returns(mockAttachmentsSet.Object);
 
             var mockNotificationService = new Mock<NotificationService>();
 
