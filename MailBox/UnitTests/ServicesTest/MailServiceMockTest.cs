@@ -4,6 +4,7 @@ using MailBox.Models.MailModels;
 using MailBox.Services;
 using MailBox.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -38,8 +39,9 @@ namespace UnitTests.ServicesTest
             mockContext.Setup(c => c.UserMails).Returns(mockMailsSet.Object);
             mockContext.Setup(c => c.Users).Returns(mockUsersSet.Object);
 
+            var mockConfiguration = new Mock<IConfiguration>();
 
-            var service = new MailService(mockContext.Object, mockNotificationService.Object);
+            var service = new MailService(mockConfiguration.Object, mockContext.Object, mockNotificationService.Object);
 
             var user9Mais = service.GetUserMails(9, 1, SortingEnum.ByDateFromNewest, FilterEnum.NoFilter, null);
             var user10Mais = service.GetUserMails(10, 1, SortingEnum.BySenderAZ, FilterEnum.FilterTopic, "testtopic");
@@ -76,7 +78,9 @@ namespace UnitTests.ServicesTest
             mockContext.Setup(c => c.UserMails).Returns(mockMailsSet.Object);
             mockContext.Setup(c => c.Users).Returns(mockUsersSet.Object);
 
-            var service = new MailService(mockContext.Object, mockNotificationService.Object);
+            var mockConfiguration = new Mock<IConfiguration>();
+
+            var service = new MailService(mockConfiguration.Object, mockContext.Object, mockNotificationService.Object);
 
             var user10Mais = service.GetMail(10, 3);
             var user11Mais = service.GetMail(11, 3);
@@ -111,7 +115,9 @@ namespace UnitTests.ServicesTest
 
             var mockNotificationService = new Mock<NotificationService>();
 
-            var service = new MailService(mockContext.Object, mockNotificationService.Object);
+            var mockConfiguration = new Mock<IConfiguration>();
+
+            var service = new MailService(mockConfiguration.Object, mockContext.Object, mockNotificationService.Object);
 
             var user10Mais = service.GetMail(10, 3);
             var user11Mais = service.GetMail(11, 3);
@@ -139,8 +145,9 @@ namespace UnitTests.ServicesTest
             var mockContext = new Mock<MailBoxDBContext>();
             mockContext.Setup(c => c.UserMails).Returns(mockUserMailsSet.Object);
 
-            var service = new MailService(mockContext.Object, mockNotificationService.Object);
+            var mockConfiguration = new Mock<IConfiguration>();
 
+            var service = new MailService(mockConfiguration.Object, mockContext.Object, mockNotificationService.Object);
 
             MailReadUpdate mailReadUpdate = new MailReadUpdate { MailID = 3, Read = true };
 
