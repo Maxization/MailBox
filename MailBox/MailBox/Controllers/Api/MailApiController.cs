@@ -10,6 +10,8 @@ using System.Security.Claims;
 using MailBox.Services.Interfaces;
 using MailBox.Models.MailModels;
 using MailBox.Contracts.Responses;
+using MailBox.Helpers;
+using MailBox.Validators.MailValidators;
 
 namespace MailBox.Controllers
 {
@@ -60,11 +62,14 @@ namespace MailBox.Controllers
         /// <param name="ccRecipientsAddresses"></param>
         /// <param name="bccRecipientsAddresses"></param>
         /// <param name="files"></param>
-        /// <returns>Error list if any</returns>
+        /// <returns>List of errors if any</returns>
         [HttpPost]
         public async Task<IActionResult> Create(string topic, string text, List<string> ccRecipientsAddresses, List<string> bccRecipientsAddresses, List<IFormFile> files)
         {
-            NewMail mail = new NewMail
+            int userID = int.Parse(User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
+            ErrorResponse errorResponse = new ErrorResponse();
+
+            NewMail newMail = new NewMail
             {
                 Topic = topic,
                 Text = text,
@@ -72,12 +77,18 @@ namespace MailBox.Controllers
                 BCCRecipientsAddresses = bccRecipientsAddresses,
                 Files = files
             };
-            int userID = int.Parse(User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
-            ErrorResponse errorResponse = new ErrorResponse();
+            var newMailValidator = new NewMailValidator().Validate(newMail);
+            if (!newMailValidator.IsValid)
+            {
+                foreach (var error in newMailValidator.Errors)
+                    errorResponse.Errors.Add(new ErrorModel { FieldName = error.PropertyName, Message = error.ErrorMessage });
+                Response.StatusCode = 400;
+                return new JsonResult(errorResponse);
+            }
 
             try
             {
-                await _mailService.AddMail(userID, mail);
+                await _mailService.AddMail(userID, newMail);
             }
             catch (Exception ex)
             {
@@ -89,16 +100,37 @@ namespace MailBox.Controllers
         }
 
         /// <summary>
-        /// Gets mails of logged user
+        /// Downloads selected attachment
         /// </summary>
         /// <param name="filename"></param>
         /// <param name="id"></param>
-        /// <returns>List of mails in JSON</returns>
+        /// <returns>File or list of errors</returns>
         [HttpGet]
-        public async Task<IActionResult> DownloadAttachment(string filename, Guid id)
+        public async Task<IActionResult> DownloadAttachment(string filename, string id)
         {
-            byte[] array = await _mailService.DownloadAttachment(id.ToString() + filename);
-            return File(array, "application/" + filename.Substring(filename.IndexOf('.') + 1), filename);
+            ErrorResponse errorResponse = new ErrorResponse();
+            byte[] array = null;
+            try
+            {
+                array = await _mailService.DownloadAttachment(id + filename);
+            }
+            catch (Exception ex)
+            {
+                errorResponse.Errors.Add(new ErrorModel { FieldName = ex.Message, Message = ex.InnerException.Message });
+                Response.StatusCode = 400;
+                return new JsonResult(errorResponse);
+            }
+
+            string extension;
+            try
+            {
+                extension = filename.Substring(filename.LastIndexOf('.'));
+            }
+            catch (Exception)
+            {
+                extension = "";
+            }
+            return new JsonResult(File(array, MIMEAssistant.GetMIMEType(extension), filename));
         }
     }
 }

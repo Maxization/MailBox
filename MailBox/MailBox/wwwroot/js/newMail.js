@@ -46,6 +46,7 @@ function OnClickSend() {
         data: formData,
         processData: false,
         contentType: false,
+        dataType: "json",
         mimeType: "multipart/form-data",
         cache: true,
         error: function (xhr) {

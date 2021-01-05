@@ -9,6 +9,7 @@
     <link href="~/css/inbox.css" rel="stylesheet" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="~/js/data.js"></script>
+    <script src="~/js/maildetails.js"></script>
 </head>
 <body class="bg-black">
     <div class="container-fluid text-white">
@@ -57,10 +58,10 @@
                             <button id="buttonAttachments" type="button" class="btn btn-info dropdown-toggle" style="width: 100%" data-toggle="dropdown" aria-haspopup="false" aria-expanded="true">
                                 Attachments
                             </button>
-                            <div id="divAttachments" class="dropdown-menu overflow-auto" style="width: 100%; height: 50px" aria-labelledby="Attachments">
+                            <div id="divAttachments" class="dropdown-menu overflow-auto" style="width: 100%; height: auto" aria-labelledby="Attachments">
                                 @foreach (var a in Model.Attachments)
                                 {
-                                    <a class="btn btn-light dropdown-item" id=@a.id href="/api/mailapi/downloadattachment?filename=@a.filename&id=@a.id">@a.filename</a>
+                                    <button class="btn btn-light dropdown-item" id="@a.id" onclick="DownloadAttachment('@a.filename', '@a.id')">@a.filename</button>
                                 }
                             </div>
                         </div>

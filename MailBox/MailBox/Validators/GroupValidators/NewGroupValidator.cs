@@ -10,7 +10,6 @@ namespace MailBox.Validators
         public NewGroupValidator()
         {
             RuleFor(x => x.Name)
-                .NotNull()
                 .NotEmpty()
                 .MaximumLength(nameMaxLength);
         }

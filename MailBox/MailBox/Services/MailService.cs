@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
 using System.IO;
+using System.Text;
+using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Http;
@@ -272,11 +274,19 @@ namespace MailBox.Services
 
             foreach (var file in files)
             {
+                StringBuilder newFilename = new StringBuilder(Regex.Replace(file.FileName.Trim().Replace(' ', '-'), @"[^0-9a-zA-Z-]{1}", "#"));
+                try
+                {
+                    int dotPos = file.FileName.LastIndexOf('.');
+                    newFilename[dotPos] = '.';
+                }
+                catch (Exception) { }
+
                 Attachment attachment = new Attachment
                 {
                     ID = Guid.NewGuid(),
                     MailID = mailID,
-                    Filename = file.FileName.Trim().Replace(' ', '-')
+                    Filename = newFilename.ToString()
                 };
                 _context.Attachments.Add(attachment);
                 string fileName = attachment.ID.ToString() + attachment.Filename;
@@ -297,22 +307,48 @@ namespace MailBox.Services
 
         public async Task<byte[]> DownloadAttachment(string filename)
         {
+            CloudBlockBlob blockBlob;
+            try
+            {
+                CloudBlobContainer blobContainer = GetBlobContainer();
+                blockBlob = blobContainer.GetBlockBlobReference(filename);
+            }
+            catch (Exception)
+            {
+                throw new Exception("AzureBlobStorage", new Exception("Error occured while connecting to storage!"));
+            }
+
+            MemoryStream stream = new MemoryStream();
+            try
+            {
+                await blockBlob.DownloadToStreamAsync(stream);
+            }
+            catch (Exception)
+            {
+                throw new Exception("AzureBlobStorage", new Exception("Error occured while downloading attachment - it probably has expired!"));
+            }
+
+            try
+            {
+                var byteArray = new byte[stream.Length];
+                stream.Position = 0;
+                stream.Read(byteArray, 0, (int)stream.Length);
+                return byteArray;
+            }
+            catch (Exception)
+            {
+                throw new Exception("AzureBlobStorage", new Exception("The attachment is probably corrupted!"));
+            }
+        }
+
+        private CloudBlobContainer GetBlobContainer()
+        {
             string storageConnection = _configuration.GetConnectionString("AzureBlob");
             CloudStorageAccount storageAccount = CloudStorageAccount.Parse(storageConnection);
             CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
             var section = _configuration.GetSection("AzureBlob");
             string containerName = section.GetValue<string>("ContainerName");
-            CloudBlobContainer blobContainer = blobClient.GetContainerReference(containerName);
-            CloudBlockBlob blockBlob = blobContainer.GetBlockBlobReference(filename);
-
-            MemoryStream stream = new MemoryStream();
-            await blockBlob.DownloadToStreamAsync(stream);
-
-            var byteArray = new byte[stream.Length];
-            stream.Position = 0;
-            stream.Read(byteArray, 0, (int)stream.Length);
-
-            return byteArray;
+            return blobClient.GetContainerReference(containerName);
         }
     }
 }
