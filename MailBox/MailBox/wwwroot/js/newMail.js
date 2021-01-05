@@ -27,15 +27,17 @@ function OnClickCC(id) {
 
 function OnClickSend() {
     var formData = new FormData();
-    var BCC = $('input[name=BCC]').val().replace(/\s/g, '').split(';').filter((el) => el);
     var CC = $('input[name=CC]').val().replace(/\s/g, '').split(';').filter((el) => el);
-
-    formData.append("topic", $('input[name=Topic]').val());
+    var BCC = $('input[name=BCC]').val().replace(/\s/g, '').split(';').filter((el) => el);
+    var dataToSend =
+    {
+        Topic: $('input[name=Topic]').val(),
+        Text: $('textarea[name=Text]').val(),
+        CCRecipientsAddresses: CC,
+        BCCRecipientsAddresses: BCC
+    };
+    formData.append("newMail", JSON.stringify(dataToSend));
     formData.append("text", $('textarea[name=Text]').val());
-    for (i = 0; i < BCC.length; i++)
-        formData.append("bccRecipientsAddresses", BCC[i]);
-    for (i = 0; i < CC.length; i++)
-        formData.append("ccRecipientsAddresses", CC[i]);
     if (attachedFiles != null)
         for (i = 0; i < attachedFiles.length; i++)
             formData.append("files", attachedFiles[i]);
