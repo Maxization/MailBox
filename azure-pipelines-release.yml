@@ -58,6 +58,12 @@ steps:
       [string] $buildName = "$(versionNumber)_$(Build.SourceBranchName)"
       Write-Host "Setting the name of the build to '$buildName'."
       Write-Host "##vso[build.updatebuildnumber]$buildName"
+
+- task: CmdLine@2
+  displayName: Build EFCore Migrations
+  inputs:
+    script: 'dotnet tool install --global dotnet-ef'
+
 - task: CmdLine@2
   displayName: Build EFCore Migrations
   inputs:
