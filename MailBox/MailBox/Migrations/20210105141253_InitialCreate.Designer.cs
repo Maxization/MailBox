@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MailBox.Migrations
 {
     [DbContext(typeof(MailBoxDBContext))]
-    [Migration("20210105115416_InitialCreate")]
+    [Migration("20210105141253_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
