@@ -58,7 +58,28 @@ steps:
       [string] $buildName = "$(versionNumber)_$(Build.SourceBranchName)"
       Write-Host "Setting the name of the build to '$buildName'."
       Write-Host "##vso[build.updatebuildnumber]$buildName"
+- task: CmdLine@2
+  displayName: Build EFCore Migrations
+  inputs:
+    script: 'dotnet ef migrations script –p $(Build.SourcesDirectory)\Mailbox\Mailbox.csproj -o $(build.artifactstagingdirectory)\migrations\scripts.sql –i'
 
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/migrations'
+    ArtifactName: 'MigrationsScripts'
+    publishLocation: 'Container'
+
+- task: SqlAzureDacpacDeployment@1
+  inputs:
+    azureSubscription: 'AzureSubscription'
+    AuthenticationType: 'server'
+    ServerName: 'mailboxdb.database.windows.net'
+    DatabaseName: 'MailBoxDB'
+    SqlUsername: 'maxization'
+    SqlPassword: 'Qwerty123'
+    deployType: 'SqlTask'
+    SqlFile: '$(System.DefaultWorkingDirectory)/**/*.sql'
+    IpDetectionMethod: 'AutoDetect'
 - task: DotNetCoreCLI@2
   inputs:
     command: publish
