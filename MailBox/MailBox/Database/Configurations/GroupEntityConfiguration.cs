@@ -17,8 +17,6 @@ namespace MailBox.Database.Configurations
             builder.HasOne(c => c.Owner)
                 .WithMany(c => c.Groups)
                 .IsRequired();
-
-            builder.HasIndex(c => c.Owner);
         }
     }
 }

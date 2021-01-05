@@ -57,32 +57,34 @@ namespace MailBox.Controllers
         /// <summary>
         /// Create new mail
         /// </summary>
-        /// <param name="newMail"></param>
+        /// <param name="topic"></param>
+        /// <param name="text"></param>
+        /// <param name="ccRecipientsAddresses"></param>
+        /// <param name="bccRecipientsAddresses"></param>
         /// <param name="files"></param>
         /// <returns>List of errors if any</returns>
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] NewMail newMail, List<IFormFile> files)
+        public async Task<IActionResult> Create(string topic, string text, List<string> ccRecipientsAddresses, List<string> bccRecipientsAddresses, List<IFormFile> files)
         {
-            newMail.Files = files;
             int userID = int.Parse(User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
             ErrorResponse errorResponse = new ErrorResponse();
 
-            //NewMail newMail = new NewMail
-            //{
-            //    Topic = topic,
-            //    Text = text,
-            //    CCRecipientsAddresses = ccRecipientsAddresses,
-            //    BCCRecipientsAddresses = bccRecipientsAddresses,
-            //    Files = files
-            //};
-            //var newMailValidator = new NewMailValidator().Validate(newMail);
-            //if (!newMailValidator.IsValid)
-            //{
-            //    foreach (var error in newMailValidator.Errors)
-            //        errorResponse.Errors.Add(new ErrorModel { FieldName = error.PropertyName, Message = error.ErrorMessage });
-            //    Response.StatusCode = 400;
-            //    return new JsonResult(errorResponse);
-            //}
+            NewMail newMail = new NewMail
+            {
+                Topic = topic,
+                Text = text,
+                CCRecipientsAddresses = ccRecipientsAddresses,
+                BCCRecipientsAddresses = bccRecipientsAddresses,
+                Files = files
+            };
+            var newMailValidator = new NewMailValidator().Validate(newMail);
+            if (!newMailValidator.IsValid)
+            {
+                foreach (var error in newMailValidator.Errors)
+                    errorResponse.Errors.Add(new ErrorModel { FieldName = error.PropertyName, Message = error.ErrorMessage });
+                Response.StatusCode = 400;
+                return new JsonResult(errorResponse);
+            }
 
             try
             {
