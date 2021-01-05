@@ -67,7 +67,7 @@ steps:
 - task: CmdLine@2
   displayName: Build EFCore Migrations
   inputs:
-    script: 'dotnet ef migrations script –p $(Build.SourcesDirectory)\MailBox\MailBox\MailBox.csproj -o $(build.artifactstagingdirectory)\migrations\scripts.sql –i'
+    script: 'dotnet ef migrations script –-project $(Build.SourcesDirectory)\MailBox\MailBox\MailBox.csproj -o $(build.artifactstagingdirectory)\migrations\scripts.sql –i'
 
 - task: PublishBuildArtifacts@1
   inputs:
