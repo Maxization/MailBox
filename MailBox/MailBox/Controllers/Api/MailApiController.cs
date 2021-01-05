@@ -1,19 +1,17 @@
 ﻿
 using System;
 using System.Linq;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using MailBox.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
+using MailBox.Services.Interfaces;
 using MailBox.Models.MailModels;
 using MailBox.Contracts.Responses;
-using System.Net.Http;
-using System.Threading.Tasks;
-using System.Net.Http.Headers;
-using System.Collections.Generic;
-using MailBox.Models.NotificationModel;
-using System.Text;
-using Newtonsoft.Json;
+using MailBox.Helpers;
+using MailBox.Validators.MailValidators;
 
 namespace MailBox.Controllers
 {
@@ -26,29 +24,6 @@ namespace MailBox.Controllers
         public MailApiController(IMailService mailService)
         {
             _mailService = mailService;
-        }
-
-        /// <summary>
-        /// Create new mail
-        /// </summary>
-        /// <param name="mail"></param>
-        /// <returns>Error list if any</returns>
-        [HttpPost]
-        public async Task<IActionResult> Create([FromBody] NewMail mail)
-        {
-            int userID = int.Parse(User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
-            ErrorResponse errorResponse = new ErrorResponse();
-            try
-            {
-                _mailService.AddMail(userID, mail);    
-            }
-            catch (Exception ex)
-            {
-                errorResponse.Errors.Add(new ErrorModel { FieldName = ex.Message, Message = ex.InnerException.Message });
-                Response.StatusCode = 400;
-            }
-
-            return new JsonResult(errorResponse);
         }
 
         /// <summary>
@@ -77,6 +52,83 @@ namespace MailBox.Controllers
             int userID = int.Parse(User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
             _mailService.UpdateMailRead(userID, mail);
             return Ok();
+        }
+
+        /// <summary>
+        /// Create new mail
+        /// </summary>
+        /// <param name="newMail"></param>
+        /// <param name="files"></param>
+        /// <returns>List of errors if any</returns>
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] NewMail newMail, List<IFormFile> files)
+        {
+            newMail.Files = files;
+            int userID = int.Parse(User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
+            ErrorResponse errorResponse = new ErrorResponse();
+
+            //NewMail newMail = new NewMail
+            //{
+            //    Topic = topic,
+            //    Text = text,
+            //    CCRecipientsAddresses = ccRecipientsAddresses,
+            //    BCCRecipientsAddresses = bccRecipientsAddresses,
+            //    Files = files
+            //};
+            //var newMailValidator = new NewMailValidator().Validate(newMail);
+            //if (!newMailValidator.IsValid)
+            //{
+            //    foreach (var error in newMailValidator.Errors)
+            //        errorResponse.Errors.Add(new ErrorModel { FieldName = error.PropertyName, Message = error.ErrorMessage });
+            //    Response.StatusCode = 400;
+            //    return new JsonResult(errorResponse);
+            //}
+
+            try
+            {
+                await _mailService.AddMail(userID, newMail);
+            }
+            catch (Exception ex)
+            {
+                errorResponse.Errors.Add(new ErrorModel { FieldName = ex.Message, Message = ex.InnerException.Message });
+                Response.StatusCode = 400;
+            }
+
+            return new JsonResult(errorResponse);
+        }
+
+        /// <summary>
+        /// Downloads selected attachment
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <param name="id"></param>
+        /// <returns>File or list of errors</returns>
+        [HttpGet]
+        public async Task<IActionResult> DownloadAttachment(string filename, string id)
+        {
+            ErrorResponse errorResponse = new ErrorResponse();
+            byte[] array = null;
+            try
+            {
+                array = await _mailService.DownloadAttachment(id + filename);
+            }
+            catch (Exception ex)
+            {
+                errorResponse.Errors.Add(new ErrorModel { FieldName = ex.Message, Message = ex.InnerException.Message });
+                Response.StatusCode = 400;
+                return new JsonResult(errorResponse);
+            }
+
+            string extension;
+            try
+            {
+                extension = filename.Substring(filename.LastIndexOf('.'));
+            }
+            catch (Exception)
+            {
+                extension = "";
+            }
+            return new JsonResult(File(array, MIMEAssistant.GetMIMEType(extension), filename));
         }
     }
 }

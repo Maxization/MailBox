@@ -26,6 +26,7 @@ namespace MailBox.Database.Configurations
                 .HasForeignKey(c => c.MailID)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            builder.HasIndex(c => c.UserID);
         }
     }
 }

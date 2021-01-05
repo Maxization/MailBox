@@ -1,3 +1,4 @@
+
 using MailBox.Database;
 using MailBox.Services;
 using Microsoft.AspNetCore.Authentication;
@@ -17,7 +18,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using MailBox.Filters;
 using Microsoft.AspNetCore.Mvc;
-using MailBox.HostedServices;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 using System;
@@ -111,7 +111,7 @@ namespace MailBox
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
-            });   
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

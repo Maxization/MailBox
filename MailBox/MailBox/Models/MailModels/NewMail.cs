@@ -1,6 +1,6 @@
 
-using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Http;
 
 namespace MailBox.Models.MailModels
 {
@@ -10,5 +10,6 @@ namespace MailBox.Models.MailModels
         public List<string> BCCRecipientsAddresses { get; set; }
         public string Topic { get; set; }
         public string Text { get; set; }
+        public List<IFormFile> Files { get; set; }
     }
 }
