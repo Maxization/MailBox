@@ -25,7 +25,6 @@
                     </div>
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-
                     <div>
                         <div class="form-row">
                             <div class="col-2">
@@ -80,7 +79,10 @@
                         </div>
                         <div class="form-row">
                             <div class="col-12">
-                                <button  class="btn btn-secondary float-left">attach files</button>
+                                <label id="filesLabel" class="btn btn-secondary float-left" data-toggle="tooltip" data-placement="right" title="No files attached">
+                                    <input name="Files" asp-for="Files" id="files" type="file" oninput="OnChangeFiles()" multiple hidden />
+                                    attach files
+                                </label>
                                 <button onclick="OnClickSend()" type="submit" class="btn btn-success float-right">Send</button>
                             </div>
                         </div>

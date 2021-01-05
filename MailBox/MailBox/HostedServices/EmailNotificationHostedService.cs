@@ -16,7 +16,7 @@ namespace MailBox.HostedServices
     {
         private readonly IConfiguration _configuration;
         public readonly IServiceProvider _serviceProvider;
-        private TimeSpan timeout;
+        private readonly TimeSpan timeout;
         public EmailNotificationHostedService(IConfiguration configuration, IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
@@ -44,8 +44,8 @@ namespace MailBox.HostedServices
                         scope.ServiceProvider
                             .GetRequiredService<IUserService>();
                     var data = userService.GetUsersEmailWithUnreadMails();
-                    
-                    foreach(var un in data)
+
+                    foreach (var un in data)
                     {
                         tos.Add(new EmailAddress(un.Email, un.Name));
                     }
@@ -55,7 +55,7 @@ namespace MailBox.HostedServices
                 var htmlContent = "<strong>Na stronie MailBox masz nieprzeczytanie wiadomości. Zaloguj sie i sprawdź!</strong>";
                 var displayRecipients = false;
                 var msg = MailHelper.CreateSingleEmailToMultipleRecipients(from, tos, subject, "", htmlContent, displayRecipients);
-                var response = await client.SendEmailAsync(msg);
+                _ = await client.SendEmailAsync(msg);
 
                 await Task.Delay(timeout, stoppingToken);
             }

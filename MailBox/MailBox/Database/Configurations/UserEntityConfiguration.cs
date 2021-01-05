@@ -35,7 +35,6 @@ namespace MailBox.Database.Configurations
             builder.HasOne(c => c.Role)
                 .WithMany(c => c.Users)
                 .IsRequired();
-            
         }
     }
 }

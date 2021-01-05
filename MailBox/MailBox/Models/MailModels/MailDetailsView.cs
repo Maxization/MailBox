@@ -14,5 +14,6 @@ namespace MailBox.Models.MailModels
         public string Topic { get; set; }
         public string Text { get; set; }
         public DateTime Date { get; set; }
+        public List<(string filename, Guid id)> Attachments { get; set; }
     }
 }

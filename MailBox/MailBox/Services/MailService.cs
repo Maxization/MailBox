@@ -1,34 +1,40 @@
 ﻿
 using MailBox.Database;
 using MailBox.Models.MailModels;
-using MailBox.Models.NotificationModel;
 using MailBox.Models.UserModels;
 using MailBox.Services.Interfaces;
-using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
+using System.Linq;
+using System.IO;
+using System.Text;
+using System.Text.RegularExpressions;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Http;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
+using Azure.Storage.Blobs;
 
 namespace MailBox.Services
 {
     public class MailService : IMailService
     {
+        private readonly IConfiguration _configuration;
         private readonly MailBoxDBContext _context;
         private readonly INotificationService _notificationService;
 
-        public MailService(MailBoxDBContext context, INotificationService notificationService)
+        public MailService(IConfiguration configuration, MailBoxDBContext context, INotificationService notificationService)
         {
             _context = context;
+            _configuration = configuration;
             _notificationService = notificationService;
         }
 
         public PagingMailInboxView GetUserMails(int userID, int page, SortingEnum sorting, FilterEnum filter, string filterPhrase)
         {
-            filterPhrase = (filterPhrase == null ? "" : filterPhrase);
+            filterPhrase ??= "";
 
             bool firstPage = (page == 1);
 
@@ -98,6 +104,13 @@ namespace MailBox.Services
             return new PagingMailInboxView { Mails = mails, FirstPage = firstPage, LastPage = lastPage };
         }
 
+        public void UpdateMailRead(int userID, MailReadUpdate mailRead)
+        {
+            UserMail userMail = _context.UserMails.Where(um => um.MailID == mailRead.MailID && um.UserID == userID).First();
+            userMail.Read = mailRead.Read;
+            _context.SaveChanges();
+        }
+
         public MailDetailsView GetMail(int userID, int mailID)
         {
             var mail = _context.UserMails
@@ -121,6 +134,7 @@ namespace MailBox.Services
                 Topic = mail.Mail.Topic,
                 Text = mail.Mail.Text,
                 Date = mail.Mail.Date,
+                Attachments = GetMailAttachments(mailID)
             };
         }
 
@@ -144,92 +158,42 @@ namespace MailBox.Services
             return recipients;
         }
 
-        public void AddMail(int userID, NewMail newMail)
+        private List<(string, Guid)> GetMailAttachments(int mailID)
         {
+            var attachmentsDB = _context.Attachments
+                .Where(x => x.MailID == mailID)
+                .ToList();
 
-            #region CheckIfEmailExist
+            List<(string filename, Guid id)> attachments = new List<(string filename, Guid id)>();
+            foreach (var attachment in attachmentsDB)
+                attachments.Add((attachment.Filename, attachment.ID));
+
+            return attachments;
+        }
+
+        public async Task AddMail(int userID, NewMail newMail)
+        {
             if (newMail.BCCRecipientsAddresses != null)
                 newMail.BCCRecipientsAddresses = newMail.BCCRecipientsAddresses.Distinct().ToList();
             if (newMail.CCRecipientsAddresses != null)
                 newMail.CCRecipientsAddresses = newMail.CCRecipientsAddresses.Distinct().ToList();
-
-            var users = _context.Users.ToList();
-            List<string> emails = new List<string>();
-            foreach (User usr in users)
-                emails.Add(usr.Email);
-
-            if (newMail.BCCRecipientsAddresses != null)
-                foreach (string email in newMail.BCCRecipientsAddresses)
-                {
-                    if (!emails.Contains(email))
-                        throw new Exception("BCCRecipientsAddresses", new Exception("No such email in global contacts list."));
-                }
-
-            if (newMail.CCRecipientsAddresses != null)
-                foreach (string email in newMail.CCRecipientsAddresses)
-                {
-                    if (!emails.Contains(email))
-                        throw new Exception("CCRecipientsAddresses", new Exception("No such email in global contacts list."));
-                }
-            #endregion
+            CheckRecipientsAddressesCorrectness(newMail.BCCRecipientsAddresses, newMail.CCRecipientsAddresses);
 
             var transaction = _context.Database.BeginTransaction();
 
             try
             {
-                User usr = _context.Users.Find(userID);
-                Mail mail = new Mail
-                {
-                    Date = DateTime.Now,
-                    Topic = newMail.Topic,
-                    Text = newMail.Text,
-                    Sender = usr,
-                };
-                _context.Mails.Add(mail);
-                _context.SaveChanges();
+                int mailID = AddNewMailToDB(userID, newMail.Topic, newMail.Text);
 
+                AddMailRecipientsToDB(newMail.CCRecipientsAddresses, RecipientType.CC, mailID);    
+                AddMailRecipientsToDB(newMail.BCCRecipientsAddresses, RecipientType.BCC, mailID);
 
-
-                if (newMail.CCRecipientsAddresses != null)
-                    foreach (string email in newMail.CCRecipientsAddresses)
-                    {
-                        usr = _context.Users.Where(x => x.Email == email).FirstOrDefault();
-                        if (usr == null)
-                            continue;
-                        UserMail um = new UserMail
-                        {
-                            UserID = usr.ID,
-                            MailID = mail.ID,
-                            RecipientType = RecipientType.CC,
-                            Read = false,
-                        };
-                        _context.UserMails.Add(um);
-                    }
-
-                if (newMail.BCCRecipientsAddresses != null)
-                    foreach (string email in newMail.BCCRecipientsAddresses)
-                    {
-                        usr = _context.Users.Where(x => x.Email == email).FirstOrDefault();
-                        if (usr == null || (newMail.CCRecipientsAddresses != null && newMail.CCRecipientsAddresses.Contains(email)))
-                            continue;
-                        UserMail um = new UserMail
-                        {
-                            UserID = usr.ID,
-                            MailID = mail.ID,
-                            RecipientType = RecipientType.BCC,
-                            Read = false,
-                        };
-                        _context.UserMails.Add(um);
-                    }
-
-                _context.SaveChanges();
+                if (IfAttachments(newMail.Files))
+                    await StoreMailAttachmentsOnAzureBlob(mailID, newMail.Files);
 
                 transaction.Commit();
 
-                HashSet<string> recipients = new HashSet<string>();
-                recipients.UnionWith(newMail.BCCRecipientsAddresses);
-                recipients.UnionWith(newMail.CCRecipientsAddresses);
-                _notificationService.SendNotification(recipients.ToList(), "NewMail", false);
+                await NotifyRecipients(newMail.BCCRecipientsAddresses, newMail.CCRecipientsAddresses, IfAttachments(newMail.Files));
             }
             catch (Exception)
             {
@@ -237,12 +201,154 @@ namespace MailBox.Services
             }
         }
 
-
-        public void UpdateMailRead(int userID, MailReadUpdate mailRead)
+        private void CheckRecipientsAddressesCorrectness(List<string> BCCRecipientsAddresses, List<string> CCRecipientsAddresses)
         {
-            UserMail userMail = _context.UserMails.Where(um => um.MailID == mailRead.MailID && um.UserID == userID).First();
-            userMail.Read = mailRead.Read;
+            var users = _context.Users.ToList();
+            List<string> emails = new List<string>();
+            foreach (User usr in users)
+                emails.Add(usr.Email);
+
+            if (BCCRecipientsAddresses != null)
+                foreach (string email in BCCRecipientsAddresses)
+                {
+                    if (!emails.Contains(email))
+                        throw new Exception("BCCRecipientsAddresses", new Exception("No such email in global contacts list."));
+                }
+            if (CCRecipientsAddresses != null)
+                foreach (string email in CCRecipientsAddresses)
+                {
+                    if (!emails.Contains(email))
+                        throw new Exception("CCRecipientsAddresses", new Exception("No such email in global contacts list."));
+                }
+        }
+
+        private int AddNewMailToDB(int userID, string topic, string text)
+        {
+            User usr = _context.Users.Find(userID);
+            Mail mail = new Mail
+            {
+                Date = DateTime.Now,
+                Topic = topic,
+                Text = text,
+                Sender = usr,
+            };
+            _context.Mails.Add(mail);
             _context.SaveChanges();
+            return mail.ID;
+        }
+
+        private void AddMailRecipientsToDB(List<string> recipients, RecipientType recipientType, int mailID)
+        {
+            if (recipients != null)
+                foreach (string email in recipients)
+                {
+                    User usr = _context.Users.Where(x => x.Email == email).FirstOrDefault();
+                    if (usr == null)
+                        continue;
+                    UserMail um = new UserMail
+                    {
+                        UserID = usr.ID,
+                        MailID = mailID,
+                        RecipientType = recipientType,
+                        Read = false,
+                    };
+                    _context.UserMails.Add(um);
+                }
+            _context.SaveChanges();
+        }
+
+        private bool IfAttachments(List<IFormFile> files)
+        {
+            return !(files == null || files.Count == 0);
+        }
+
+        private async Task StoreMailAttachmentsOnAzureBlob(int mailID, List<IFormFile> files)
+        {
+            string connectionString = _configuration.GetConnectionString("AzureBlob");
+            BlobServiceClient blobServiceClient = new BlobServiceClient(connectionString);
+            var section = _configuration.GetSection("AzureBlob");
+            string containerName = section.GetValue<string>("ContainerName");
+            BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(containerName);
+
+            List<Task> uploadTasks = new List<Task>();
+
+            foreach (var file in files)
+            {
+                StringBuilder newFilename = new StringBuilder(Regex.Replace(file.FileName.Trim().Replace(' ', '-'), @"[^0-9a-zA-Z-]{1}", "#"));
+                try
+                {
+                    int dotPos = file.FileName.LastIndexOf('.');
+                    newFilename[dotPos] = '.';
+                }
+                catch (Exception) { }
+
+                Attachment attachment = new Attachment
+                {
+                    ID = Guid.NewGuid(),
+                    MailID = mailID,
+                    Filename = newFilename.ToString()
+                };
+                _context.Attachments.Add(attachment);
+                string fileName = attachment.ID.ToString() + attachment.Filename;
+                BlobClient blobClient = containerClient.GetBlobClient(fileName);
+                uploadTasks.Add(blobClient.UploadAsync(file.OpenReadStream()));
+            }
+            await Task.WhenAll(uploadTasks);
+            _context.SaveChanges();
+        }
+
+        private async Task NotifyRecipients(List<string> BCCRecipientsAddresses, List<string> CCRecipientsAddresses, bool ifAttachments)
+        {
+            HashSet<string> recipients = new HashSet<string>();
+            recipients.UnionWith(BCCRecipientsAddresses);
+            recipients.UnionWith(CCRecipientsAddresses);
+            await _notificationService.SendNotification(recipients.ToList(), "NewMail", ifAttachments);
+        }
+
+        public async Task<byte[]> DownloadAttachment(string filename)
+        {
+            CloudBlockBlob blockBlob;
+            try
+            {
+                CloudBlobContainer blobContainer = GetBlobContainer();
+                blockBlob = blobContainer.GetBlockBlobReference(filename);
+            }
+            catch (Exception)
+            {
+                throw new Exception("AzureBlobStorage", new Exception("Error occured while connecting to storage!"));
+            }
+
+            MemoryStream stream = new MemoryStream();
+            try
+            {
+                await blockBlob.DownloadToStreamAsync(stream);
+            }
+            catch (Exception)
+            {
+                throw new Exception("AzureBlobStorage", new Exception("Error occured while downloading attachment - it probably has expired!"));
+            }
+
+            try
+            {
+                var byteArray = new byte[stream.Length];
+                stream.Position = 0;
+                stream.Read(byteArray, 0, (int)stream.Length);
+                return byteArray;
+            }
+            catch (Exception)
+            {
+                throw new Exception("AzureBlobStorage", new Exception("The attachment is probably corrupted!"));
+            }
+        }
+
+        private CloudBlobContainer GetBlobContainer()
+        {
+            string storageConnection = _configuration.GetConnectionString("AzureBlob");
+            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(storageConnection);
+            CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+            var section = _configuration.GetSection("AzureBlob");
+            string containerName = section.GetValue<string>("ContainerName");
+            return blobClient.GetContainerReference(containerName);
         }
     }
 }

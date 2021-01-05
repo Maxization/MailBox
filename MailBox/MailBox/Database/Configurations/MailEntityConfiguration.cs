@@ -18,12 +18,6 @@ namespace MailBox.Database.Configurations
                 .HasMaxLength(100)
                 .IsRequired();
 
-            //builder.HasMany(c => c.Mails)
-            //    .WithOne(c => c.MailReply);
-
-            //builder.HasOne(c => c.MailReply)
-            //    .WithMany(c => c.Mails);
-
             builder.HasOne(c => c.Sender)
                 .WithMany(c => c.CreatedMails);
         }

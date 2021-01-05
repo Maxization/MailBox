@@ -1,5 +1,6 @@
 ﻿
 using MailBox.Models.MailModels;
+using System.Threading.Tasks;
 
 namespace MailBox.Services.Interfaces
 {
@@ -8,8 +9,9 @@ namespace MailBox.Services.Interfaces
     public interface IMailService
     {
         PagingMailInboxView GetUserMails(int userID, int page, SortingEnum sorting, FilterEnum filter, string filterPhrase);
-        MailDetailsView GetMail(int userID, int mailID);
-        void AddMail(int userID, NewMail mail);
         void UpdateMailRead(int userID, MailReadUpdate mail);
+        MailDetailsView GetMail(int userID, int mailID);
+        Task AddMail(int userID, NewMail mail);
+        Task<byte[]> DownloadAttachment(string filename);
     }
 }

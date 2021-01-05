@@ -28,7 +28,6 @@ namespace MailBox.Filters
                         {
                             FieldName = error.Key,
                             Message = subError
-
                         };
 
                         errorResponse.Errors.Add(errorModel);

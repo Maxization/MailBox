@@ -1,3 +1,18 @@
+
+var attachedFiles;
+
+function OnChangeFiles() {
+    attachedFiles = document.getElementById('files').files;
+    var newText = "Attached " + attachedFiles.length + " file";
+    newText += (attachedFiles.length === 1 ? ": " : "s: ");
+    for (var i = 0; i < attachedFiles.length; i++) {
+        newText += attachedFiles[i].name;
+        if (i != attachedFiles.length - 1)
+            newText += ", ";
+    }
+    $("#filesLabel").tooltip().attr('data-original-title', newText);
+}
+
 function OnClickBCC(id) {
     var inp = $('input[name=BCC]');
     var email = inp.val() + document.getElementById(id).innerHTML + "; ";
@@ -11,20 +26,28 @@ function OnClickCC(id) {
 }
 
 function OnClickSend() {
+    var formData = new FormData();
     var BCC = $('input[name=BCC]').val().replace(/\s/g, '').split(';').filter((el) => el);
     var CC = $('input[name=CC]').val().replace(/\s/g, '').split(';').filter((el) => el);
-    var dataToSend =
-    {
-        Topic: $('input[name=Topic]').val(),
-        Text: $('textarea[name=Text]').val(),
-        CCRecipientsAddresses: CC,
-        BCCRecipientsAddresses: BCC
-    };
+
+    formData.append("topic", $('input[name=Topic]').val());
+    formData.append("text", $('textarea[name=Text]').val());
+    for (i = 0; i < BCC.length; i++)
+        formData.append("bccRecipientsAddresses", BCC[i]);
+    for (i = 0; i < CC.length; i++)
+        formData.append("ccRecipientsAddresses", CC[i]);
+    if (attachedFiles != null)
+        for (i = 0; i < attachedFiles.length; i++)
+            formData.append("files", attachedFiles[i]);
+
     $.ajax({
         url: '/api/mailapi/create',
         type: "POST",
-        data: JSON.stringify(dataToSend),
-        contentType: 'application/json',
+        data: formData,
+        processData: false,
+        contentType: false,
+        dataType: "json",
+        mimeType: "multipart/form-data",
         cache: true,
         error: function (xhr) {
             document.getElementById("CCError").innerHTML = "";
@@ -52,7 +75,7 @@ function OnClickSend() {
                     default:
                         break;
                 }
-            })
+            });
         },
         success: function () {
             window.location = '/mail/inbox';
@@ -80,4 +103,12 @@ $(document).ready(function () {
         if (event.keyCode == 13)
             event.preventDefault();
     });
+    $("body").tooltip({ selector: '[data-toggle=tooltip]' });
+    if (!window.File || !window.FileReader || !window.FileList || !window.Blob) {
+        alert('You cannot attach files in yout browser - please install the newest version');
+        return;
+    }
+    input = document.getElementById('files');
+    if (!input.files)
+        alert('You cannot attach files in yout browser - please install the newest version');
 });

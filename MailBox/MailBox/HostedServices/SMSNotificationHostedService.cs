@@ -1,10 +1,10 @@
-﻿using MailBox.Services;
+﻿
+using MailBox.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Twilio;
@@ -16,7 +16,7 @@ namespace MailBox.HostedServices
     {
         private readonly IConfiguration _configuration;
         public readonly IServiceProvider _serviceProvider;
-        private TimeSpan timeout;
+        private readonly TimeSpan timeout;
         public SMSNotificationHostedService(IConfiguration configuration, IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
@@ -46,15 +46,15 @@ namespace MailBox.HostedServices
 
                     foreach (var un in data)
                     {
-                        if(un.PhoneNumber!=null)
+                        if (un.PhoneNumber != null)
                             tos.Add(new Twilio.Types.PhoneNumber(un.PhoneNumber));
                     }
 
                 }
 
-                foreach(Twilio.Types.PhoneNumber num in tos)
+                foreach (Twilio.Types.PhoneNumber num in tos)
                 {
-                    var message = MessageResource.Create(
+                    _ = MessageResource.Create(
                         body: "Na stronie MailBox masz nieprzeczytanie wiadomości. Zaloguj sie i sprawdź!",
                         from: new Twilio.Types.PhoneNumber(number),
                         to: num
