@@ -28,7 +28,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools"
         Version="1.0.0-msbuild2-final" />
     <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet"
-        Version="1.0.0-msbuild2-final" />
+        Version="1.0.0-preview3-final" />
   </ItemGroup>
 
   <ItemGroup>
