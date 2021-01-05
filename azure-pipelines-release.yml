@@ -21,7 +21,7 @@ steps:
   displayName: 'Use .Net Core sdk 5.x'
   inputs:
     packageType: sdk
-    version: 5.x
+    version: 3.x
     installationPath: $(Agent.ToolsDirectory)/dotnet
     includePreviewVersions: true
 - task: Assembly-Info-NetCore@2
@@ -59,6 +59,35 @@ steps:
       Write-Host "Setting the name of the build to '$buildName'."
       Write-Host "##vso[build.updatebuildnumber]$buildName"
 
+- task: CmdLine@2
+  displayName: Build EFCore Migrations
+  inputs:
+    script: 'dotnet tool install --global dotnet-ef'
+
+- task: efcore-migration-script-generator-task@0
+  inputs:
+    installdependencies: true # required for net 3.1+
+    projectpath: '$(Build.SourcesDirectory)/MailBox/MailBox/Mailbox.csproj' # path to project that has your DbContext
+    databasecontexts: 'MailBoxDBContext'
+    targetfolder: '$(build.artifactstagingdirectory)/migrations'
+
+- task: PublishPipelineArtifact@1
+  displayName: 'Publish migrations'
+  inputs:
+    targetPath: '$(build.artifactstagingdirectory)/migrations'
+    artifact: 'migrations'
+
+- task: SqlAzureDacpacDeployment@1
+  inputs:
+    azureSubscription: 'AzureSubscription'
+    AuthenticationType: 'server'
+    ServerName: 'mailboxdb.database.windows.net'
+    DatabaseName: 'MailBoxDB'
+    SqlUsername: 'maxization'
+    SqlPassword: 'Qwerty123'
+    deployType: 'SqlTask'
+    SqlFile: $(System.ArtifactsDirectory)/migrations/MailBoxDBContext.sql
+    IpDetectionMethod: 'AutoDetect'
 - task: DotNetCoreCLI@2
   inputs:
     command: publish
