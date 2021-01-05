@@ -14,6 +14,7 @@ namespace MailBox.Database
         public virtual DbSet<UserRole> Roles { get; set; }
         public virtual DbSet<UserMail> UserMails { get; set; }
         public virtual DbSet<GroupUser> GroupUsers { get; set; }
+        public virtual DbSet<Attachment> Attachments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -25,6 +26,7 @@ namespace MailBox.Database
             modelBuilder.ApplyConfiguration(new UserEntityConfiguration());
             modelBuilder.ApplyConfiguration(new UserMailEntityConfiguration());
             modelBuilder.ApplyConfiguration(new UserRoleEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new AttachemtEntityConfiguration());
         }
     }
 }

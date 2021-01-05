@@ -9,7 +9,6 @@ namespace MailBox.Validators.UserValidators
         public DeletedUserValidator()
         {
             RuleFor(x => x.Address)
-                .NotNull()
                 .NotEmpty()
                 .Matches(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
         }

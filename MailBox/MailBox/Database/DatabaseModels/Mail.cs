@@ -12,5 +12,6 @@ namespace MailBox.Database
         public DateTime Date { get; set; }
         public User Sender { get; set; }
         public ICollection<UserMail> UserMails { get; set; }
+        public ICollection<Attachment> Attachments { get; set; }
     }
 }

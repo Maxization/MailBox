@@ -19,6 +19,26 @@ namespace MailBox.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.1");
 
+            modelBuilder.Entity("MailBox.Database.Attachment", b =>
+                {
+                    b.Property<Guid>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Filename")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("MailID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("MailID");
+
+                    b.ToTable("Attachments");
+                });
+
             modelBuilder.Entity("MailBox.Database.Group", b =>
                 {
                     b.Property<int>("ID")
@@ -141,6 +161,8 @@ namespace MailBox.Migrations
 
                     b.HasIndex("MailID");
 
+                    b.HasIndex("UserID");
+
                     b.ToTable("UserMails");
                 });
 
@@ -159,6 +181,17 @@ namespace MailBox.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("Roles");
+                });
+
+            modelBuilder.Entity("MailBox.Database.Attachment", b =>
+                {
+                    b.HasOne("MailBox.Database.Mail", "Mail")
+                        .WithMany("Attachments")
+                        .HasForeignKey("MailID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Mail");
                 });
 
             modelBuilder.Entity("MailBox.Database.Group", b =>
@@ -238,6 +271,8 @@ namespace MailBox.Migrations
 
             modelBuilder.Entity("MailBox.Database.Mail", b =>
                 {
+                    b.Navigation("Attachments");
+
                     b.Navigation("UserMails");
                 });
 

@@ -11,11 +11,11 @@ namespace MailBox.Controllers
     [Authorize(Policy = "AssignToUser")]
     public class GroupsController : Controller
     {
-        private readonly IGroupService groupService;
+        private readonly IGroupService _groupService;
 
         public GroupsController(IGroupService groupService)
         {
-            this.groupService = groupService;
+            _groupService = groupService;
         }
 
         public IActionResult ManageGroups()

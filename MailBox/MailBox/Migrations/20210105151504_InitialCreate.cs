@@ -109,6 +109,25 @@ namespace MailBox.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Attachments",
+                columns: table => new
+                {
+                    ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    MailID = table.Column<int>(type: "int", nullable: false),
+                    Filename = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Attachments", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_Attachments_Mails_MailID",
+                        column: x => x.MailID,
+                        principalTable: "Mails",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "UserMails",
                 columns: table => new
                 {
@@ -134,6 +153,11 @@ namespace MailBox.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Attachments_MailID",
+                table: "Attachments",
+                column: "MailID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Groups_OwnerID",
                 table: "Groups",
                 column: "OwnerID");
@@ -154,6 +178,11 @@ namespace MailBox.Migrations
                 column: "MailID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_UserMails_UserID",
+                table: "UserMails",
+                column: "UserID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Users_Email",
                 table: "Users",
                 column: "Email",
@@ -167,6 +196,9 @@ namespace MailBox.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Attachments");
+
             migrationBuilder.DropTable(
                 name: "GroupUsers");
 

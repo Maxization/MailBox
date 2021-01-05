@@ -1,17 +1,11 @@
 ﻿
 using MailBox.Database;
-using MailBox.Models.NotificationModel;
 using MailBox.Models.UserModels;
 using MailBox.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MailBox.Services
 {
@@ -88,23 +82,23 @@ namespace MailBox.Services
                 if (!um.Read && !addedUsers.Contains(um.User.Email))
                 {
                     addedUsers.Add(um.User.Email);
-                    result.Add(new UserSMSNotification { Name = um.User.FirstName + " " + um.User.LastName, PhoneNumber=um.User.PhoneNumber });
+                    result.Add(new UserSMSNotification { Name = um.User.FirstName + " " + um.User.LastName, PhoneNumber = um.User.PhoneNumber });
                 }
             }
 
             return result;
         }
 
-        
+
 
         public void UpdateUserRole(UserRoleUpdate userRoleUpdate)
         {
             var user = _context.Users.First(u => u.Email == userRoleUpdate.Address);
             user.Role = _context.Roles.First(r => r.RoleName == userRoleUpdate.RoleName);
             _context.SaveChanges();
-            if(userRoleUpdate.RoleName == "User" || userRoleUpdate.RoleName == "Admin")
+            if (userRoleUpdate.RoleName == "User" || userRoleUpdate.RoleName == "Admin")
             {
-                _notificationService.SendNotification(new List<string>{ userRoleUpdate.Address}, "ActivatedAccount",false);
+                _notificationService.SendNotification(new List<string> { userRoleUpdate.Address }, "ActivatedAccount", false);
             }
             else if (userRoleUpdate.RoleName == "Banned")
             {
