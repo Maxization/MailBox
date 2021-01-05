@@ -71,11 +71,11 @@ steps:
     databasecontexts: 'MailBoxDBContext'
     targetfolder: '$(build.artifactstagingdirectory)/migrations'
 
-- task: PublishBuildArtifacts@1
+- task: PublishPipelineArtifact@1
+  displayName: 'Publish migrations'
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)/migrations'
-    ArtifactName: 'MigrationsScripts'
-    publishLocation: 'Container'
+    targetPath: '$(build.artifactstagingdirectory)/migrations'
+    artifact: 'migrations'
 
 - task: SqlAzureDacpacDeployment@1
   inputs:
@@ -86,7 +86,7 @@ steps:
     SqlUsername: 'maxization'
     SqlPassword: 'Qwerty123'
     deployType: 'SqlTask'
-    SqlFile: '$(System.DefaultWorkingDirectory)/**/*.sql'
+    SqlFile: $(System.ArtifactsDirectory)/migrations/MailBoxDBContext.sql
     IpDetectionMethod: 'AutoDetect'
 - task: DotNetCoreCLI@2
   inputs:
