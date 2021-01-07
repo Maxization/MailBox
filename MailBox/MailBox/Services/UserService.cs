@@ -13,7 +13,6 @@ namespace MailBox.Services
     {
         private readonly MailBoxDBContext _context;
         private readonly INotificationService _notificationService;
-
         public UserService(MailBoxDBContext context, INotificationService notificationService)
         {
             _context = context;
@@ -88,8 +87,6 @@ namespace MailBox.Services
 
             return result;
         }
-
-
 
         public void UpdateUserRole(UserRoleUpdate userRoleUpdate)
         {

@@ -16,6 +16,5 @@ namespace MailBox.Database
         public ICollection<UserMail> UserMails { get; set; }
         public ICollection<Group> Groups { get; set; }
         public ICollection<GroupUser> GroupUsers { get; set; }
-
     }
 }

@@ -9,7 +9,6 @@ namespace UnitTests.ModelsTest.GroupModelsTest
         [Fact]
         public void ConstructorTest()
         {
-
             #region Init variables
             int groupID = 0;
             string groupMemberAddress = "test@address.com";

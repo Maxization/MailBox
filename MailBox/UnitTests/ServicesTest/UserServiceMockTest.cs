@@ -106,38 +106,36 @@ namespace UnitTests.ServicesTest
 
         private List<UserRole> GetSampleUserRoles()
         {
-            List<UserRole> userRoles = new List<UserRole>();
-            userRoles.Add(
+            List<UserRole> userRoles = new List<UserRole>
+            {
                 new UserRole
                 {
                     ID = 1,
                     RoleName = "Admin"
-                });
-            userRoles.Add(
+                },
                 new UserRole
                 {
                     ID = 2,
                     RoleName = "User"
-                });
-            userRoles.Add(
+                },
                 new UserRole
                 {
                     ID = 3,
                     RoleName = "New"
-                });
-            userRoles.Add(
+                },
                 new UserRole
                 {
                     ID = 4,
                     RoleName = "Banned"
-                });
+                }
+            };
             return userRoles;
         }
 
         private List<User> GetSampleUsers()
         {
-            List<User> users = new List<User>();
-            users.Add(
+            List<User> users = new List<User>
+            {
                 new User
                 {
                     FirstName = "TestName1",
@@ -145,8 +143,7 @@ namespace UnitTests.ServicesTest
                     Email = "test1@address.com",
                     ID = 0,
                     Role = new UserRole { ID = 1, RoleName = "Admin" },
-                });
-            users.Add(
+                },
                 new User
                 {
                     FirstName = "TestName2",
@@ -154,8 +151,7 @@ namespace UnitTests.ServicesTest
                     Email = "test2@address.com",
                     ID = 1,
                     Role = new UserRole { ID = 2, RoleName = "User" },
-                });
-            users.Add(
+                },
                 new User
                 {
                     FirstName = "TestName3",
@@ -163,8 +159,7 @@ namespace UnitTests.ServicesTest
                     Email = "test3@address.com",
                     ID = 2,
                     Role = new UserRole { ID = 2, RoleName = "User" },
-                });
-            users.Add(
+                },
                 new User
                 {
                     FirstName = "TestName4",
@@ -172,8 +167,7 @@ namespace UnitTests.ServicesTest
                     Email = "test4@address.com",
                     ID = 3,
                     Role = new UserRole { ID = 3, RoleName = "New" },
-                });
-            users.Add(
+                },
                 new User
                 {
                     FirstName = "TestName5",
@@ -181,8 +175,7 @@ namespace UnitTests.ServicesTest
                     Email = "test5@address.com",
                     ID = 4,
                     Role = new UserRole { ID = 4, RoleName = "Banned" },
-                });
-            users.Add(
+                },
                 new User
                 {
                     FirstName = "TestName6",
@@ -190,8 +183,7 @@ namespace UnitTests.ServicesTest
                     Email = "test6@address.com",
                     ID = 5,
                     Role = new UserRole { ID = 4, RoleName = "Banned" },
-                });
-            users.Add(
+                },
                 new User
                 {
                     FirstName = "TestName7",
@@ -199,7 +191,8 @@ namespace UnitTests.ServicesTest
                     Email = "test7@address.com",
                     ID = 6,
                     Role = new UserRole { ID = 2, RoleName = "User" },
-                });
+                }
+            };
             return users;
         }
     }

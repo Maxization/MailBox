@@ -10,6 +10,5 @@ namespace MailBox.Database
         public User Owner { get; set; }
 
         public ICollection<GroupUser> GroupUsers { get; set; }
-
     }
 }

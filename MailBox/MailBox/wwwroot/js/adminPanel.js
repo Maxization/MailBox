@@ -16,7 +16,7 @@ function GetAllUsersOnLoad() {
 
 function SetUserRole(address, roleName) {
     $.ajax({
-        url:'/api/userapi/updateuserrole',
+        url: '/api/userapi/updateuserrole',
         type: "PUT",
         data: JSON.stringify({ Address: address, RoleName: roleName }),
         contentType: 'application/json',
@@ -54,8 +54,7 @@ function DeleteUser(address) {
     });
 }
 
-function ShowUsers(list)
-{
+function ShowUsers(list) {
     $("#new_users").empty();
     $("#banned_users").empty();
     $("#active_users").empty();
@@ -72,24 +71,21 @@ function ShowUsers(list)
     });
 }
 
-function ShowNewUser(item)
-{
+function ShowNewUser(item) {
     $("#new_users").append("<tr><td>" + item.name + "</td><td>" + item.surname + "</td><td>" + item.address +
         "</td><td><button class=\"btn btn-success\" onclick=\"SetUserRole( '" + item.address + "', 'User' )\">Accept</button>" +
         "</td><td><button class=\"btn btn-danger\" onclick=\"DeleteUser( '" + item.address + "')\">Delete</button>" +
         "</td></tr>");
 }
 
-function ShowBannedUser(item)
-{
+function ShowBannedUser(item) {
     $("#banned_users").append("<tr><td>" + item.name + "</td><td>" + item.surname + "</td><td>" + item.address +
         "</td><td><button class=\"btn btn-success\" onclick=\"SetUserRole('" + item.address + "' , 'User' )\">Unlock</button>" +
         "</td><td><button class=\"btn btn-danger\" onclick=\"DeleteUser( '" + item.address + "' )\">Delete</button>" +
         "</td></tr>");
 }
 
-function ShowActiveUser(item)
-{
+function ShowActiveUser(item) {
     $("#active_users").append("<tr><td>" + item.name + "</td><td>" + item.surname + "</td><td>" + item.address +
         "<td><button class=\"btn dropdown-toggle content-center btn-info \" type=\"button\" id=\"dropdownMenuButton\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">" +
         item.role +

@@ -11,18 +11,12 @@ namespace MailBox.Controllers
     [Authorize(Policy = "AssignToUser")]
     public class GroupsController : Controller
     {
-        private readonly IGroupService _groupService;
-
-        public GroupsController(IGroupService groupService)
-        {
-            _groupService = groupService;
-        }
+        public GroupsController() { }
 
         public IActionResult ManageGroups()
         {
             int userID = int.Parse(User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
             return View();
         }
-
     }
 }

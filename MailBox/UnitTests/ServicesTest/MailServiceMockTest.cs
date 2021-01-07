@@ -173,117 +173,121 @@ namespace UnitTests.ServicesTest
 
         private List<User> GetSamlpeUsers()
         {
-            List<User> users = new List<User>();
-            users.Add(new User { ID = 0, FirstName = "SenderName1", LastName = "SenderSurname1", Email = "sender1@address.com" });
-            users.Add(new User { ID = 10, FirstName = "SenderName10", LastName = "SenderSurname10", Email = "sender10@address.com" });
-            users.Add(new User { ID = 1, FirstName = "SenderName2", LastName = "SenderSurname2", Email = "sender2@address.com" });
-            users.Add(new User { ID = 2, FirstName = "SenderName0", LastName = "SenderSurname0", Email = "sender0@address.com" });
-            users.Add(new User { ID = 3, FirstName = "SenderName3", LastName = "SenderSurname3", Email = "sender3@address.com" });
-            users.Add(new User { ID = 11, FirstName = "SenderName11", LastName = "SenderSurname11", Email = "sender11@address.com" });
-            users.Add(new User { ID = 4, FirstName = "SenderName4", LastName = "SenderSurname4", Email = "sender4@address.com" });
-            users.Add(new User { ID = 9, FirstName = "SenderName9", LastName = "SenderSurname9", Email = "sender9@address.com" });
+            List<User> users = new List<User>
+            {
+                new User { ID = 0, FirstName = "SenderName1", LastName = "SenderSurname1", Email = "sender1@address.com" },
+                new User { ID = 10, FirstName = "SenderName10", LastName = "SenderSurname10", Email = "sender10@address.com" },
+                new User { ID = 1, FirstName = "SenderName2", LastName = "SenderSurname2", Email = "sender2@address.com" },
+                new User { ID = 2, FirstName = "SenderName0", LastName = "SenderSurname0", Email = "sender0@address.com" },
+                new User { ID = 3, FirstName = "SenderName3", LastName = "SenderSurname3", Email = "sender3@address.com" },
+                new User { ID = 11, FirstName = "SenderName11", LastName = "SenderSurname11", Email = "sender11@address.com" },
+                new User { ID = 4, FirstName = "SenderName4", LastName = "SenderSurname4", Email = "sender4@address.com" },
+                new User { ID = 9, FirstName = "SenderName9", LastName = "SenderSurname9", Email = "sender9@address.com" }
+            };
             return users;
         }
 
         private List<UserMail> GetSampleUserMails()
         {
-            List<UserMail> mails = new List<UserMail>();
-            mails.Add(new UserMail
+            List<UserMail> mails = new List<UserMail>
             {
-                Mail = new Mail
+                new UserMail
                 {
-                    ID = 0,
-                    Date = new DateTime(),
-                    Sender = new User { ID = 0, FirstName = "SenderName1", LastName = "SenderSurname1", Email = "sender1@address.com" },
-                    Text = "testtext0",
-                    Topic = "testtopic0"
+                    Mail = new Mail
+                    {
+                        ID = 0,
+                        Date = new DateTime(),
+                        Sender = new User { ID = 0, FirstName = "SenderName1", LastName = "SenderSurname1", Email = "sender1@address.com" },
+                        Text = "testtext0",
+                        Topic = "testtopic0"
+                    },
+                    Read = false,
+                    User = new User { ID = 10, FirstName = "SenderName10", LastName = "SenderSurname10", Email = "sender10@address.com" },
+                    RecipientType = RecipientType.CC,
+                    UserID = 10,
+                    MailID = 0
                 },
-                Read = false,
-                User = new User { ID = 10, FirstName = "SenderName10", LastName = "SenderSurname10", Email = "sender10@address.com" },
-                RecipientType = RecipientType.CC,
-                UserID = 10,
-                MailID = 0
-            });
-            mails.Add(new UserMail
-            {
-                Mail = new Mail
+                new UserMail
                 {
-                    ID = 1,
-                    Date = new DateTime(),
-                    Sender = new User { ID = 1, FirstName = "SenderName2", LastName = "SenderSurname2", Email = "sender2@address.com" },
-                    Text = "testtext1",
-                    Topic = "testtopic1"
+                    Mail = new Mail
+                    {
+                        ID = 1,
+                        Date = new DateTime(),
+                        Sender = new User { ID = 1, FirstName = "SenderName2", LastName = "SenderSurname2", Email = "sender2@address.com" },
+                        Text = "testtext1",
+                        Topic = "testtopic1"
+                    },
+                    Read = true,
+                    User = new User { ID = 10, FirstName = "SenderName10", LastName = "SenderSurname10", Email = "sender10@address.com" },
+                    RecipientType = RecipientType.CC,
+                    UserID = 10,
+                    MailID = 1
                 },
-                Read = true,
-                User = new User { ID = 10, FirstName = "SenderName10", LastName = "SenderSurname10", Email = "sender10@address.com" },
-                RecipientType = RecipientType.CC,
-                UserID = 10,
-                MailID = 1
-            });
-            mails.Add(new UserMail
-            {
-                Mail = new Mail
+                new UserMail
                 {
-                    ID = 2,
-                    Date = new DateTime(),
-                    Sender = new User { ID = 2, FirstName = "SenderName0", LastName = "SenderSurname0", Email = "sender0@address.com" },
-                    Text = "testtext2",
-                    Topic = "testtopic2"
+                    Mail = new Mail
+                    {
+                        ID = 2,
+                        Date = new DateTime(),
+                        Sender = new User { ID = 2, FirstName = "SenderName0", LastName = "SenderSurname0", Email = "sender0@address.com" },
+                        Text = "testtext2",
+                        Topic = "testtopic2"
+                    },
+                    Read = true,
+                    User = new User { ID = 10, FirstName = "SenderName10", LastName = "SenderSurname10", Email = "sender10@address.com" },
+                    RecipientType = RecipientType.BCC,
+                    UserID = 10,
+                    MailID = 2
                 },
-                Read = true,
-                User = new User { ID = 10, FirstName = "SenderName10", LastName = "SenderSurname10", Email = "sender10@address.com" },
-                RecipientType = RecipientType.BCC,
-                UserID = 10,
-                MailID = 2
-            });
-            mails.Add(new UserMail
-            {
-                Mail = new Mail
+                new UserMail
                 {
-                    ID = 3,
-                    Date = new DateTime(),
-                    Sender = new User { ID = 3, FirstName = "SenderName3", LastName = "SenderSurname3", Email = "sender3@address.com" },
-                    Text = "testtext3",
-                    Topic = "testtopic3"
+                    Mail = new Mail
+                    {
+                        ID = 3,
+                        Date = new DateTime(),
+                        Sender = new User { ID = 3, FirstName = "SenderName3", LastName = "SenderSurname3", Email = "sender3@address.com" },
+                        Text = "testtext3",
+                        Topic = "testtopic3"
+                    },
+                    Read = true,
+                    User = new User { ID = 10, FirstName = "SenderName10", LastName = "SenderSurname10", Email = "sender10@address.com" },
+                    RecipientType = RecipientType.BCC,
+                    UserID = 10,
+                    MailID = 3
                 },
-                Read = true,
-                User = new User { ID = 10, FirstName = "SenderName10", LastName = "SenderSurname10", Email = "sender10@address.com" },
-                RecipientType = RecipientType.BCC,
-                UserID = 10,
-                MailID = 3
-            });
-            mails.Add(new UserMail
-            {
-                Mail = new Mail
+                new UserMail
                 {
-                    ID = 3,
-                    Date = new DateTime(),
-                    Sender = new User { ID = 3, FirstName = "SenderName3", LastName = "SenderSurname3", Email = "sender3@address.com" },
-                    Text = "testtext3",
-                    Topic = "testtopic3"
+                    Mail = new Mail
+                    {
+                        ID = 3,
+                        Date = new DateTime(),
+                        Sender = new User { ID = 3, FirstName = "SenderName3", LastName = "SenderSurname3", Email = "sender3@address.com" },
+                        Text = "testtext3",
+                        Topic = "testtopic3"
+                    },
+                    Read = false,
+                    User = new User { ID = 11, FirstName = "SenderName11", LastName = "SenderSurname11", Email = "sender11@address.com" },
+                    RecipientType = RecipientType.CC,
+                    UserID = 11,
+                    MailID = 3
                 },
-                Read = false,
-                User = new User { ID = 11, FirstName = "SenderName11", LastName = "SenderSurname11", Email = "sender11@address.com" },
-                RecipientType = RecipientType.CC,
-                UserID = 11,
-                MailID = 3
-            });
-            mails.Add(new UserMail
-            {
-                Mail = new Mail
+                new UserMail
                 {
-                    ID = 4,
-                    Date = new DateTime(),
-                    Sender = new User { ID = 4, FirstName = "SenderName4", LastName = "SenderSurname4", Email = "sender4@address.com" },
-                    Text = "testtext4",
-                    Topic = "testtopic4"
-                },
-                Read = true,
-                User = new User { ID = 10, FirstName = "SenderName10", LastName = "SenderSurname10", Email = "sender10@address.com" },
-                RecipientType = RecipientType.BCC,
-                UserID = 10,
-                MailID = 4
-            });
+                    Mail = new Mail
+                    {
+                        ID = 4,
+                        Date = new DateTime(),
+                        Sender = new User { ID = 4, FirstName = "SenderName4", LastName = "SenderSurname4", Email = "sender4@address.com" },
+                        Text = "testtext4",
+                        Topic = "testtopic4"
+                    },
+                    Read = true,
+                    User = new User { ID = 10, FirstName = "SenderName10", LastName = "SenderSurname10", Email = "sender10@address.com" },
+                    RecipientType = RecipientType.BCC,
+                    UserID = 10,
+                    MailID = 4
+                }
+            };
             return mails;
         }
     }

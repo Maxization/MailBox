@@ -9,7 +9,6 @@ namespace MailBox.Validators.MailValidators
         public readonly int topicMaxLength = 100;
         public readonly int textMaxLength = 1000000;
         public readonly string emailRegex = @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$";
-
         public NewMailValidator()
         {
             RuleFor(x => x.CCRecipientsAddresses)

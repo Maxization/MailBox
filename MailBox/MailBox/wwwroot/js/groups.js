@@ -115,6 +115,7 @@ function ChangeGroupName(Name, GroupID) {
 }
 
 function AddGroup(Name) {
+    document.getElementById("newGroupError").innerHTML = "";
     $.ajax({
         url: '/api/GroupsApi/AddGroup',
         type: "POST",

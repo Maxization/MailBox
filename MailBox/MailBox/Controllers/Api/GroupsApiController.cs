@@ -15,7 +15,6 @@ namespace MailBox.Controllers.Api
     public class GroupsApiController : ControllerBase
     {
         private readonly IGroupService groupService;
-
         public GroupsApiController(IGroupService groupService)
         {
             this.groupService = groupService;

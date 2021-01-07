@@ -20,7 +20,6 @@ namespace MailBox.Controllers
     public class MailApiController : ControllerBase
     {
         private readonly IMailService _mailService;
-
         public MailApiController(IMailService mailService)
         {
             _mailService = mailService;
@@ -109,7 +108,7 @@ namespace MailBox.Controllers
         public async Task<IActionResult> DownloadAttachment(string filename, string id)
         {
             ErrorResponse errorResponse = new ErrorResponse();
-            byte[] array = null;
+            byte[] array;
             try
             {
                 array = await _mailService.DownloadAttachment(id + filename);
