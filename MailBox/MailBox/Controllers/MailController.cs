@@ -7,13 +7,11 @@ using System.Security.Claims;
 
 namespace MailBox.Controllers
 {
-
     [Authorize]
     [Authorize(Policy = "AssignToUser")]
     public class MailController : Controller
     {
         private readonly IMailService _mailService;
-
         public MailController(IMailService mailService)
         {
             _mailService = mailService;

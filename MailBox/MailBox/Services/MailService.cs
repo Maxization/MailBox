@@ -24,7 +24,6 @@ namespace MailBox.Services
         private readonly IConfiguration _configuration;
         private readonly MailBoxDBContext _context;
         private readonly INotificationService _notificationService;
-
         public MailService(IConfiguration configuration, MailBoxDBContext context, INotificationService notificationService)
         {
             _context = context;
@@ -185,7 +184,7 @@ namespace MailBox.Services
             {
                 int mailID = AddNewMailToDB(userID, newMail.Topic, newMail.Text);
 
-                AddMailRecipientsToDB(newMail.CCRecipientsAddresses, RecipientType.CC, mailID);    
+                AddMailRecipientsToDB(newMail.CCRecipientsAddresses, RecipientType.CC, mailID);
                 AddMailRecipientsToDB(newMail.BCCRecipientsAddresses, RecipientType.BCC, mailID);
 
                 if (IfAttachments(newMail.Files))

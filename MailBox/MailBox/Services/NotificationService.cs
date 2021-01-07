@@ -25,7 +25,6 @@ namespace MailBox.Services
             await Task.Run(() => SendNotificationToRecipients(emails, content, withAttachments));
         }
 
-
         private async void SendNotificationToRecipients(List<string> emails, string contentMes, bool withAttachments)
         {
             using HttpClient client = new HttpClient();

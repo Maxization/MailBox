@@ -14,6 +14,5 @@ namespace MailBox.Database
         public Mail Mail { get; set; }
         public RecipientType RecipientType { get; set; }
         public bool Read { get; set; }
-
     }
 }

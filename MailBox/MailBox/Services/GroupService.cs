@@ -13,7 +13,6 @@ namespace MailBox.Services
     public class GroupService : IGroupService
     {
         private readonly MailBoxDBContext _context;
-
         public GroupService(MailBoxDBContext context)
         {
             _context = context;
